@@ -1,0 +1,107 @@
+WARNING: CPU IP/backtrace sampling not supported, disabling.
+Try the 'nsys status --environment' command to learn more.
+
+WARNING: CPU context switch tracing not supported, disabling.
+Try the 'nsys status --environment' command to learn more.
+
+compile inner 耗时: 947.637979 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/home/jade/.local/icicle/lib/backend
+prove() -> icicle device setup 耗时: 246.486202ms
+prove() -> initBlindingPolynomials 耗时: 0.004414ms
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 11.861759 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.011194 ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 5.505333ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 9.158316ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003443ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 5.366073ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 9.116570ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003433ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 5.322860ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.903662ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003322ms
+	solveConstraints() || commitToLRO() 耗时: 43.406111 ms
+prove() -> solveConstraints 耗时: 55.288884ms
+prove() -> completeQk 耗时: 55.186717ms
+prove() -> deriveGammaAndBeta 耗时: 55.332435ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 5.196616ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.956451ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003180ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 14.170256ms
+prove() -> buildRatioCopyConstraint 耗时: 69.709745ms
+	computeQuotient() || prepare to compute & derive alpha): 69.766089 ms
+		computeNumerator() || batchApply 耗时: 1.623560 ms
+		computeNumerator() || batchApply 耗时: 1.438444 ms
+		computeNumerator() || batchApply 耗时: 2.244477 ms
+		computeNumerator() || batchApply 耗时: 1.961385 ms
+	computeQuotient() || computeNumerator() 耗时: 9.037363 ms
+		divideByZH() || parallelize divide 耗时: 0.104102 ms
+		divideByZH() || ToCanonical 耗时: 0.154449 ms
+	computeQuotient() || divideByZH() 耗时: 0.271615 ms
+		commitToQuotient() || commit h1 耗时: 5.907403 ms
+		commitToQuotient() || commit h2 耗时: 5.569699 ms
+		commitToQuotient() || commit h3 耗时: 5.412056 ms
+	computeQuotient() || commitToQuotient() 耗时: 16.901095 ms
+	computeQuotient() || deriveZeta() 耗时: 0.089830 ms
+prove() -> computeQuotient 耗时: 96.074974ms
+prove() -> openZ 耗时: 101.560971ms
+prove() -> computeLinearizedPolynomial 耗时: 107.387811ms
+prove() -> batchOpening 耗时: 113.667821ms
+prove() -> prove() 总耗时: 113.872150ms
+prove inner 耗时: 1325.532741 ms
+verify inner 耗时: 3.583533 ms
+assemble Poseidon2-FS inputs 耗时: 1.126461 ms
+compile outer(frontend.Compile) 耗时: 2665.546085 ms
+[outer] nbConstraints=6312227 nbPublic=4 nbSecret=168
+solve outer 耗时: 1610.480878ms
+outer circuit solved
+compile outer(pkOuter.Compile) 耗时: 14624.781580 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/home/jade/.local/icicle/lib/backend
+prove() -> icicle device setup 耗时: 884.576111ms
+prove() -> initBlindingPolynomials 耗时: 0.016897ms
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 1640.727334 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.006665 ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 165.383776ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.485711ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.004400ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 174.131385ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.420753ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003135ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 166.717430ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.406605ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003295ms
+	solveConstraints() || commitToLRO() 耗时: 531.590733 ms
+prove() -> solveConstraints 耗时: 2172.348994ms
+prove() -> completeQk 耗时: 2172.309206ms
+prove() -> deriveGammaAndBeta 耗时: 2172.331050ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 191.800892ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.387582ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003131ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 200.243878ms
+prove() -> buildRatioCopyConstraint 耗时: 3056.339576ms
+	computeQuotient() || prepare to compute & derive alpha): 3069.919993 ms
+		computeNumerator() || batchApply 耗时: 775.536462 ms
+		computeNumerator() || batchApply 耗时: 774.564451 ms
+		computeNumerator() || batchApply 耗时: 774.584167 ms
+		computeNumerator() || batchApply 耗时: 774.339025 ms
+	computeQuotient() || computeNumerator() 耗时: 8623.040010 ms
+		divideByZH() || parallelize divide 耗时: 302.114310 ms
+		divideByZH() || ToCanonical 耗时: 1181.788490 ms
+	computeQuotient() || divideByZH() 耗时: 1483.977901 ms
+		commitToQuotient() || commit h1 耗时: 284.086453 ms
+		commitToQuotient() || commit h2 耗时: 271.321027 ms
+		commitToQuotient() || commit h3 耗时: 272.207309 ms
+	computeQuotient() || commitToQuotient() 耗时: 827.637193 ms
+	computeQuotient() || deriveZeta() 耗时: 0.102461 ms
+prove() -> computeQuotient 耗时: 14004.742927ms
+prove() -> openZ 耗时: 14677.050666ms
+prove() -> computeLinearizedPolynomial 耗时: 15416.226603ms
+prove() -> batchOpening 耗时: 16107.159830ms
+prove() -> prove() 总耗时: 17299.803355ms
+prove outer 耗时: 20544.333975 ms
+verify outer 耗时: 2.862477 ms
+outer circuit verified
+Collecting data...
+Generating '/tmp/nsys-report-8451.qdstrm'
+[1/1] [0%                          ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [0%                          ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [11%                         ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [===23%                      ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [===24%                      ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [====25%                     ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [====26%                     ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [====27%                     ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [====28%                     ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=====29%                    ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=====30%                    ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=====31%                    ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=====32%                    ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [======33%                   ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [======34%                   ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [======35%                   ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=======36%                  ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=======37%                  ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=======38%                  ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=======39%                  ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [========40%                 ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [========41%                 ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [========42%                 ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=========43%                ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=========44%                ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=========45%                ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=========46%                ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [==========47%               ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [==========48%               ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [==========49%               ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [===========50%              ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [===========51%              ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [===========52%              ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [===========53%              ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [============54%             ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [============55%             ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [============56%             ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [============57%             ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=============58%            ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=============59%            ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=============60%            ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [==============61%           ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [==============62%           ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [==============63%           ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [==============64%           ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [===============65%          ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [====================83%     ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [====================85%     ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [========================100%] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [========================100%] mimchasher_icicle_20251107_033652.nsys-rep
+Generated:
+	/home/jade/jade/eonark-gpu/logs/msm-fft-gpu/mimchasher_icicle_20251107_033652.nsys-rep
