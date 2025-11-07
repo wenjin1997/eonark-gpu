@@ -8,7 +8,7 @@ cd "$SCRIPT_DIR/.."
 export EON_PROFILE=1
 
 TS=$(date +%Y%m%d_%H%M%S)
-LOG_DIR="logs"
+LOG_DIR="logs/msm-fft-gpu"
 mkdir -p "$LOG_DIR"
 BASE="$LOG_DIR/mimchasher_icicle_${TS}"
 LOG_FILE="${BASE}.log"

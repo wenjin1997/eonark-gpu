@@ -1,0 +1,56 @@
+WARNING: CPU IP/backtrace sampling not supported, disabling.
+Try the 'nsys status --environment' command to learn more.
+
+WARNING: CPU context switch tracing not supported, disabling.
+Try the 'nsys status --environment' command to learn more.
+
+compile inner 耗时: 945.350103 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/home/jade/.local/icicle/lib/backend
+prove() -> icicle device setup 耗时: 257.021338ms
+prove() -> initBlindingPolynomials 耗时: 0.006825ms
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 6.417260 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.006695 ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 5.345874ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 9.114462ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003326ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 5.409117ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 9.169837ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003230ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 5.353121ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 9.132188ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003206ms
+	solveConstraints() || commitToLRO() 耗时: 43.559672 ms
+prove() -> solveConstraints 耗时: 49.989313ms
+prove() -> completeQk 耗时: 49.951305ms
+prove() -> deriveGammaAndBeta 耗时: 50.078437ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 5.138652ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 9.097733ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003352ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 14.254792ms
+prove() -> buildRatioCopyConstraint 耗时: 64.542800ms
+	computeQuotient() || prepare to compute & derive alpha): 64.589191 ms
+		computeNumerator() || batchApply 耗时: 1.582095 ms
+		computeNumerator() || batchApply 耗时: 2.067645 ms
+		computeNumerator() || batchApply 耗时: 1.443957 ms
+		computeNumerator() || batchApply 耗时: 1.625864 ms
+	computeQuotient() || computeNumerator() 耗时: 8.465902 ms
+		divideByZH() || parallelize divide 耗时: 0.151283 ms
+		divideByZH() || ToCanonical 耗时: 0.265779 ms
+	computeQuotient() || divideByZH() 耗时: 0.436861 ms
+		commitToQuotient() || commit h1 耗时: 5.392022 ms
+		commitToQuotient() || commit h2 耗时: 5.325769 ms
+		commitToQuotient() || commit h3 耗时: 5.385458 ms
+	computeQuotient() || commitToQuotient() 耗时: 16.110583 ms
+	computeQuotient() || deriveZeta() 耗时: 0.071549 ms
+prove() -> computeQuotient 耗时: 89.683154ms
+prove() -> openZ 耗时: 95.080411ms
+prove() -> computeLinearizedPolynomial 耗时: 100.504542ms
+prove() -> batchOpening 耗时: 106.590390ms
+prove() -> prove() 总耗时: 106.724963ms
+prove inner 耗时: 1295.924198 ms
+verify inner 耗时: 3.171571 ms
+assemble Poseidon2-FS inputs 耗时: 0.697974 ms
+compile outer(frontend.Compile) 耗时: 2663.215308 ms
+[outer] nbConstraints=6312221 nbPublic=4 nbSecret=168
+solve outer 耗时: 1593.608763ms
+outer circuit solved

@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-    "os"
 	"math/big"
 	"math/bits"
 	"runtime"
@@ -103,7 +102,7 @@ func (pk *ProvingKey) setupDevicePointers(spr *cs.SparseR1CS) error {
 	// ② 在 device 上完成拷贝和 Montgomery 变换
 	var copyErr error
 	done := make(chan struct{})
-    gpuSpan := profilerStart()
+    // gpuSpan := profilerStart()
     icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 		defer close(done)
 
@@ -245,19 +244,6 @@ func hostFromFrSlice(v []fr.Element) icicle_core.HostSlice[fr.Element] {
 
 func prove(spr *cs.SparseR1CS, pk *ProvingKey, fullWitness witness.Witness, opts ...backend.ProverOption) (*plonkbls12381.Proof, error) {
 
-    // Optional profiling enable by env var
-    profEnabled := os.Getenv("EON_PROFILE") == "1"
-    var profStart time.Time
-    if profEnabled {
-        ProfilerReset()
-        ProfilerEnable(true)
-        profStart = time.Now()
-        defer func() {
-            profileTotalAdd(time.Since(profStart))
-            ProfilerReport()
-            ProfilerEnable(false)
-        }()
-    }
 
 	if HasIcicle {
 		start := time.Now()
@@ -1384,7 +1370,7 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 		// (Ql, Qr, Qm, Qo, S1, S2, S3, Qcp, Qc) and ID, LOne
 		// we could pre-compute these rho*2 FFTs and store them
 		// at the cost of a huge memory footprint.
-		start_time = time.Now()
+		start_time := time.Now()
 		batchApply(s.x, func(p *iop.Polynomial) {
 			if p == nil {
 				return
@@ -1400,7 +1386,7 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 			// GPU 不可用或该 poly 未上传 → CPU 回退
 			_ = s.toCosetLagrangeOnGPUorCPU_DEV(p, wDevReg, wDevRev, sk, nil)
 		})
-		elapsed = time.Since(start_time)
+		elapsed := time.Since(start_time)
 		fmt.Printf("		computeNumerator() || batchApply 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 
 		wgBuf.Wait()
@@ -2305,7 +2291,7 @@ func commitOnGPUOrCPU(coeffs []fr.Element, pk *ProvingKey, useLagrange bool) (cu
 		var st icicle_runtime.EIcicleError
 
 		done := make(chan struct{})
-        gpuSpan := profilerStart()
+        // gpuSpan := profilerStart()
 		icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 			defer close(done)
 			if useLagrange {
@@ -2319,7 +2305,7 @@ func commitOnGPUOrCPU(coeffs []fr.Element, pk *ProvingKey, useLagrange bool) (cu
 			}
 		})
 		<-done
-        profilerAddGPU(gpuSpan)
+        // profilerAddGPU(gpuSpan)
 
 		if st == icicle_runtime.Success {
 			return curve.G1Affine(dig), nil
@@ -2348,7 +2334,7 @@ func commitBlindingFactorGPUOrCPU(n int, b *iop.Polynomial, pk *ProvingKey) (cur
 		)
 
         done := make(chan struct{})
-        gpuSpan := profilerStart()
+        // gpuSpan := profilerStart()
 		icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 			defer close(done)
 
@@ -2364,7 +2350,7 @@ func commitBlindingFactorGPUOrCPU(n int, b *iop.Polynomial, pk *ProvingKey) (cur
 			}
 		})
 		<-done
-        profilerAddGPU(gpuSpan)
+        // profilerAddGPU(gpuSpan)
 
 		if stLo == icicle_runtime.Success && stHi == icicle_runtime.Success {
 			res := curve.G1Affine(hi)
@@ -2387,14 +2373,14 @@ func OpenOnGPUOrCPU(p []fr.Element, point fr.Element, pk *ProvingKey) (kzg.Openi
 		var st icicle_runtime.EIcicleError
 
 		done := make(chan struct{})
-        gpuSpan := profilerStart()
+        // gpuSpan := profilerStart()
 		icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 			defer close(done)
 			// 传入 monomial SRS（和 Commit 一致）
 			pr, st = kzg_bls12_381.OnDeviceOpen(p, point, pk.deviceInfo.G1Device.G1)
 		})
 		<-done
-        profilerAddGPU(gpuSpan)
+        // profilerAddGPU(gpuSpan)
 
 		if st == icicle_runtime.Success {
 			return pr, nil
