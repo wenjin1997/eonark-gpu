@@ -1,0 +1,46 @@
+item,mimchasher_default_20251107_034702,mimchasher_icicle_20251107_034702
+compile inner,947.646188,943.985080
+prove() -> initBlindingPolynomials,0.628131,0.012089
+"solveConstraints() || s.spr.Solve() (L, R, O)",1785.145247,1642.275113
+"solveConstraints() || sets x[id_L], x[id_R], x[id_O]",0.009111,0.009512
+commitToPolyAndBlinding() -> commit to p,2103.239861,192.556854
+commitToPolyAndBlinding() -> commit to b,0.457582,8.416140
+commitToPolyAndBlinding() -> commit_p + commit_b,0.005337,0.003383
+"commitToLRO() || commitToPolyAndBlinding(s.x[id_R], s.bp[id_Br]) LRO[1]",2315.243876,
+"commitToLRO() || commitToPolyAndBlinding(s.x[id_O], s.bp[id_Bo]) LRO[2]",2115.231544,
+"commitToLRO() || commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl]) LRO[0]",2315.383683,
+solveConstraints() || commitToLRO(),2315.539391,530.824911
+prove() -> solveConstraints,4100.715536,2173.133441
+prove() -> completeQk,4100.686130,2173.142385
+prove() -> deriveGammaAndBeta,4100.774152,2173.173018
+"buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz])",2103.727010,201.029760
+prove() -> buildRatioCopyConstraint,6922.109841,3080.026517
+computeNumerator() || fft.BitReverse(scalingVectorRev),67.832834,
+computeNumerator() || polynomial fft,1780.766460,
+computeNumerator() || batchApply,3848.512232,774.731824
+computeQuotient() || computeNumerator(),19318.877093,8369.462606
+divideByZH() || parallelize divide,509.501226,489.235246
+divideByZH() || ToCanonical,1153.214908,1085.998406
+computeQuotient() || divideByZH(),1662.848945,1575.327600
+computeQuotient() || commitToQuotient(),5851.996221,815.087542
+computeQuotient() || deriveZeta() and clean up,0.075987,
+prove() -> computeQuotient,33774.348731,13853.228512
+prove() -> openZ,36022.460615,14529.805135
+"computeLinearizedPolynomial() || kzg.Commit(s.linearizedPolynomial, s.pk.Kzg, runtime.NumCPU()*2)",2098.624303,
+computeLinearizedPolynomial() 总,38571.136319,
+prove() -> computeLinearizedPolynomial,38571.139448,15267.357411
+prove() -> batchOpening,40767.980936,15984.335571
+prove() -> prove() 总,41734.927031,17131.547677
+prove inner,964.087307,1198.748092
+verify inner,4.002187,2.255865
+assemble Poseidon2-FS inputs,1.228888,0.701643
+compile outer(frontend.Compile),2692.355477,2633.008463
+solve outer,1671.301551,1570.548981
+compile outer(pkOuter.Compile),14675.867520,14702.491188
+prove outer,44081.855037,20383.855887
+verify outer,2.293766,2.873288
+prove() -> icicle device setup,,898.433969
+commitToQuotient() || commit h1,,272.235390
+commitToQuotient() || commit h2,,271.493993
+commitToQuotient() || commit h3,,271.296339
+computeQuotient() || deriveZeta(),,0.088703

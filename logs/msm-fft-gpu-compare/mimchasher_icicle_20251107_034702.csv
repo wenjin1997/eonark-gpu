@@ -1,0 +1,38 @@
+item,milliseconds
+compile inner,943.98508
+prove() -> icicle device setup,898.433969
+prove() -> initBlindingPolynomials,0.012089
+"solveConstraints() || s.spr.Solve() (L, R, O)",1642.275113
+"solveConstraints() || sets x[id_L], x[id_R], x[id_O]",0.009512
+commitToPolyAndBlinding() -> commit to p,192.556854
+commitToPolyAndBlinding() -> commit to b,8.41614
+commitToPolyAndBlinding() -> commit_p + commit_b,0.003383
+solveConstraints() || commitToLRO(),530.824911
+prove() -> solveConstraints,2173.133441
+prove() -> completeQk,2173.142385
+prove() -> deriveGammaAndBeta,2173.173018
+"buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz])",201.02976
+prove() -> buildRatioCopyConstraint,3080.026517
+computeNumerator() || batchApply,774.731824
+computeQuotient() || computeNumerator(),8369.462606
+divideByZH() || parallelize divide,489.235246
+divideByZH() || ToCanonical,1085.998406
+computeQuotient() || divideByZH(),1575.3276
+commitToQuotient() || commit h1,272.23539
+commitToQuotient() || commit h2,271.493993
+commitToQuotient() || commit h3,271.296339
+computeQuotient() || commitToQuotient(),815.087542
+computeQuotient() || deriveZeta(),0.088703
+prove() -> computeQuotient,13853.228512
+prove() -> openZ,14529.805135
+prove() -> computeLinearizedPolynomial,15267.357411
+prove() -> batchOpening,15984.335571
+prove() -> prove() 总,17131.547677
+prove inner,1198.748092
+verify inner,2.255865
+assemble Poseidon2-FS inputs,0.701643
+compile outer(frontend.Compile),2633.008463
+solve outer,1570.548981
+compile outer(pkOuter.Compile),14702.491188
+prove outer,20383.855887
+verify outer,2.873288
