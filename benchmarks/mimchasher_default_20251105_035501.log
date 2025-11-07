@@ -1,0 +1,209 @@
+compile inner 耗时: 921.553624 ms
+prove() -> initBlindingPolynomials 耗时: 0.005119ms
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 0.501801 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.007475 ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 1.321896ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 1.468124ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 1.610960ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 0.378865ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.005366ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_O], s.bp[id_Bo]) LRO[2] 耗时: 1.730428ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 0.466992ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003382ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_R], s.bp[id_Br]) LRO[1] 耗时: 1.945640ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 0.435064ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.005253ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl]) LRO[0] 耗时: 2.068381ms
+	solveConstraints() || commitToLRO() 耗时: 2.076656 ms
+prove() -> solveConstraints 耗时: 2.594393ms
+prove() -> completeQk 耗时: 2.551194ms
+prove() -> deriveGammaAndBeta 耗时: 2.780192ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 1.153447ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 0.442945ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003335ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 1.611173ms
+prove() -> buildRatioCopyConstraint 耗时: 4.681185ms
+	computeQuotient() || prepare to compute & derive alpha): 4.732112 ms
+		computeNumerator() || fft.BitReverse(scalingVectorRev) 耗时: 0.001581 ms
+			computeNumerator() || polynomial fft 耗时: 0.063983 ms
+			computeNumerator() || polynomial fft 耗时: 0.034000 ms
+			computeNumerator() || polynomial fft 耗时: 0.031021 ms
+			computeNumerator() || polynomial fft 耗时: 0.066160 ms
+			computeNumerator() || polynomial fft 耗时: 0.026598 ms
+			computeNumerator() || polynomial fft 耗时: 0.031026 ms
+			computeNumerator() || polynomial fft 耗时: 0.026922 ms
+			computeNumerator() || polynomial fft 耗时: 0.026614 ms
+			computeNumerator() || polynomial fft 耗时: 0.026707 ms
+			computeNumerator() || polynomial fft 耗时: 0.062858 ms
+			computeNumerator() || polynomial fft 耗时: 0.061933 ms
+			computeNumerator() || polynomial fft 耗时: 0.068386 ms
+			computeNumerator() || polynomial fft 耗时: 0.067683 ms
+			computeNumerator() || polynomial fft 耗时: 0.064881 ms
+		computeNumerator() || batchApply 耗时: 0.359348 ms
+		computeNumerator() || fft.BitReverse(scalingVectorRev) 耗时: 0.002119 ms
+			computeNumerator() || polynomial fft 耗时: 0.064143 ms
+			computeNumerator() || polynomial fft 耗时: 0.026265 ms
+			computeNumerator() || polynomial fft 耗时: 0.062368 ms
+			computeNumerator() || polynomial fft 耗时: 0.026248 ms
+			computeNumerator() || polynomial fft 耗时: 0.027553 ms
+			computeNumerator() || polynomial fft 耗时: 0.026657 ms
+			computeNumerator() || polynomial fft 耗时: 0.060672 ms
+			computeNumerator() || polynomial fft 耗时: 0.060597 ms
+			computeNumerator() || polynomial fft 耗时: 0.026331 ms
+			computeNumerator() || polynomial fft 耗时: 0.026927 ms
+			computeNumerator() || polynomial fft 耗时: 0.064002 ms
+			computeNumerator() || polynomial fft 耗时: 0.062963 ms
+			computeNumerator() || polynomial fft 耗时: 0.062171 ms
+			computeNumerator() || polynomial fft 耗时: 0.063343 ms
+		computeNumerator() || batchApply 耗时: 0.361129 ms
+			computeNumerator() || polynomial fft 耗时: 0.026170 ms
+			computeNumerator() || polynomial fft 耗时: 0.027094 ms
+			computeNumerator() || polynomial fft 耗时: 0.026182 ms
+			computeNumerator() || polynomial fft 耗时: 0.027982 ms
+			computeNumerator() || polynomial fft 耗时: 0.063562 ms
+			computeNumerator() || polynomial fft 耗时: 0.026882 ms
+			computeNumerator() || polynomial fft 耗时: 0.061465 ms
+			computeNumerator() || polynomial fft 耗时: 0.057625 ms
+			computeNumerator() || polynomial fft 耗时: 0.026445 ms
+			computeNumerator() || polynomial fft 耗时: 0.067368 ms
+			computeNumerator() || polynomial fft 耗时: 0.065882 ms
+			computeNumerator() || polynomial fft 耗时: 0.062304 ms
+			computeNumerator() || polynomial fft 耗时: 0.068288 ms
+			computeNumerator() || polynomial fft 耗时: 0.061590 ms
+		computeNumerator() || batchApply 耗时: 0.235602 ms
+			computeNumerator() || polynomial fft 耗时: 0.026275 ms
+			computeNumerator() || polynomial fft 耗时: 0.028239 ms
+			computeNumerator() || polynomial fft 耗时: 0.027972 ms
+			computeNumerator() || polynomial fft 耗时: 0.028060 ms
+			computeNumerator() || polynomial fft 耗时: 0.065447 ms
+			computeNumerator() || polynomial fft 耗时: 0.029364 ms
+			computeNumerator() || polynomial fft 耗时: 0.059260 ms
+			computeNumerator() || polynomial fft 耗时: 0.060850 ms
+			computeNumerator() || polynomial fft 耗时: 0.061619 ms
+			computeNumerator() || polynomial fft 耗时: 0.062681 ms
+			computeNumerator() || polynomial fft 耗时: 0.063875 ms
+			computeNumerator() || polynomial fft 耗时: 0.066030 ms
+			computeNumerator() || polynomial fft 耗时: 0.063279 ms
+			computeNumerator() || polynomial fft 耗时: 0.062767 ms
+		computeNumerator() || batchApply 耗时: 0.316430 ms
+	computeQuotient() || computeNumerator() 耗时: 2.103941 ms
+		divideByZH() || parallelize divide 耗时: 0.053325 ms
+		divideByZH() || ToCanonical 耗时: 0.219982 ms
+	computeQuotient() || divideByZH() 耗时: 0.284604 ms
+		commitToQuotient || commit h3 (实际执行): 1.236904 ms
+		commitToQuotient || commit h1 (实际执行): 1.241450 ms
+		commitToQuotient || commit h2 (实际执行): 1.397096 ms
+	computeQuotient() || commitToQuotient() 耗时: 1.416106 ms
+	computeQuotient() || deriveZeta() and clean up 耗时: 0.121904 ms
+prove() -> computeQuotient 耗时: 8.668364ms
+prove() -> openZ 耗时: 9.429302ms
+		computeLinearizedPolynomial() || kzg.Commit(s.linearizedPolynomial, s.pk.Kzg, runtime.NumCPU()*2) 耗时: 0.732193 ms
+		computeLinearizedPolynomial() 总耗时: 10.390898 ms
+prove() -> computeLinearizedPolynomial 耗时: 10.394141ms
+prove() -> batchOpening 耗时: 11.615592ms
+prove() -> prove() 总耗时: 11.774830ms
+prove inner 耗时: 929.894199 ms
+verify inner 耗时: 2.810909 ms
+assemble Poseidon2-FS inputs 耗时: 0.675818 ms
+compile outer(frontend.Compile) 耗时: 2656.742634 ms
+[outer] nbConstraints=6312224 nbPublic=4 nbSecret=168
+solve outer 耗时: 1642.160132ms
+outer circuit solved
+compile outer(pkOuter.Compile) 耗时: 14640.332553 ms
+prove() -> initBlindingPolynomials 耗时: 0.917995ms
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 1877.678938 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.005996 ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 2098.873873ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 0.663759ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.005320ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_O], s.bp[id_Bo]) LRO[2] 耗时: 2099.589798ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 2281.603227ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 0.447191ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.005331ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl]) LRO[0] 耗时: 2282.094068ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 2356.830598ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 0.430914ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003268ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_R], s.bp[id_Br]) LRO[1] 耗时: 2357.318955ms
+	solveConstraints() || commitToLRO() 耗时: 2357.404162 ms
+prove() -> solveConstraints 耗时: 4235.104622ms
+prove() -> completeQk 耗时: 4235.107926ms
+prove() -> deriveGammaAndBeta 耗时: 4234.788858ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 2101.618019ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 0.467848ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003071ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 2102.110679ms
+prove() -> buildRatioCopyConstraint 耗时: 7058.044930ms
+	computeQuotient() || prepare to compute & derive alpha): 7071.230434 ms
+		computeNumerator() || fft.BitReverse(scalingVectorRev) 耗时: 61.561246 ms
+			computeNumerator() || polynomial fft 耗时: 1454.967312 ms
+			computeNumerator() || polynomial fft 耗时: 1553.313840 ms
+			computeNumerator() || polynomial fft 耗时: 1572.760527 ms
+			computeNumerator() || polynomial fft 耗时: 1582.853298 ms
+			computeNumerator() || polynomial fft 耗时: 1622.665899 ms
+			computeNumerator() || polynomial fft 耗时: 1619.461944 ms
+			computeNumerator() || polynomial fft 耗时: 1589.284921 ms
+			computeNumerator() || polynomial fft 耗时: 1587.142951 ms
+			computeNumerator() || polynomial fft 耗时: 1547.733001 ms
+			computeNumerator() || polynomial fft 耗时: 1592.564656 ms
+			computeNumerator() || polynomial fft 耗时: 1591.153415 ms
+			computeNumerator() || polynomial fft 耗时: 1575.256891 ms
+			computeNumerator() || polynomial fft 耗时: 1520.571400 ms
+			computeNumerator() || polynomial fft 耗时: 1510.602980 ms
+		computeNumerator() || batchApply 耗时: 3547.132225 ms
+		computeNumerator() || fft.BitReverse(scalingVectorRev) 耗时: 68.256186 ms
+			computeNumerator() || polynomial fft 耗时: 1478.959356 ms
+			computeNumerator() || polynomial fft 耗时: 1533.050652 ms
+			computeNumerator() || polynomial fft 耗时: 1570.961017 ms
+			computeNumerator() || polynomial fft 耗时: 1533.796847 ms
+			computeNumerator() || polynomial fft 耗时: 1664.699010 ms
+			computeNumerator() || polynomial fft 耗时: 1596.608714 ms
+			computeNumerator() || polynomial fft 耗时: 1705.063005 ms
+			computeNumerator() || polynomial fft 耗时: 1621.461626 ms
+			computeNumerator() || polynomial fft 耗时: 1618.093562 ms
+			computeNumerator() || polynomial fft 耗时: 1636.482582 ms
+			computeNumerator() || polynomial fft 耗时: 1635.110691 ms
+			computeNumerator() || polynomial fft 耗时: 1629.192273 ms
+			computeNumerator() || polynomial fft 耗时: 1593.471564 ms
+			computeNumerator() || polynomial fft 耗时: 1629.797495 ms
+		computeNumerator() || batchApply 耗时: 3577.638423 ms
+			computeNumerator() || polynomial fft 耗时: 1536.847804 ms
+			computeNumerator() || polynomial fft 耗时: 1520.016399 ms
+			computeNumerator() || polynomial fft 耗时: 1528.479087 ms
+			computeNumerator() || polynomial fft 耗时: 1607.328716 ms
+			computeNumerator() || polynomial fft 耗时: 1587.315454 ms
+			computeNumerator() || polynomial fft 耗时: 1634.305619 ms
+			computeNumerator() || polynomial fft 耗时: 1635.572890 ms
+			computeNumerator() || polynomial fft 耗时: 1639.502884 ms
+			computeNumerator() || polynomial fft 耗时: 1545.664801 ms
+			computeNumerator() || polynomial fft 耗时: 1636.272345 ms
+			computeNumerator() || polynomial fft 耗时: 1569.632419 ms
+			computeNumerator() || polynomial fft 耗时: 1592.706972 ms
+			computeNumerator() || polynomial fft 耗时: 1551.254922 ms
+			computeNumerator() || polynomial fft 耗时: 1538.070583 ms
+		computeNumerator() || batchApply 耗时: 3770.151969 ms
+			computeNumerator() || polynomial fft 耗时: 1755.901744 ms
+			computeNumerator() || polynomial fft 耗时: 1724.871763 ms
+			computeNumerator() || polynomial fft 耗时: 1733.946913 ms
+			computeNumerator() || polynomial fft 耗时: 1780.080298 ms
+			computeNumerator() || polynomial fft 耗时: 1815.223544 ms
+			computeNumerator() || polynomial fft 耗时: 1744.694871 ms
+			computeNumerator() || polynomial fft 耗时: 1754.366260 ms
+			computeNumerator() || polynomial fft 耗时: 1816.505633 ms
+			computeNumerator() || polynomial fft 耗时: 1716.765283 ms
+			computeNumerator() || polynomial fft 耗时: 1756.836543 ms
+			computeNumerator() || polynomial fft 耗时: 1756.474926 ms
+			computeNumerator() || polynomial fft 耗时: 1736.149879 ms
+			computeNumerator() || polynomial fft 耗时: 1722.033826 ms
+			computeNumerator() || polynomial fft 耗时: 1746.701824 ms
+		computeNumerator() || batchApply 耗时: 3831.420315 ms
+	computeQuotient() || computeNumerator() 耗时: 19604.355064 ms
+		divideByZH() || parallelize divide 耗时: 502.305964 ms
+		divideByZH() || ToCanonical 耗时: 1152.310167 ms
+	computeQuotient() || divideByZH() 耗时: 1654.819885 ms
+		commitToQuotient || commit h3 (实际执行): 5853.056521 ms
+		commitToQuotient || commit h2 (实际执行): 5901.066617 ms
+		commitToQuotient || commit h1 (实际执行): 5905.975415 ms
+	computeQuotient() || commitToQuotient() 耗时: 5906.108358 ms
+	computeQuotient() || deriveZeta() and clean up 耗时: 0.075291 ms
+prove() -> computeQuotient 耗时: 34236.635724ms

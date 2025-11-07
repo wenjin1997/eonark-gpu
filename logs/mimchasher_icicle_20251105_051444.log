@@ -1,0 +1,229 @@
+WARNING: CPU IP/backtrace sampling not supported, disabling.
+Try the 'nsys status --environment' command to learn more.
+
+WARNING: CPU context switch tracing not supported, disabling.
+Try the 'nsys status --environment' command to learn more.
+
+compile inner 耗时: 933.260583 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/home/jade/.local/icicle/lib/backend
+prove() -> icicle device setup 耗时: 251.344940ms
+prove() -> initBlindingPolynomials 耗时: 0.008058ms
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 8.958817 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.003208 ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 6.332682ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 11.374711ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 20.328784ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 14.354604ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003365ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_R], s.bp[id_Br]) LRO[1] 耗时: 25.740556ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 19.449545ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003291ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_O], s.bp[id_Bo]) LRO[2] 耗时: 25.794078ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 10.506692ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003300ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl]) LRO[0] 耗时: 30.846481ms
+	solveConstraints() || commitToLRO() 耗时: 30.892902 ms
+prove() -> solveConstraints 耗时: 39.860629ms
+prove() -> completeQk 耗时: 39.803519ms
+prove() -> deriveGammaAndBeta 耗时: 39.946339ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 5.229130ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 10.209494ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003390ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 15.452372ms
+prove() -> buildRatioCopyConstraint 耗时: 55.571721ms
+	computeQuotient() || prepare to compute & derive alpha): 55.610154 ms
+		computeNumerator() || fft.BitReverse(scalingVectorRev) 耗时: 0.002242 ms
+			computeNumerator() || polynomial fft 耗时: 0.034410 ms
+			computeNumerator() || polynomial fft 耗时: 0.032131 ms
+			computeNumerator() || polynomial fft 耗时: 0.032538 ms
+			computeNumerator() || polynomial fft 耗时: 0.053436 ms
+			computeNumerator() || polynomial fft 耗时: 0.030685 ms
+			computeNumerator() || polynomial fft 耗时: 0.057245 ms
+			computeNumerator() || polynomial fft 耗时: 0.067001 ms
+			computeNumerator() || polynomial fft 耗时: 0.029778 ms
+			computeNumerator() || polynomial fft 耗时: 0.063849 ms
+			computeNumerator() || polynomial fft 耗时: 0.031525 ms
+			computeNumerator() || polynomial fft 耗时: 0.064215 ms
+			computeNumerator() || polynomial fft 耗时: 0.039707 ms
+			computeNumerator() || polynomial fft 耗时: 0.061220 ms
+			computeNumerator() || polynomial fft 耗时: 0.064141 ms
+		computeNumerator() || batchApply 耗时: 0.422832 ms
+			computeNumerator() || polynomial fft 耗时: 0.027243 ms
+			computeNumerator() || polynomial fft 耗时: 0.028276 ms
+			computeNumerator() || polynomial fft 耗时: 0.029344 ms
+			computeNumerator() || polynomial fft 耗时: 0.026965 ms
+			computeNumerator() || polynomial fft 耗时: 0.053649 ms
+			computeNumerator() || polynomial fft 耗时: 0.026799 ms
+			computeNumerator() || polynomial fft 耗时: 0.030310 ms
+			computeNumerator() || polynomial fft 耗时: 0.034443 ms
+			computeNumerator() || polynomial fft 耗时: 0.058046 ms
+			computeNumerator() || polynomial fft 耗时: 0.029813 ms
+			computeNumerator() || polynomial fft 耗时: 0.027293 ms
+			computeNumerator() || polynomial fft 耗时: 0.066899 ms
+			computeNumerator() || polynomial fft 耗时: 0.060534 ms
+			computeNumerator() || polynomial fft 耗时: 0.057945 ms
+		computeNumerator() || batchApply 耗时: 0.307934 ms
+			computeNumerator() || polynomial fft 耗时: 0.026807 ms
+			computeNumerator() || polynomial fft 耗时: 0.057559 ms
+			computeNumerator() || polynomial fft 耗时: 0.035199 ms
+			computeNumerator() || polynomial fft 耗时: 0.056269 ms
+			computeNumerator() || polynomial fft 耗时: 0.033199 ms
+			computeNumerator() || polynomial fft 耗时: 0.027748 ms
+			computeNumerator() || polynomial fft 耗时: 0.027495 ms
+			computeNumerator() || polynomial fft 耗时: 0.054024 ms
+			computeNumerator() || polynomial fft 耗时: 0.026124 ms
+			computeNumerator() || polynomial fft 耗时: 0.067231 ms
+			computeNumerator() || polynomial fft 耗时: 0.059150 ms
+			computeNumerator() || polynomial fft 耗时: 0.064093 ms
+			computeNumerator() || polynomial fft 耗时: 0.026816 ms
+			computeNumerator() || polynomial fft 耗时: 0.073114 ms
+		computeNumerator() || batchApply 耗时: 0.333385 ms
+			computeNumerator() || polynomial fft 耗时: 0.026597 ms
+			computeNumerator() || polynomial fft 耗时: 0.027311 ms
+			computeNumerator() || polynomial fft 耗时: 0.026709 ms
+			computeNumerator() || polynomial fft 耗时: 0.026148 ms
+			computeNumerator() || polynomial fft 耗时: 0.059243 ms
+			computeNumerator() || polynomial fft 耗时: 0.026671 ms
+			computeNumerator() || polynomial fft 耗时: 0.027294 ms
+			computeNumerator() || polynomial fft 耗时: 0.026802 ms
+			computeNumerator() || polynomial fft 耗时: 0.028154 ms
+			computeNumerator() || polynomial fft 耗时: 0.029781 ms
+			computeNumerator() || polynomial fft 耗时: 0.062006 ms
+			computeNumerator() || polynomial fft 耗时: 0.063473 ms
+			computeNumerator() || polynomial fft 耗时: 0.063560 ms
+			computeNumerator() || polynomial fft 耗时: 0.068885 ms
+		computeNumerator() || batchApply 耗时: 0.334501 ms
+	computeQuotient() || computeNumerator() 耗时: 2.127906 ms
+		divideByZH() || parallelize divide 耗时: 0.048469 ms
+		divideByZH() || ToCanonical 耗时: 0.194757 ms
+	computeQuotient() || divideByZH() 耗时: 0.252574 ms
+		commitToQuotient() || commit h1 耗时: 5.793387 ms
+		commitToQuotient() || commit h2 耗时: 6.221526 ms
+		commitToQuotient() || commit h3 耗时: 6.233283 ms
+	computeQuotient() || commitToQuotient() 耗时: 18.260363 ms
+	computeQuotient() || deriveZeta() 耗时: 0.124810 ms
+prove() -> computeQuotient 耗时: 76.385711ms
+prove() -> openZ 耗时: 82.485811ms
+prove() -> computeLinearizedPolynomial 耗时: 88.495995ms
+prove() -> batchOpening 耗时: 94.704002ms
+prove() -> prove() 总耗时: 94.861723ms
+[Profiler] total=346.239 ms  gpu=384.167 ms (110.95%)  cpu=0.000 ms (0.00%)
+prove inner 耗时: 1296.974799 ms
+verify inner 耗时: 3.567992 ms
+assemble Poseidon2-FS inputs 耗时: 1.046115 ms
+compile outer(frontend.Compile) 耗时: 2627.369157 ms
+[outer] nbConstraints=6312227 nbPublic=4 nbSecret=168
+solve outer 耗时: 1605.647910ms
+outer circuit solved
+compile outer(pkOuter.Compile) 耗时: 14660.464260 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/home/jade/.local/icicle/lib/backend
+prove() -> icicle device setup 耗时: 384.742814ms
+prove() -> initBlindingPolynomials 耗时: 0.012736ms
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 1543.082295 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.009267 ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 466.733691ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 477.371691ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 479.293927ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 24.376148ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003419ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl]) LRO[0] 耗时: 491.132135ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 18.541354ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003372ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_O], s.bp[id_Bo]) LRO[2] 耗时: 495.929005ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 16.519071ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003530ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_R], s.bp[id_Br]) LRO[1] 耗时: 495.823839ms
+	solveConstraints() || commitToLRO() 耗时: 495.999327 ms
+prove() -> solveConstraints 耗时: 2039.111229ms
+prove() -> completeQk 耗时: 2039.143012ms
+prove() -> deriveGammaAndBeta 耗时: 2039.017050ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 192.373077ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 11.108628ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003184ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 203.540449ms
+prove() -> buildRatioCopyConstraint 耗时: 2875.645048ms
+	computeQuotient() || prepare to compute & derive alpha): 2889.241352 ms
+		computeNumerator() || fft.BitReverse(scalingVectorRev) 耗时: 69.127199 ms
+			computeNumerator() || polynomial fft 耗时: 1660.480909 ms
+			computeNumerator() || polynomial fft 耗时: 1653.195920 ms
+			computeNumerator() || polynomial fft 耗时: 1713.133193 ms
+			computeNumerator() || polynomial fft 耗时: 1791.406699 ms
+			computeNumerator() || polynomial fft 耗时: 1740.098493 ms
+			computeNumerator() || polynomial fft 耗时: 1645.167611 ms
+			computeNumerator() || polynomial fft 耗时: 1736.570255 ms
+			computeNumerator() || polynomial fft 耗时: 1783.915363 ms
+			computeNumerator() || polynomial fft 耗时: 1744.053899 ms
+			computeNumerator() || polynomial fft 耗时: 1685.501647 ms
+			computeNumerator() || polynomial fft 耗时: 1746.151075 ms
+			computeNumerator() || polynomial fft 耗时: 1697.804802 ms
+			computeNumerator() || polynomial fft 耗时: 1674.953019 ms
+			computeNumerator() || polynomial fft 耗时: 1669.500899 ms
+		computeNumerator() || batchApply 耗时: 3800.230443 ms
+			computeNumerator() || polynomial fft 耗时: 1699.946432 ms
+			computeNumerator() || polynomial fft 耗时: 1827.316342 ms
+			computeNumerator() || polynomial fft 耗时: 1807.204811 ms
+			computeNumerator() || polynomial fft 耗时: 1755.251515 ms
+			computeNumerator() || polynomial fft 耗时: 1838.115421 ms
+			computeNumerator() || polynomial fft 耗时: 1783.665172 ms
+			computeNumerator() || polynomial fft 耗时: 1853.820508 ms
+			computeNumerator() || polynomial fft 耗时: 1851.819295 ms
+			computeNumerator() || polynomial fft 耗时: 1744.123112 ms
+			computeNumerator() || polynomial fft 耗时: 1833.630692 ms
+			computeNumerator() || polynomial fft 耗时: 1843.965415 ms
+			computeNumerator() || polynomial fft 耗时: 1803.255262 ms
+			computeNumerator() || polynomial fft 耗时: 1871.741903 ms
+			computeNumerator() || polynomial fft 耗时: 1747.446333 ms
+		computeNumerator() || batchApply 耗时: 3787.934983 ms
+			computeNumerator() || polynomial fft 耗时: 1721.854399 ms
+			computeNumerator() || polynomial fft 耗时: 1725.520209 ms
+			computeNumerator() || polynomial fft 耗时: 1773.522166 ms
+			computeNumerator() || polynomial fft 耗时: 1744.622895 ms
+			computeNumerator() || polynomial fft 耗时: 1795.485748 ms
+			computeNumerator() || polynomial fft 耗时: 1759.337752 ms
+			computeNumerator() || polynomial fft 耗时: 1821.849592 ms
+			computeNumerator() || polynomial fft 耗时: 1792.675286 ms
+			computeNumerator() || polynomial fft 耗时: 1830.222338 ms
+			computeNumerator() || polynomial fft 耗时: 1839.493033 ms
+			computeNumerator() || polynomial fft 耗时: 1850.189830 ms
+			computeNumerator() || polynomial fft 耗时: 1840.210690 ms
+			computeNumerator() || polynomial fft 耗时: 1848.732239 ms
+			computeNumerator() || polynomial fft 耗时: 1691.666044 ms
+		computeNumerator() || batchApply 耗时: 3773.799572 ms
+			computeNumerator() || polynomial fft 耗时: 1608.121857 ms
+			computeNumerator() || polynomial fft 耗时: 1622.276133 ms
+			computeNumerator() || polynomial fft 耗时: 1634.556551 ms
+			computeNumerator() || polynomial fft 耗时: 1650.551355 ms
+			computeNumerator() || polynomial fft 耗时: 1647.085331 ms
+			computeNumerator() || polynomial fft 耗时: 1646.094383 ms
+			computeNumerator() || polynomial fft 耗时: 1713.140516 ms
+			computeNumerator() || polynomial fft 耗时: 1661.269618 ms
+			computeNumerator() || polynomial fft 耗时: 1687.120737 ms
+			computeNumerator() || polynomial fft 耗时: 1689.332691 ms
+			computeNumerator() || polynomial fft 耗时: 1667.168552 ms
+			computeNumerator() || polynomial fft 耗时: 1681.868215 ms
+			computeNumerator() || polynomial fft 耗时: 1680.775092 ms
+			computeNumerator() || polynomial fft 耗时: 1625.432698 ms
+		computeNumerator() || batchApply 耗时: 3659.015449 ms
+	computeQuotient() || computeNumerator() 耗时: 19856.192706 ms
+		divideByZH() || parallelize divide 耗时: 429.715517 ms
+		divideByZH() || ToCanonical 耗时: 1092.577910 ms
+	computeQuotient() || divideByZH() 耗时: 1522.366634 ms
+		commitToQuotient() || commit h1 耗时: 291.252960 ms
+		commitToQuotient() || commit h2 耗时: 266.668875 ms
+		commitToQuotient() || commit h3 耗时: 265.814567 ms
+	computeQuotient() || commitToQuotient() 耗时: 823.755221 ms
+	computeQuotient() || deriveZeta() 耗时: 0.110762 ms
+prove() -> computeQuotient 耗时: 25091.713607ms
+prove() -> openZ 耗时: 25762.956078ms
+prove() -> computeLinearizedPolynomial 耗时: 26493.112627ms
+prove() -> batchOpening 耗时: 27199.495065ms
+prove() -> prove() 总耗时: 28254.774102ms
+[Profiler] total=28639.575 ms  gpu=4051.829 ms (14.15%)  cpu=24587.746 ms (85.85%)
+prove outer 耗时: 30946.140672 ms
+verify outer 耗时: 3.171153 ms
+outer circuit verified
+Collecting data...
+Generating '/tmp/nsys-report-c206.qdstrm'
+[1/1] [0%                          ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [0%                          ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [=16%                        ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [=====32%                    ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [======33%                   ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [======34%                   ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [======35%                   ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [=======36%                  ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [=======37%                  ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [=======38%                  ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [=======39%                  ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [========40%                 ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [========41%                 ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [========42%                 ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [=========43%                ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [=========44%                ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [=========45%                ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [=========46%                ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [==========47%               ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [==========48%               ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [==========49%               ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [===========50%              ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [===========51%              ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [===========52%              ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [===========53%              ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [============54%             ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [============55%             ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [============56%             ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [============57%             ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [=============58%            ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [=============59%            ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [=============60%            ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [==============61%           ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [==============62%           ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [==============63%           ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [==============64%           ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [===============65%          ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [===============66%          ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [===============67%          ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [================68%         ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [================69%         ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [================70%         ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [================71%         ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [=================72%        ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [=================73%        ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [=================74%        ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [==================75%       ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [==================76%       ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [==================77%       ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [=====================89%    ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [======================92%   ] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [========================100%] mimchasher_icicle_20251105_051444.nsys-rep[1/1] [========================100%] mimchasher_icicle_20251105_051444.nsys-rep
+Generated:
+	/home/jade/jade/eonark-gpu/logs/mimchasher_icicle_20251105_051444.nsys-rep
