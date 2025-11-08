@@ -83,6 +83,7 @@ const (
 	order_blinding_Z = 2
 )
 
+// TODO: compute communication cost
 func (pk *ProvingKey) setupDevicePointers(spr *cs.SparseR1CS) error {
 	// ① 选择/创建后端 & 设备
 	if st := icicle_runtime.LoadBackendFromEnvOrDefault(); st != icicle_runtime.Success {
@@ -184,7 +185,7 @@ func (pk *ProvingKey) setupDevicePointers(spr *cs.SparseR1CS) error {
 	copy(bigRevTwiddles, bigTwiddles)
 	fft.BitReverse(bigRevTwiddles)
 
-	// jade: 主要分析 copymemory
+	// TODO: analysis the communication cost of copymemory
 	/***********************  上传到显存（并转非 Mont）  **************************/
 	done = make(chan struct{})
 	icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
@@ -216,8 +217,8 @@ func (pk *ProvingKey) setupDevicePointers(spr *cs.SparseR1CS) error {
 		hBigRev := icicle_core.HostSliceFromElements(bigRevTwiddles)
 		hBigRev.CopyToDevice(&pk.deviceInfo.BigTwiddlesNRev, true)
 
-		// jade: 这一步不该记在 copymemory 中
 		// 统一转为“非 Montgomery”，便于后续 VecMulOnDevice 直接使用
+		// ! do not count this step in the communication cost
 		if st := kzg_bls12_381.MontConvOnDevice(pk.deviceInfo.BigTwiddlesN, false); st != icicle_runtime.Success {
 			copyErr = fmt.Errorf("FromMontgomery(bigTwiddlesN): %s", st.AsString())
 			return
@@ -631,16 +632,32 @@ func (s *instance) commitToLRO() error {
 	// })
 
 	// return g.Wait()
+
+	// FIXME : this can be parallelized
 	var err error
+	start_time := time.Now()
 	if s.proof.LRO[0], err = s.commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl]); err != nil {
 		return err
 	}
+	elasped := time.Since(start_time)
+	fmt.Printf("		commitToLRO() || commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl]) LRO[0] 耗时: %.6fms\n", float64(elasped.Nanoseconds())/1e6)
+
+
+	start_time = time.Now()
 	if s.proof.LRO[1], err = s.commitToPolyAndBlinding(s.x[id_R], s.bp[id_Br]); err != nil {
 		return err
 	}
+	elasped = time.Since(start_time)
+	fmt.Printf("		commitToLRO() || commitToPolyAndBlinding(s.x[id_R], s.bp[id_Br]) LRO[1] 耗时: %.6fms\n", float64(elasped.Nanoseconds())/1e6)
+
+
+	start_time = time.Now()
 	if s.proof.LRO[2], err = s.commitToPolyAndBlinding(s.x[id_O], s.bp[id_Bo]); err != nil {
 		return err
 	}
+	elasped = time.Since(start_time)
+	fmt.Printf("		commitToLRO() || commitToPolyAndBlinding(s.x[id_O], s.bp[id_Bo]) LRO[2] 耗时: %.6fms\n", float64(elasped.Nanoseconds())/1e6)
+
 	return nil
 }
 
@@ -859,7 +876,7 @@ func (s *instance) computeQuotient() (err error) {
 
 	close(s.chH)
 	elasped = time.Since(start_time)
-	fmt.Printf("	computeQuotient() || deriveZeta() 耗时: %.6f ms\n", float64(elasped.Nanoseconds())/1e6)
+	fmt.Printf("	computeQuotient() || deriveZeta() & clean up 耗时: %.6f ms\n", float64(elasped.Nanoseconds())/1e6)
 
 	return nil
 }
@@ -1023,8 +1040,11 @@ func (s *instance) computeLinearizedPolynomial() error {
 
 	var err error
 	// s.linearizedPolynomialDigest, err = kzg.Commit(s.linearizedPolynomial, s.pk.Kzg, runtime.NumCPU()*2)
+	start_time := time.Now()
 	s.linearizedPolynomialDigest, err = commitOnGPUOrCPU(s.linearizedPolynomial, s.pk, false /* monomial */)
-
+	elapsed := time.Since(start_time)
+	fmt.Printf("		computeLinearizedPolynomial() || kzg.Commit 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
+	
 	if err != nil {
 		return err
 	}
@@ -1424,6 +1444,7 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 	// scale everything back
 	// TODO: 测试下时间
 	go func() {
+		start_time := time.Now()
 		s.x[id_ZS] = nil
 		s.x[id_Qk] = nil
 
@@ -1445,7 +1466,8 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 		for _, q := range s.bp {
 			scalePowers(q, cs)
 		}
-
+		elapsed := time.Since(start_time)
+		fmt.Printf("		computeNumerator() || restore LRO 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 		close(s.chRestoreLRO)
 	}()
 
@@ -2441,10 +2463,13 @@ func (s *instance) toCosetLagrangeOnGPUorCPU_DEV(
 			}
 
 			// 正变换 NTT：Canonical -> Lagrange(小域)
+			start_fft_time := time.Now()
 			if st = kzg_bls12_381.NttOnDevice(dev); st != icicle_runtime.Success {
 				gpuErr = fmt.Errorf("NttOnDevice failed: %s", st.AsString())
 				return
 			}
+			elapsed := time.Since(start_fft_time)
+			fmt.Printf("		computeNumerator() || polynomial fft (NttOnDevice) 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 
 			// 4) 回拷 + 释放
 			// TODO: 计算 communcation cost
@@ -2452,10 +2477,13 @@ func (s *instance) toCosetLagrangeOnGPUorCPU_DEV(
 			host.CopyFromDevice(&dev)
 
 			// 4) 立刻把 dev 恢复为 Canonical，方便下一个 coset 继续复用
+			start_ifft_time := time.Now()
 			if st = kzg_bls12_381.INttOnDevice(dev); st != icicle_runtime.Success {
 				gpuErr = fmt.Errorf("INttOnDevice (restore canonical) failed: %s", st.AsString())
 				return
 			}
+			elapsed = time.Since(start_ifft_time)
+			fmt.Printf("		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 		})
 		<-done
 

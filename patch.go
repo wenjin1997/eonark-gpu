@@ -727,7 +727,6 @@ func (s *instance) h3() []fr.Element {
 }
 
 func (s *instance) computeLinearizedPolynomial() error {
-	start_compute_linearized_polynomial_time := time.Now()
 	// wait for H to be committed and zeta to be derived (or ctx.Done())
 	select {
 	case <-s.ctx.Done():
@@ -790,15 +789,12 @@ func (s *instance) computeLinearizedPolynomial() error {
 	var err error
 	start_time := time.Now()
 	s.linearizedPolynomialDigest, err = kzg.Commit(s.linearizedPolynomial, s.pk.Kzg, runtime.NumCPU()*2)
+	elapsed := time.Since(start_time)
+	fmt.Printf("		computeLinearizedPolynomial() || kzg.Commit 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 	if err != nil {
 		return err
 	}
-	elapsed := time.Since(start_time)
-	fmt.Printf("		computeLinearizedPolynomial() || kzg.Commit(s.linearizedPolynomial, s.pk.Kzg, runtime.NumCPU()*2) 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 	close(s.chLinearizedPolynomial)
-
-	elapsed = time.Since(start_compute_linearized_polynomial_time)
-	fmt.Printf("		computeLinearizedPolynomial() 总耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	return nil
 }
