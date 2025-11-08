@@ -102,8 +102,8 @@ func (pk *ProvingKey) setupDevicePointers(spr *cs.SparseR1CS) error {
 	// ② 在 device 上完成拷贝和 Montgomery 变换
 	var copyErr error
 	done := make(chan struct{})
-    // gpuSpan := profilerStart()
-    icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
+	// gpuSpan := profilerStart()
+	icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 		defer close(done)
 
 		g1Host := icicle_core.HostSlice[curve.G1Affine](pk.Kzg.G1)
@@ -184,6 +184,7 @@ func (pk *ProvingKey) setupDevicePointers(spr *cs.SparseR1CS) error {
 	copy(bigRevTwiddles, bigTwiddles)
 	fft.BitReverse(bigRevTwiddles)
 
+	// jade: 主要分析 copymemory
 	/***********************  上传到显存（并转非 Mont）  **************************/
 	done = make(chan struct{})
 	icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
@@ -215,6 +216,7 @@ func (pk *ProvingKey) setupDevicePointers(spr *cs.SparseR1CS) error {
 		hBigRev := icicle_core.HostSliceFromElements(bigRevTwiddles)
 		hBigRev.CopyToDevice(&pk.deviceInfo.BigTwiddlesNRev, true)
 
+		// jade: 这一步不该记在 copymemory 中
 		// 统一转为“非 Montgomery”，便于后续 VecMulOnDevice 直接使用
 		if st := kzg_bls12_381.MontConvOnDevice(pk.deviceInfo.BigTwiddlesN, false); st != icicle_runtime.Success {
 			copyErr = fmt.Errorf("FromMontgomery(bigTwiddlesN): %s", st.AsString())
@@ -243,7 +245,6 @@ func hostFromFrSlice(v []fr.Element) icicle_core.HostSlice[fr.Element] {
 }
 
 func prove(spr *cs.SparseR1CS, pk *ProvingKey, fullWitness witness.Witness, opts ...backend.ProverOption) (*plonkbls12381.Proof, error) {
-
 
 	if HasIcicle {
 		start := time.Now()
@@ -552,7 +553,6 @@ func (s *instance) solveConstraints() error {
 	elapsed = time.Since(start_time)
 	fmt.Printf("	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 
-
 	// commit to l, r, o and add blinding factors
 	start_time = time.Now()
 	if err := s.commitToLRO(); err != nil {
@@ -560,7 +560,7 @@ func (s *instance) solveConstraints() error {
 	}
 	elapsed = time.Since(start_time)
 	fmt.Printf("	solveConstraints() || commitToLRO() 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
-	
+
 	close(s.chLRO)
 
 	return nil
@@ -612,7 +612,6 @@ func (s *instance) commitToLRO() error {
 
 	// g := new(errgroup.Group)
 
-	
 	// g.Go(func() (err error) {
 	// 	start_time := time.Now()
 	// 	s.proof.LRO[0], err = s.commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl])
@@ -837,7 +836,7 @@ func (s *instance) computeQuotient() (err error) {
 	elasped = time.Since(start_time)
 	fmt.Printf("	computeQuotient() || divideByZH() 耗时: %.6f ms\n", float64(elasped.Nanoseconds())/1e6)
 
-	start_time = time.Now()	
+	start_time = time.Now()
 	// commit to h
 	// if err := commitToQuotient(s.h1(), s.h2(), s.h3(), s.proof, s.pk.Kzg); err != nil {
 	if err := commitToQuotient(s.h1(), s.h2(), s.h3(), s.proof, s.pk); err != nil {
@@ -850,7 +849,6 @@ func (s *instance) computeQuotient() (err error) {
 	if err := s.deriveZeta(); err != nil {
 		return err
 	}
-
 
 	// wait for clean up tasks to be done
 	select {
@@ -1278,6 +1276,7 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 				}
 
 				// 上传到同一张卡
+				// TODO: 计算 communcation cost
 				host := icicle_core.HostSliceFromElements(s.x[i].Coefficients())
 				host.CopyToDevice(&devX[i], true)
 
@@ -1423,6 +1422,7 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 
 	// ——————————————————————————————————————————————————————————————————————— 启动异步“全局回滚”：把所有“按幂次相位污染”一次性撤掉
 	// scale everything back
+	// TODO: 测试下时间
 	go func() {
 		s.x[id_ZS] = nil
 		s.x[id_Qk] = nil
@@ -1679,7 +1679,7 @@ func divideByZH(a *iop.Polynomial, domains [2]*fft.Domain) (*iop.Polynomial, err
 	fmt.Printf("		divideByZH() || parallelize divide 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	// since a is in bit reverse order, ToRegular shouldn't do anything
-	// !TODO: change to GPU FFT
+	// TODO: change to GPU FFT
 	start_time = time.Now()
 	a.ToCanonical(domains[1]).ToRegular()
 	elapsed = time.Since(start_time)
@@ -2291,7 +2291,7 @@ func commitOnGPUOrCPU(coeffs []fr.Element, pk *ProvingKey, useLagrange bool) (cu
 		var st icicle_runtime.EIcicleError
 
 		done := make(chan struct{})
-        // gpuSpan := profilerStart()
+		// gpuSpan := profilerStart()
 		icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 			defer close(done)
 			if useLagrange {
@@ -2305,7 +2305,7 @@ func commitOnGPUOrCPU(coeffs []fr.Element, pk *ProvingKey, useLagrange bool) (cu
 			}
 		})
 		<-done
-        // profilerAddGPU(gpuSpan)
+		// profilerAddGPU(gpuSpan)
 
 		if st == icicle_runtime.Success {
 			return curve.G1Affine(dig), nil
@@ -2333,8 +2333,8 @@ func commitBlindingFactorGPUOrCPU(n int, b *iop.Polynomial, pk *ProvingKey) (cur
 			stLo, stHi icicle_runtime.EIcicleError
 		)
 
-        done := make(chan struct{})
-        // gpuSpan := profilerStart()
+		done := make(chan struct{})
+		// gpuSpan := profilerStart()
 		icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 			defer close(done)
 
@@ -2350,7 +2350,7 @@ func commitBlindingFactorGPUOrCPU(n int, b *iop.Polynomial, pk *ProvingKey) (cur
 			}
 		})
 		<-done
-        // profilerAddGPU(gpuSpan)
+		// profilerAddGPU(gpuSpan)
 
 		if stLo == icicle_runtime.Success && stHi == icicle_runtime.Success {
 			res := curve.G1Affine(hi)
@@ -2373,14 +2373,14 @@ func OpenOnGPUOrCPU(p []fr.Element, point fr.Element, pk *ProvingKey) (kzg.Openi
 		var st icicle_runtime.EIcicleError
 
 		done := make(chan struct{})
-        // gpuSpan := profilerStart()
+		// gpuSpan := profilerStart()
 		icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 			defer close(done)
 			// 传入 monomial SRS（和 Commit 一致）
 			pr, st = kzg_bls12_381.OnDeviceOpen(p, point, pk.deviceInfo.G1Device.G1)
 		})
 		<-done
-        // profilerAddGPU(gpuSpan)
+		// profilerAddGPU(gpuSpan)
 
 		if st == icicle_runtime.Success {
 			return pr, nil
@@ -2447,6 +2447,7 @@ func (s *instance) toCosetLagrangeOnGPUorCPU_DEV(
 			}
 
 			// 4) 回拷 + 释放
+			// TODO: 计算 communcation cost
 			host := icicle_core.HostSliceFromElements(coeffs)
 			host.CopyFromDevice(&dev)
 
