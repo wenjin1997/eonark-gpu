@@ -279,82 +279,82 @@ func prove(spr *cs.SparseR1CS, pk *ProvingKey, fullWitness witness.Witness, opts
 
 	// solve constraints
 	g.Go(func() error {
-		start_time := time.Now()
+		start_solve_constraints_time := time.Now()
 		err := instance.solveConstraints()
-		elapsed := time.Since(start_time)
-		fmt.Printf("prove() -> solveConstraints 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
+		elapsed_solve_constraints_time := time.Since(start_solve_constraints_time)
+		fmt.Printf("prove() -> solveConstraints 耗时: %.6fms\n", float64(elapsed_solve_constraints_time.Nanoseconds())/1e6)
 		return err
 	})
 
 	// complete qk
 	g.Go(func() error {
-		start_time := time.Now()
+		start_complete_qk_time := time.Now()
 		err := instance.completeQk()
-		elapsed := time.Since(start_time)
-		fmt.Printf("prove() -> completeQk 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
+		elapsed_complete_qk_time := time.Since(start_complete_qk_time)
+		fmt.Printf("prove() -> completeQk 耗时: %.6fms\n", float64(elapsed_complete_qk_time.Nanoseconds())/1e6)
 		return err
 	})
 
 	// init blinding polynomials
 	g.Go(func() error {
-		start_time := time.Now()
+		start_init_blinding_polynomials_time := time.Now()
 		err := instance.initBlindingPolynomials()
-		elapsed := time.Since(start_time)
-		fmt.Printf("prove() -> initBlindingPolynomials 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
+		elapsed_init_blinding_polynomials_time := time.Since(start_init_blinding_polynomials_time)
+		fmt.Printf("prove() -> initBlindingPolynomials 耗时: %.6fms\n", float64(elapsed_init_blinding_polynomials_time.Nanoseconds())/1e6)
 		return err
 	})
 
 	// derive gamma, beta (copy constraint)
 	g.Go(func() error {
-		start_time := time.Now()
+		start_derive_gamma_and_beta_time := time.Now()
 		err := instance.deriveGammaAndBeta()
-		elapsed := time.Since(start_time)
-		fmt.Printf("prove() -> deriveGammaAndBeta 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
+		elapsed_derive_gamma_and_beta_time := time.Since(start_derive_gamma_and_beta_time)
+		fmt.Printf("prove() -> deriveGammaAndBeta 耗时: %.6fms\n", float64(elapsed_derive_gamma_and_beta_time.Nanoseconds())/1e6)
 		return err
 	})
 
 	// compute accumulating ratio for the copy constraint
 	g.Go(func() error {
-		start_time := time.Now()
+		start_build_ratio_copy_constraint_time := time.Now()
 		err := instance.buildRatioCopyConstraint()
-		elapsed := time.Since(start_time)
-		fmt.Printf("prove() -> buildRatioCopyConstraint 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
+		elapsed_build_ratio_copy_constraint_time := time.Since(start_build_ratio_copy_constraint_time)
+		fmt.Printf("prove() -> buildRatioCopyConstraint 耗时: %.6fms\n", float64(elapsed_build_ratio_copy_constraint_time.Nanoseconds())/1e6)
 		return err
 	})
 
 	// compute h
 	g.Go(func() error {
-		start_time := time.Now()
+		start_compute_quotient_time := time.Now()
 		err := instance.computeQuotient()
-		elapsed := time.Since(start_time)
-		fmt.Printf("prove() -> computeQuotient 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
+		elapsed_compute_quotient_time := time.Since(start_compute_quotient_time)
+		fmt.Printf("prove() -> computeQuotient 耗时: %.6fms\n", float64(elapsed_compute_quotient_time.Nanoseconds())/1e6)
 		return err
 	})
 
 	// open Z (blinded) at ωζ (proof.ZShiftedOpening)
 	g.Go(func() error {
-		start_time := time.Now()
+		start_open_z_time := time.Now()
 		err := instance.openZ()
-		elapsed := time.Since(start_time)
-		fmt.Printf("prove() -> openZ 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
+		elapsed_open_z_time := time.Since(start_open_z_time)
+		fmt.Printf("prove() -> openZ 耗时: %.6fms\n", float64(elapsed_open_z_time.Nanoseconds())/1e6)
 		return err
 	})
 
 	// linearized polynomial
 	g.Go(func() error {
-		start_time := time.Now()
+		start_compute_linearized_polynomial_time := time.Now()
 		err := instance.computeLinearizedPolynomial()
-		elapsed := time.Since(start_time)
-		fmt.Printf("prove() -> computeLinearizedPolynomial 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
+		elapsed_compute_linearized_polynomial_time := time.Since(start_compute_linearized_polynomial_time)
+		fmt.Printf("prove() -> computeLinearizedPolynomial 耗时: %.6fms\n", float64(elapsed_compute_linearized_polynomial_time.Nanoseconds())/1e6)
 		return err
 	})
 
 	// Batch opening
 	g.Go(func() error {
-		start_time := time.Now()
+		start_batch_opening_time := time.Now()
 		err := instance.batchOpening()
-		elapsed := time.Since(start_time)
-		fmt.Printf("prove() -> batchOpening 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
+		elapsed_batch_opening_time := time.Since(start_batch_opening_time)
+		fmt.Printf("prove() -> batchOpening 耗时: %.6fms\n", float64(elapsed_batch_opening_time.Nanoseconds())/1e6)
 		return err
 	})
 
@@ -362,8 +362,8 @@ func prove(spr *cs.SparseR1CS, pk *ProvingKey, fullWitness witness.Witness, opts
 		return nil, err
 	}
 
-	elapsed := time.Since(start_prove_time)
-	fmt.Printf("prove() -> prove() 总耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
+	elapsed_prove_time := time.Since(start_prove_time)
+	fmt.Printf("prove() -> prove() 总耗时: %.6fms\n", float64(elapsed_prove_time.Nanoseconds())/1e6)
 
 	log.Debug().Dur("took", time.Since(start)).Msg("prover done")
 	return instance.proof, nil
@@ -579,11 +579,14 @@ func (s *instance) completeQk() error {
 	copy(qkCoeffs, wWitness[:len(s.spr.Public)])
 
 	// wait for solver to be done
+	start_time := time.Now()
 	select {
 	case <-s.ctx.Done():
 		return errContextDone
 	case <-s.chLRO:
 	}
+	elapsed := time.Since(start_time)
+	fmt.Printf("		completeQk() || wait for solver to be done 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	for i := range s.commitmentInfo {
 		qkCoeffs[s.spr.GetNbPublicVariables()+s.commitmentInfo[i].CommitmentIndex] = s.commitmentVal[i]
@@ -673,12 +676,16 @@ func (s *instance) deriveGammaAndBeta() error {
 	}
 
 	// wait for LRO to be committed
+	start_time := time.Now()
 	select {
 	case <-s.ctx.Done():
 		return errContextDone
 	case <-s.chLRO:
 	}
+	elapsed := time.Since(start_time)
+	fmt.Printf("		deriveGammaAndBeta() || wait for LRO to be committed 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
+	start_time = time.Now()
 	if err := s.fs.Bind(eon.CID_GAMMA, eon.HashG1(s.proof.LRO[0])); err != nil {
 		return err
 	}
@@ -807,22 +814,28 @@ func (s *instance) computeQuotient() (err error) {
 	lone[0].SetOne()
 
 	// wait for solver to be done
+	start_wait_for_solver_done := time.Now()
 	select {
 	case <-s.ctx.Done():
 		return errContextDone
 	case <-s.chLRO:
 	}
+	elapsed := time.Since(start_wait_for_solver_done)
+	fmt.Printf("		computeQuotient() || wait for solver to be done 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	for i := 0; i < len(s.commitmentInfo); i++ {
 		s.x[id_Qci+2*i+1] = s.cCommitments[i]
 	}
 
 	// wait for Z to be committed or context done
+	start_wait_for_z_committed := time.Now()
 	select {
 	case <-s.ctx.Done():
 		return errContextDone
 	case <-s.chZ:
 	}
+	elapsed = time.Since(start_wait_for_z_committed)
+	fmt.Printf("		computeQuotient() || wait for Z to be committed 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	// derive alpha
 	if err = s.deriveAlpha(); err != nil {
@@ -883,12 +896,16 @@ func (s *instance) computeQuotient() (err error) {
 
 func (s *instance) buildRatioCopyConstraint() (err error) {
 	// wait for gamma and beta to be derived (or ctx.Done())
+	start_time := time.Now()
 	select {
 	case <-s.ctx.Done():
 		return errContextDone
 	case <-s.chGammaBeta:
 	}
+	elapsed := time.Since(start_time)
+	fmt.Printf("		buildRatioCopyConstraint() || wait for gamma and beta to be derived 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
+	start_time = time.Now()
 	// TODO @gbotrel having iop.BuildRatioCopyConstraint return something
 	// with capacity = len() + 4 would avoid extra alloc / copy during openZ
 	s.x[id_Z], err = iop.BuildRatioCopyConstraint(
@@ -906,12 +923,14 @@ func (s *instance) buildRatioCopyConstraint() (err error) {
 	if err != nil {
 		return err
 	}
+	elapsed = time.Since(start_time)
+	fmt.Printf("		buildRatioCopyConstraint() || iop.BuildRatioCopyConstraint 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	// commit to the blinded version of z
-	start_time := time.Now()
+	start_time = time.Now()
 	s.proof.Z, err = s.commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz])
-	elasped := time.Since(start_time)
-	fmt.Printf("		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: %.6fms\n", float64(elasped.Nanoseconds())/1e6)
+	elapsed = time.Since(start_time)
+	fmt.Printf("		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	close(s.chZ)
 
@@ -921,18 +940,28 @@ func (s *instance) buildRatioCopyConstraint() (err error) {
 // open Z (blinded) at ωζ
 func (s *instance) openZ() (err error) {
 	// wait for H to be committed and zeta to be derived (or ctx.Done())
+	start_time := time.Now()
 	select {
 	case <-s.ctx.Done():
 		return errContextDone
 	case <-s.chH:
 	}
+	elapsed := time.Since(start_time)
+	fmt.Printf("		openZ() || wait for H to be committed and zeta to be derived 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
+
+	start_time = time.Now()
 	var zetaShifted fr.Element
 	zetaShifted.Mul(&s.zeta, &s.pk.Vk.Generator)
 	s.blindedZ = getBlindedCoefficients(s.x[id_Z], s.bp[id_Bz])
+	elapsed = time.Since(start_time)
+	fmt.Printf("		openZ() || getBlindedCoefficients 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
+
 	// open z at zeta
 	// s.proof.ZShiftedOpening, err = kzg.Open(s.blindedZ, zetaShifted, s.pk.Kzg)
+	start_time = time.Now()
 	s.proof.ZShiftedOpening, err = OpenOnGPUOrCPU(s.blindedZ, zetaShifted, s.pk)
-
+	elapsed = time.Since(start_time)
+	fmt.Printf("		openZ() || Open 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 	if err != nil {
 		return err
 	}
@@ -978,14 +1007,17 @@ func (s *instance) h3() []fr.Element {
 }
 
 func (s *instance) computeLinearizedPolynomial() error {
-
+	start_time := time.Now()
 	// wait for H to be committed and zeta to be derived (or ctx.Done())
 	select {
 	case <-s.ctx.Done():
 		return errContextDone
 	case <-s.chH:
 	}
+	elapsed := time.Since(start_time)
+	fmt.Printf("		computeLinearizedPolynomial() || wait for H to be committed and zeta to be derived 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
+	start_time = time.Now()
 	qcpzeta := make([]fr.Element, len(s.commitmentInfo))
 	var blzeta, brzeta, bozeta fr.Element
 	var wg sync.WaitGroup
@@ -1037,12 +1069,14 @@ func (s *instance) computeLinearizedPolynomial() error {
 		coefficients(s.cCommitments),
 		s.pk,
 	)
+	elapsed = time.Since(start_time)
+	fmt.Printf("		computeLinearizedPolynomial() || innerComputeLinearizedPoly 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	var err error
 	// s.linearizedPolynomialDigest, err = kzg.Commit(s.linearizedPolynomial, s.pk.Kzg, runtime.NumCPU()*2)
-	start_time := time.Now()
+	start_time = time.Now()
 	s.linearizedPolynomialDigest, err = commitOnGPUOrCPU(s.linearizedPolynomial, s.pk, false /* monomial */)
-	elapsed := time.Since(start_time)
+	elapsed = time.Since(start_time)
 	fmt.Printf("		computeLinearizedPolynomial() || kzg.Commit 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 	
 	if err != nil {
@@ -1055,12 +1089,16 @@ func (s *instance) computeLinearizedPolynomial() error {
 func (s *instance) batchOpening() error {
 
 	// wait for linearizedPolynomial to be computed (or ctx.Done())
+	start_time := time.Now()
 	select {
 	case <-s.ctx.Done():
 		return errContextDone
 	case <-s.chLinearizedPolynomial:
 	}
+	elapsed := time.Since(start_time)
+	fmt.Printf("		batchOpening() || wait for linearizedPolynomial 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
+	start_time = time.Now()
 	polysQcp := coefficients(s.trace.Qcp)
 	polysToOpen := make([][]fr.Element, 6+len(polysQcp))
 	copy(polysToOpen[6:], polysQcp)
@@ -1081,7 +1119,10 @@ func (s *instance) batchOpening() error {
 	digestsToOpen[3] = s.proof.LRO[2]
 	digestsToOpen[4] = s.pk.Vk.S[0]
 	digestsToOpen[5] = s.pk.Vk.S[1]
+	elapsed = time.Since(start_time)
+	fmt.Printf("		batchOpening() || prepare polysToOpen and digestsToOpen 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
+	start_time = time.Now()
 	var err error
 	s.proof.BatchedProof, err = BatchOpenSinglePoint(
 		polysToOpen,
@@ -1091,7 +1132,8 @@ func (s *instance) batchOpening() error {
 		s.pk,
 		s.proof.ZShiftedOpening.ClaimedValue,
 	)
-
+	elapsed = time.Since(start_time)
+	fmt.Printf("		batchOpening() || BatchOpenSinglePoint 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 	return err
 }
 
