@@ -26,9 +26,9 @@ nsys profile \
   --force-overwrite=true \
   --sample=process-tree \
   --cpuctxsw=system-wide \
-  --trace=cuda,osrt,nvtx,gpu \
+  --trace=cuda,osrt,nvtx \
   --cuda-memory-usage=true \
-  --gpu-metrics-device=all \
+  --cuda-trace-all-apis=true \
   go run -tags icicle ./examples/mimchasher/main.go -count=1 -v
 
 echo "[nsys] 生成概览报告 (${SUMMARY_REPORT}.txt)"
