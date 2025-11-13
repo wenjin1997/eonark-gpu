@@ -1687,6 +1687,7 @@ func commitToQuotient(h1, h2, h3 []fr.Element, proof *plonkbls12381.Proof, pk *P
 	var err error
 
 	start_time := time.Now()
+	fmt.Printf("		commitToQuotient() || commit h1 开始\n")
 	proof.H[0], err = commitOnGPUOrCPU(h1, pk, false /* monomial */)
 	elapsed := time.Since(start_time)
 	fmt.Printf("		commitToQuotient() || commit h1 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
@@ -2355,15 +2356,18 @@ func commitOnGPUOrCPU(coeffs []fr.Element, pk *ProvingKey, useLagrange bool) (cu
 		var st icicle_runtime.EIcicleError
 
 		done := make(chan struct{})
+		fmt.Printf("		commitOnGPUOrCPU() || GPU 开始\n")
 		// gpuSpan := profilerStart()
 		icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 			defer close(done)
 			if useLagrange {
 				// dig, st = kzg_bls12_381.OnDeviceCommit(coeffs, pk.deviceInfo.G1Device.G1Lagrange)
+				fmt.Printf("		commitOnGPUOrCPU() || GPU 开始 commitLagrange\n")
 				base := pk.deviceInfo.G1Device.G1Lagrange.RangeTo(len(coeffs), false)
 				dig, st = kzg_bls12_381.OnDeviceCommit(coeffs, base)
 			} else {
 				// dig, st = kzg_bls12_381.OnDeviceCommit(coeffs, pk.deviceInfo.G1Device.G1)
+				fmt.Printf("		commitOnGPUOrCPU() || GPU 开始 commitMonomial\n")
 				base := pk.deviceInfo.G1Device.G1.RangeTo(len(coeffs), false)
 				dig, st = kzg_bls12_381.OnDeviceCommit(coeffs, base)
 			}
@@ -2372,6 +2376,7 @@ func commitOnGPUOrCPU(coeffs []fr.Element, pk *ProvingKey, useLagrange bool) (cu
 		// profilerAddGPU(gpuSpan)
 
 		if st == icicle_runtime.Success {
+			fmt.Printf("		commitOnGPUOrCPU() || GPU 成功\n")
 			return curve.G1Affine(dig), nil
 		}
 		log.Printf("[GPU failed -> CPU] kzg.Commit")
@@ -2379,8 +2384,10 @@ func commitOnGPUOrCPU(coeffs []fr.Element, pk *ProvingKey, useLagrange bool) (cu
 
 	// CPU
 	if useLagrange {
+		fmt.Printf("		commitOnGPUOrCPU() || CPU 开始 commitLagrange\n")
 		return kzg.Commit(coeffs, pk.KzgLagrange)
 	}
+	fmt.Printf("		commitOnGPUOrCPU() || CPU 开始 commitMonomial\n")
 	return kzg.Commit(coeffs, pk.Kzg)
 }
 
