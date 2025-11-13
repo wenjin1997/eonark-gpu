@@ -1,6 +1,8 @@
 package bls12_381_gpu
 
 import (
+	"fmt"
+
 	curve "github.com/consensys/gnark-crypto/ecc/bls12-381"
 	"github.com/consensys/gnark-crypto/ecc/bls12-381/fp"
 	"github.com/consensys/gnark-crypto/ecc/bls12-381/fr"
@@ -38,31 +40,36 @@ func blsProjectiveToGnarkAffine(p icicle_bls12_381.Projective) curve.G1Affine {
 // 返回：kzg.Digest (= curve.G1Affine)
 func OnDeviceCommit(p []fr.Element, G1Device icicle_core.DeviceSlice) (kzg.Digest, icicle_runtime.EIcicleError) {
 	// 1) 把标量拷到设备
+	fmt.Printf("		OnDeviceCommit() || host 开始\n")
 	host := icicle_core.HostSliceFromElements(p)
-
+	fmt.Printf("		OnDeviceCommit() || host 拷贝到 device 开始\n")
 	var scalarsDev icicle_core.DeviceSlice
 	host.CopyToDevice(&scalarsDev, true)
-
+	fmt.Printf("		OnDeviceCommit() || host 拷贝到 device 成功\n")
 	// 2) 配置 MSM
 	cfg := icicle_msm.GetDefaultMSMConfig()
 	// gnark-crypto 的标量/基点默认在 Montgomery 形式
 	cfg.AreScalarsMontgomeryForm = true
 	cfg.AreBasesMontgomeryForm = false
+	fmt.Printf("		OnDeviceCommit() || MSM 配置成功\n")
 
 	// 3) 运行 MSM（输出 1 个 projective 点）
+	fmt.Printf("		OnDeviceCommit() || MSM 运行开始\n")
 	out := make(icicle_core.HostSlice[icicle_bls12_381.Projective], 1)
 	st := icicle_msm.Msm(scalarsDev, G1Device, &cfg, out)
-
+	fmt.Printf("		OnDeviceCommit() || MSM 运行成功\n")
 	_ = scalarsDev.Free()
 
 	// 4) 转成 gnark 的 Affine（= kzg.Digest）
 	res := blsProjectiveToGnarkAffine(out[0])
-
+	fmt.Printf("		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功\n")
 	// 5) 清理设备内存
 	if st != icicle_runtime.Success {
+		fmt.Printf("		OnDeviceCommit() || 清理设备内存失败\n")
 		return kzg.Digest{}, st
 	}
 
+	fmt.Printf("		OnDeviceCommit() || 清理设备内存成功\n")
 	return kzg.Digest(res), icicle_runtime.Success
 }
 

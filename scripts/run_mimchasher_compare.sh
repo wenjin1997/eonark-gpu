@@ -11,7 +11,15 @@ set -euo pipefail
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 cd "$SCRIPT_DIR/.."
 
-OUT_DIR="logs/msm-fft-gpu-compare"
+# Select output directory based on GPU model
+GPU_NAME="$(nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null | head -n 1 || echo "")"
+if [[ "$GPU_NAME" == *"5070"* ]]; then
+  OUT_DIR="logs/msm-fft-gpu-compare/gpu-5070"
+elif [[ "$GPU_NAME" == *"4090"* ]]; then
+  OUT_DIR="logs/msm-fft-gpu-compare/gpu-4090"
+else
+  OUT_DIR="logs/msm-fft-gpu-compare/others"
+fi
 mkdir -p "$OUT_DIR"
 
 TIMESTAMP="$(date +"%Y%m%d_%H%M%S")"
