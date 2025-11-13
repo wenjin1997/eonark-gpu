@@ -645,14 +645,12 @@ func (s *instance) commitToLRO() error {
 	elasped := time.Since(start_time)
 	fmt.Printf("		commitToLRO() || commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl]) LRO[0] 耗时: %.6fms\n", float64(elasped.Nanoseconds())/1e6)
 
-
 	start_time = time.Now()
 	if s.proof.LRO[1], err = s.commitToPolyAndBlinding(s.x[id_R], s.bp[id_Br]); err != nil {
 		return err
 	}
 	elasped = time.Since(start_time)
 	fmt.Printf("		commitToLRO() || commitToPolyAndBlinding(s.x[id_R], s.bp[id_Br]) LRO[1] 耗时: %.6fms\n", float64(elasped.Nanoseconds())/1e6)
-
 
 	start_time = time.Now()
 	if s.proof.LRO[2], err = s.commitToPolyAndBlinding(s.x[id_O], s.bp[id_Bo]); err != nil {
@@ -1078,7 +1076,7 @@ func (s *instance) computeLinearizedPolynomial() error {
 	s.linearizedPolynomialDigest, err = commitOnGPUOrCPU(s.linearizedPolynomial, s.pk, false /* monomial */)
 	elapsed = time.Since(start_time)
 	fmt.Printf("		computeLinearizedPolynomial() || kzg.Commit 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
-	
+
 	if err != nil {
 		return err
 	}
@@ -2352,14 +2350,22 @@ func Dev_deriveRandomness(fs *Transcript, challenge fr.Element, points ...*curve
 func commitOnGPUOrCPU(coeffs []fr.Element, pk *ProvingKey, useLagrange bool) (curve.G1Affine, error) {
 	// GPU
 	if HasIcicle && pk != nil && pk.deviceInfo != nil {
-		var dig kzg.Digest
-		var st icicle_runtime.EIcicleError
+		nvtxEnd := nvtxScope("kzg.Commit GPU", nvtxColorCommit)
+		defer nvtxEnd()
+
+		var (
+			dig kzg.Digest
+			st  icicle_runtime.EIcicleError
+		)
 
 		done := make(chan struct{})
 		fmt.Printf("		commitOnGPUOrCPU() || GPU 开始\n")
 		// gpuSpan := profilerStart()
 		icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 			defer close(done)
+			stageEnd := nvtxScope("kzg.Commit::OnDevice", nvtxColorDeviceStage)
+			defer stageEnd()
+
 			if useLagrange {
 				// dig, st = kzg_bls12_381.OnDeviceCommit(coeffs, pk.deviceInfo.G1Device.G1Lagrange)
 				fmt.Printf("		commitOnGPUOrCPU() || GPU 开始 commitLagrange\n")
@@ -2373,7 +2379,6 @@ func commitOnGPUOrCPU(coeffs []fr.Element, pk *ProvingKey, useLagrange bool) (cu
 			}
 		})
 		<-done
-		// profilerAddGPU(gpuSpan)
 
 		if st == icicle_runtime.Success {
 			fmt.Printf("		commitOnGPUOrCPU() || GPU 成功\n")
