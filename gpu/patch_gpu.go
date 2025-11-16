@@ -1079,6 +1079,7 @@ func (s *instance) computeLinearizedPolynomial() error {
 	elapsed = time.Since(start_time)
 	fmt.Printf("		computeLinearizedPolynomial() || kzg.Commit 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 
+
 	if err != nil {
 		return err
 	}
