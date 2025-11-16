@@ -7,8 +7,16 @@
 
 set -euo pipefail
 
-ROOT_DIR="/home/jade/jade/eonark-gpu"
-OUTPUT_DIR="${ROOT_DIR}/logs/profiles"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+ROOT_DIR="${SCRIPT_DIR}/.."
+GPU_NAME="$(nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null | head -n 1 || echo "")"
+if [[ "$GPU_NAME" == *"5070"* ]]; then
+  OUTPUT_DIR="${ROOT_DIR}/logs/gpu-5070/profiles/"
+elif [[ "$GPU_NAME" == *"4090"* ]]; then
+  OUTPUT_DIR="${ROOT_DIR}/logs/gpu-4090/profiles/"
+else
+  OUTPUT_DIR="${ROOT_DIR}/logs/others/profiles/"
+fi
 TIMESTAMP="$(date +%Y%m%d_%H%M%S)"
 OUT_PREFIX="${OUTPUT_DIR}/mimchasher_${TIMESTAMP}"
 REPLAY_FILE="${OUT_PREFIX}.nsys-rep"
@@ -20,6 +28,8 @@ cd "${ROOT_DIR}"
 
 echo "[nsys] Profiling Go workload, output前缀: ${OUT_PREFIX}"
 echo "[nsys] 使用增强的 GPU 追踪选项来捕获动态库中的 GPU 调用..."
+echo "[nsys] 注意：GPU 内存分配主要在 setupDevicePointers() 中发生"
+echo "[nsys] 如果 nsys 显示的内存使用与 nvidia-smi 不符，可能是 icicle 使用了内存池或特殊的内存管理方式"
 nsys profile \
   --output "${OUT_PREFIX}" \
   --force-overwrite=true \
@@ -28,15 +38,30 @@ nsys profile \
   --trace=cuda,osrt,nvtx \
   --cuda-memory-usage=true \
   --cuda-trace-all-apis=true \
+  --stats=true \
   go run -tags icicle ./examples/mimchasher/main.go -count=1 -v
 
-# 确保 SQLite 文件被导出（nsys profile 会自动生成，这里只是确认）
+# 确保 SQLite 文件被导出
 SQLITE_FILE="${OUT_PREFIX}.sqlite"
 if [ -f "${SQLITE_FILE}" ]; then
-  echo "[nsys] SQLite 文件已生成: ${SQLITE_FILE}"
+  echo "[nsys] SQLite 文件已自动生成: ${SQLITE_FILE}"
 else
-  echo "[nsys] 强制导出 SQLite 文件..."
-  nsys stats --force-export=true "${REPLAY_FILE}" > /dev/null 2>&1 || true
+  echo "[nsys] 显式导出 SQLite 文件..."
+  # 方法1: 使用 nsys export 命令
+  if command -v nsys &> /dev/null; then
+    nsys export --type sqlite --output "${SQLITE_FILE}" "${REPLAY_FILE}" 2>/dev/null || {
+      # 方法2: 如果 export 失败，尝试使用 stats 强制导出
+      echo "[nsys] 尝试使用 stats 导出 SQLite..."
+      nsys stats --force-export=true --output "${OUT_PREFIX}_stats" "${REPLAY_FILE}" > /dev/null 2>&1 || true
+      # 检查是否生成了 SQLite
+      if [ ! -f "${SQLITE_FILE}" ]; then
+        echo "[警告] SQLite 文件导出失败，但 .nsys-rep 文件仍可用于分析"
+      fi
+    }
+  fi
+  if [ -f "${SQLITE_FILE}" ]; then
+    echo "[nsys] SQLite 文件已成功导出: ${SQLITE_FILE}"
+  fi
 fi
 
 cat <<EOF
