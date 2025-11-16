@@ -45,6 +45,8 @@ import (
 	icicle_bls12_381 "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381"
 	icicle_ntt "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/ntt"
 	icicle_runtime "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/runtime"
+	
+	"github.com/eon-protocol/eonark/gpu/nvtx"
 )
 
 const HasIcicle = true
@@ -2350,7 +2352,7 @@ func Dev_deriveRandomness(fs *Transcript, challenge fr.Element, points ...*curve
 func commitOnGPUOrCPU(coeffs []fr.Element, pk *ProvingKey, useLagrange bool) (curve.G1Affine, error) {
 	// GPU
 	if HasIcicle && pk != nil && pk.deviceInfo != nil {
-		nvtxEnd := nvtxScope("kzg.Commit GPU", nvtxColorCommit)
+		nvtxEnd := nvtx.Scope("kzg.Commit GPU", nvtx.ColorCommit)
 		defer nvtxEnd()
 
 		var (
@@ -2363,7 +2365,7 @@ func commitOnGPUOrCPU(coeffs []fr.Element, pk *ProvingKey, useLagrange bool) (cu
 		// gpuSpan := profilerStart()
 		icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 			defer close(done)
-			stageEnd := nvtxScope("kzg.Commit::OnDevice", nvtxColorDeviceStage)
+			stageEnd := nvtx.Scope("kzg.Commit::OnDevice", nvtx.ColorDeviceStage)
 			defer stageEnd()
 
 			if useLagrange {
