@@ -85,6 +85,44 @@ const (
 	order_blinding_Z = 2
 )
 
+// getCPUMemoryInfo 获取当前 CPU 内存使用情况（MiB）
+func getCPUMemoryInfo() (allocated, total, sys uint64) {
+	var m runtime.MemStats
+	runtime.ReadMemStats(&m)
+
+	// allocated: 当前分配的堆内存
+	allocated = m.Alloc / 1024 / 1024 // 转换为 MiB
+
+	// total: 从系统分配的总内存
+	total = m.TotalAlloc / 1024 / 1024 // 转换为 MiB
+
+	// sys: 从系统获取的内存
+	sys = m.Sys / 1024 / 1024 // 转换为 MiB
+
+	return allocated, total, sys
+}
+
+// printMemoryInfo 打印 GPU 和 CPU 内存信息
+func printMemoryInfo(label string) {
+	// GPU 内存
+	if mem, err := icicle_runtime.GetAvailableMemory(); err == icicle_runtime.Success && mem != nil {
+		used := mem.Total - mem.Free
+		pct := 0.0
+		if mem.Total > 0 {
+			pct = (float64(used) / float64(mem.Total)) * 100.0
+		}
+		fmt.Printf("		[%s] GPU memory: used=%.0f MiB / total=%.0f MiB (%.1f%%)\n",
+			label, float64(used)/1024.0/1024.0, float64(mem.Total)/1024.0/1024.0, pct)
+	} else {
+		fmt.Printf("		[%s] GPU memory: <unavailable> (err=%v)\n", label, err)
+	}
+
+	// CPU 内存
+	allocated, total, sys := getCPUMemoryInfo()
+	fmt.Printf("		[%s] CPU memory: allocated=%d MiB, total_allocated=%d MiB, sys=%d MiB\n",
+		label, allocated, total, sys)
+}
+
 // TODO: compute communication cost
 func (pk *ProvingKey) setupDevicePointers(spr *cs.SparseR1CS) error {
 	// ① 选择/创建后端 & 设备
@@ -109,11 +147,36 @@ func (pk *ProvingKey) setupDevicePointers(spr *cs.SparseR1CS) error {
 	icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 		defer close(done)
 
+		// 记录 CopyToDevice 前的内存状态
+		fmt.Printf("		[Memory] Before CopyToDevice G1:\n")
+		printMemoryInfo("Before")
+
+		// 计算要传输的数据大小
+		g1Size := len(pk.Kzg.G1) * 96 // G1Affine 在 BLS12-381 中是 96 字节
+		fmt.Printf("		[Memory] G1 data size: %d elements, %d bytes (%.2f MiB)\n",
+			len(pk.Kzg.G1), g1Size, float64(g1Size)/1024.0/1024.0)
+
+		// NVTX 标记：开始 CopyToDevice G1
+		nvtx.RangePush("CopyToDevice: G1")
 		g1Host := icicle_core.HostSlice[curve.G1Affine](pk.Kzg.G1)
 		g1Host.CopyToDevice(&pk.deviceInfo.G1Device.G1, true)
+		nvtx.RangePop()
+
+		// 记录 CopyToDevice G1 后的内存状态
+		fmt.Printf("		[Memory] After CopyToDevice G1:\n")
+		printMemoryInfo("After G1")
+
+		// 计算 G1Lagrange 数据大小
+		g1LagSize := len(pk.KzgLagrange.G1) * 96
+		fmt.Printf("		[Memory] G1Lagrange data size: %d elements, %d bytes (%.2f MiB)\n",
+			len(pk.KzgLagrange.G1), g1LagSize, float64(g1LagSize)/1024.0/1024.0)
 
 		g1LagHost := icicle_core.HostSlice[curve.G1Affine](pk.KzgLagrange.G1)
 		g1LagHost.CopyToDevice(&pk.deviceInfo.G1Device.G1Lagrange, true)
+
+		// 记录 CopyToDevice G1Lagrange 后的内存状态
+		fmt.Printf("		[Memory] After CopyToDevice G1Lagrange:\n")
+		printMemoryInfo("After G1Lagrange")
 
 		if st := icicle_bls12_381.AffineFromMontgomery(pk.deviceInfo.G1Device.G1); st != icicle_runtime.Success {
 			copyErr = fmt.Errorf("AffineFromMontgomery(G1): %s", st.AsString())
@@ -141,8 +204,16 @@ func (pk *ProvingKey) setupDevicePointers(spr *cs.SparseR1CS) error {
 	done = make(chan struct{})
 	icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 		defer close(done)
+
+		// NVTX 标记：释放旧的 NTT Domain
+		nvtx.RangePush("NTT: ReleaseDomain")
 		stRls = icicle_ntt.ReleaseDomain()
+		nvtx.RangePop()
+
+		// NVTX 标记：初始化新的 NTT Domain
+		nvtx.RangePush("NTT: InitDomain")
 		stInit = icicle_ntt.InitDomain(rou, icicle_core.GetDefaultNTTInitDomainConfig())
+		nvtx.RangePop()
 	})
 	<-done
 	if stRls != icicle_runtime.Success {
@@ -193,42 +264,90 @@ func (pk *ProvingKey) setupDevicePointers(spr *cs.SparseR1CS) error {
 	icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 		defer close(done)
 
+		// 记录上传前的内存状态
+		fmt.Printf("		[Memory] Before CopyToDevice tables:\n")
+		printMemoryInfo("Before Tables")
+
 		// —— cosetTable
+		cosetTableSize := len(cos) * 32 // fr.Element 是 32 字节
+		fmt.Printf("		[Memory] cosetTable size: %d elements, %d bytes (%.2f MiB)\n",
+			len(cos), cosetTableSize, float64(cosetTableSize)/1024.0/1024.0)
+		nvtx.RangePush("CopyToDevice: cosetTable")
 		hCos := icicle_core.HostSliceFromElements(cos)
 		hCos.CopyToDevice(&pk.deviceInfo.CosetTable, true)
+		nvtx.RangePop()
+		fmt.Printf("		[Memory] After CopyToDevice cosetTable:\n")
+		printMemoryInfo("After cosetTable")
 
 		// —— cosetTableRev
+		cosetTableRevSize := len(cosRev) * 32
+		fmt.Printf("		[Memory] cosetTableRev size: %d elements, %d bytes (%.2f MiB)\n",
+			len(cosRev), cosetTableRevSize, float64(cosetTableRevSize)/1024.0/1024.0)
+		nvtx.RangePush("CopyToDevice: cosetTableRev")
 		hCosRev := icicle_core.HostSliceFromElements(cosRev)
 		hCosRev.CopyToDevice(&pk.deviceInfo.CosetTableRev, true)
+		nvtx.RangePop()
+		fmt.Printf("		[Memory] After CopyToDevice cosetTableRev:\n")
+		printMemoryInfo("After cosetTableRev")
 
-		// 统一转为“非 Montgomery”，便于后续 VecMulOnDevice 直接使用
+		// 统一转为"非 Montgomery"，便于后续 VecMulOnDevice 直接使用
+		nvtx.RangePush("MontConv: cosetTable")
 		if st := kzg_bls12_381.MontConvOnDevice(pk.deviceInfo.CosetTable, false); st != icicle_runtime.Success {
 			copyErr = fmt.Errorf("FromMontgomery(cosetTable): %s", st.AsString())
+			nvtx.RangePop()
 			return
 		}
+		nvtx.RangePop()
+		nvtx.RangePush("MontConv: cosetTableRev")
 		if st := kzg_bls12_381.MontConvOnDevice(pk.deviceInfo.CosetTableRev, false); st != icicle_runtime.Success {
 			copyErr = fmt.Errorf("FromMontgomery(cosetTableRev): %s", st.AsString())
+			nvtx.RangePop()
 			return
 		}
+		nvtx.RangePop()
 
 		// —— big twiddles
+		bigTwiddlesSize := len(bigTwiddles) * 32
+		fmt.Printf("		[Memory] BigTwiddlesN size: %d elements, %d bytes (%.2f MiB)\n",
+			len(bigTwiddles), bigTwiddlesSize, float64(bigTwiddlesSize)/1024.0/1024.0)
+		nvtx.RangePush("CopyToDevice: BigTwiddlesN")
 		hBig := icicle_core.HostSliceFromElements(bigTwiddles)
 		hBig.CopyToDevice(&pk.deviceInfo.BigTwiddlesN, true)
+		nvtx.RangePop()
+		fmt.Printf("		[Memory] After CopyToDevice BigTwiddlesN:\n")
+		printMemoryInfo("After BigTwiddlesN")
 
 		// —— big twiddles rev
+		bigRevTwiddlesSize := len(bigRevTwiddles) * 32
+		fmt.Printf("		[Memory] BigTwiddlesNRev size: %d elements, %d bytes (%.2f MiB)\n",
+			len(bigRevTwiddles), bigRevTwiddlesSize, float64(bigRevTwiddlesSize)/1024.0/1024.0)
+		nvtx.RangePush("CopyToDevice: BigTwiddlesNRev")
 		hBigRev := icicle_core.HostSliceFromElements(bigRevTwiddles)
 		hBigRev.CopyToDevice(&pk.deviceInfo.BigTwiddlesNRev, true)
+		nvtx.RangePop()
+		fmt.Printf("		[Memory] After CopyToDevice BigTwiddlesNRev:\n")
+		printMemoryInfo("After BigTwiddlesNRev")
 
-		// 统一转为“非 Montgomery”，便于后续 VecMulOnDevice 直接使用
+		// 统一转为"非 Montgomery"，便于后续 VecMulOnDevice 直接使用
 		// ! do not count this step in the communication cost
+		nvtx.RangePush("MontConv: BigTwiddlesN")
 		if st := kzg_bls12_381.MontConvOnDevice(pk.deviceInfo.BigTwiddlesN, false); st != icicle_runtime.Success {
 			copyErr = fmt.Errorf("FromMontgomery(bigTwiddlesN): %s", st.AsString())
+			nvtx.RangePop()
 			return
 		}
+		nvtx.RangePop()
+		nvtx.RangePush("MontConv: BigTwiddlesNRev")
 		if st := kzg_bls12_381.MontConvOnDevice(pk.deviceInfo.BigTwiddlesNRev, false); st != icicle_runtime.Success {
 			copyErr = fmt.Errorf("FromMontgomery(bigTwiddlesNRev): %s", st.AsString())
+			nvtx.RangePop()
 			return
 		}
+		nvtx.RangePop()
+
+		// 记录所有操作完成后的内存状态
+		fmt.Printf("		[Memory] After all CopyToDevice operations:\n")
+		printMemoryInfo("Final")
 
 		// 供cpu回退懒加载使用
 		pk.deviceInfo.bigW = bigW
@@ -1333,26 +1452,73 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 
 		icicle_runtime.RunOnDevice(&s.pk.deviceInfo.Device, func(args ...any) {
 			defer close(doneUpload)
+
+			// 统计要上传的多项式数量
+			var totalCoeffs int
+			var totalBytes uint64
+			var polysToUpload int
+			for i := 0; i < len(s.x); i++ {
+				if i == id_ZS || s.x[i] == nil {
+					continue
+				}
+				polysToUpload++
+			}
+
+			// 记录上传前的内存状态
+			fmt.Printf("		[Memory] Before uploading polynomials to device:\n")
+			printMemoryInfo("Before Upload")
+			fmt.Printf("		[Memory] Total polynomials to upload: %d (out of %d)\n", polysToUpload, len(s.x))
+
+			var uploadedCount int
 			for i := 0; i < len(s.x); i++ {
 				if i == id_ZS || s.x[i] == nil {
 					continue
 				}
 
+				// 计算当前多项式的数据大小
+				coeffs := s.x[i].Coefficients()
+				coeffCount := len(coeffs)
+				polySize := uint64(coeffCount) * 32 // fr.Element 是 32 字节
+				totalCoeffs += coeffCount
+				totalBytes += polySize
+				uploadedCount++
+
+
+				fmt.Printf("		[Memory] Uploading poly[%d]: %d coefficients, %d bytes (%.2f MiB), basis=%v\n",
+					i, coeffCount, polySize, float64(polySize)/1024.0/1024.0, s.x[i].Basis)
+
 				// 上传到同一张卡
 				// TODO: 计算 communcation cost
-				host := icicle_core.HostSliceFromElements(s.x[i].Coefficients())
+				nvtx.RangePush(fmt.Sprintf("CopyToDevice: poly[%d]", i))
+				host := icicle_core.HostSliceFromElements(coeffs)
 				host.CopyToDevice(&devX[i], true)
+				nvtx.RangePop()
+
+				// 记录每次上传后的内存状态（仅对前几个和最后一个记录，避免输出过多）
+				if totalPolys <= 3 || totalPolys == polysToUpload {
+					fmt.Printf("		[Memory] After uploading poly[%d]:\n", i)
+					printMemoryInfo(fmt.Sprintf("After poly[%d]", i))
+				}
 
 				// device 侧统一规范为 Canonical（后续每轮：系数×缩放→NTT）
 				if s.x[i].Basis != iop.Canonical {
+					nvtx.RangePush(fmt.Sprintf("INttOnDevice: poly[%d]", i))
 					if st := kzg_bls12_381.INttOnDevice(devX[i]); st != icicle_runtime.Success {
 						upErr = fmt.Errorf("INttOnDevice poly[%d]: %s", i, st.AsString())
+						nvtx.RangePop()
 						return
 					}
+					nvtx.RangePop()
 				}
 				uploadedIdx = append(uploadedIdx, i)
 				poly2idx[s.x[i]] = i
 			}
+
+			// 记录所有上传完成后的内存状态
+			fmt.Printf("		[Memory] After uploading all polynomials:\n")
+			printMemoryInfo("After All Uploads")
+			fmt.Printf("		[Memory] Summary: uploaded %d polynomials, %d total coefficients, %d bytes (%.2f MiB)\n",
+				len(uploadedIdx), totalCoeffs, totalBytes, float64(totalBytes)/1024.0/1024.0)
 		})
 		<-doneUpload
 		if upErr != nil {
@@ -1371,9 +1537,23 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 	defer func() {
 		if useGPU {
 			icicle_runtime.RunOnDevice(&s.pk.deviceInfo.Device, func(args ...any) {
-				for _, idx := range uploadedIdx {
+				fmt.Printf("		[Memory] Before freeing uploaded polynomials:\n")
+				printMemoryInfo("Before Free")
+				fmt.Printf("		[Memory] Freeing %d polynomial buffers\n", len(uploadedIdx))
+				for freeIdx, idx := range uploadedIdx {
+					nvtx.RangePush(fmt.Sprintf("Free: poly[%d]", idx))
 					devX[idx].Free()
+					nvtx.RangePop()
+
+					// 记录每次释放后的内存状态（仅对前几个和最后一个记录）
+					if freeIdx < 3 || freeIdx == len(uploadedIdx)-1 {
+						fmt.Printf("		[Memory] After freeing poly[%d] (%d/%d):\n", idx, freeIdx+1, len(uploadedIdx))
+						printMemoryInfo(fmt.Sprintf("After free poly[%d]", idx))
+					}
 				}
+				fmt.Printf("		[Memory] After freeing all uploaded polynomials:\n")
+				printMemoryInfo("After All Free")
+				fmt.Printf("		[Memory] Freed %d polynomial buffers\n", len(uploadedIdx))
 			})
 		}
 	}()
@@ -1426,12 +1606,29 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 			sk = scaleBig
 		}
 
-		// 把所有参与的多项式转换成“本块 coset 的 n 个点值”
+		// 把所有参与的多项式转换成"本块 coset 的 n 个点值"
 		// we do **a lot** of FFT here, but on the small domain.
 		// note that for all the polynomials in the proving key
 		// (Ql, Qr, Qm, Qo, S1, S2, S3, Qcp, Qc) and ID, LOne
 		// we could pre-compute these rho*2 FFTs and store them
 		// at the cost of a huge memory footprint.
+		var processedPolys int
+		var processingPolys []int
+		for j := 0; j < len(s.x); j++ {
+			if j != id_ZS && s.x[j] != nil {
+				processingPolys = append(processingPolys, j)
+			}
+		}
+		fmt.Printf("		[Memory] Processing %d polynomials in batchApply\n", len(processingPolys))
+		for _, polyIdx := range processingPolys {
+			if s.x[polyIdx] != nil {
+				coeffs := s.x[polyIdx].Coefficients()
+				fmt.Printf("		[Memory] Processing poly[%d] (GPU): %d coefficients, %d bytes (%.2f MiB)\n",
+					polyIdx, len(coeffs), len(coeffs)*32, float64(len(coeffs)*32)/1024.0/1024.0)
+			}
+		}
+		fmt.Printf("		[Memory] Before batchApply (toCosetLagrange):\n")
+		printMemoryInfo("Before batchApply")
 		start_time := time.Now()
 		batchApply(s.x, func(p *iop.Polynomial) {
 			if p == nil {
@@ -1450,6 +1647,9 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 		})
 		elapsed := time.Since(start_time)
 		fmt.Printf("		computeNumerator() || batchApply 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
+		fmt.Printf("		[Memory] After batchApply (toCosetLagrange):\n")
+		printMemoryInfo("After batchApply")
+		fmt.Printf("		[Memory] Processed %d polynomials\n", len(processingPolys))
 
 		wgBuf.Wait()
 
@@ -2503,6 +2703,10 @@ func (s *instance) toCosetLagrangeOnGPUorCPU_DEV(
 			defer close(done)
 			dev := *xdev
 
+			// NVTX 标记：toCosetLagrange 处理
+			nvtx.RangePush(fmt.Sprintf("toCosetLagrange: poly[%d] (GPU)", len(coeffs)))
+			defer nvtx.RangePop()
+
 			// 约定：每次调用结束前把 dev 恢复为 Canonical（见尾部 INTT），
 			// 因此这里 dev 一定是 Canonical。
 
@@ -2530,8 +2734,17 @@ func (s *instance) toCosetLagrangeOnGPUorCPU_DEV(
 
 			// 4) 回拷 + 释放
 			// TODO: 计算 communcation cost
+			polySize := len(coeffs) * 32 // fr.Element 是 32 字节
+			fmt.Printf("		[Memory] Before CopyFromDevice (D2H): poly size=%d coefficients, %d bytes (%.2f MiB)\n",
+				len(coeffs), polySize, float64(polySize)/1024.0/1024.0)
+			fmt.Printf("		[Memory] Before CopyFromDevice (D2H):\n")
+			printMemoryInfo("Before D2H")
+			nvtx.RangePush(fmt.Sprintf("CopyFromDevice: D2H (poly, %d coeffs)", len(coeffs)))
 			host := icicle_core.HostSliceFromElements(coeffs)
 			host.CopyFromDevice(&dev)
+			nvtx.RangePop()
+			fmt.Printf("		[Memory] After CopyFromDevice (D2H):\n")
+			printMemoryInfo("After D2H")
 
 			// 4) 立刻把 dev 恢复为 Canonical，方便下一个 coset 继续复用
 			start_ifft_time := time.Now()
