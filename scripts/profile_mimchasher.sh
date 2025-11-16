@@ -4,8 +4,6 @@
 # 该脚本会调用 nsys profile 对 `go run -tags icicle ./examples/mimchasher/main.go -count=1 -v`
 # 的执行过程进行系统级采样，生成 .nsys-rep 和 .sqlite 文件。
 # 使用增强的 GPU 追踪选项来捕获动态库中的 GPU 调用。
-# 的执行过程进行系统级采样，生成 .nsys-rep 和 .sqlite 文件。
-# 使用增强的 GPU 追踪选项来捕获动态库中的 GPU 调用。
 
 set -euo pipefail
 
@@ -23,13 +21,14 @@ TIMESTAMP="$(date +%Y%m%d_%H%M%S)"
 OUT_PREFIX="${OUTPUT_DIR}/mimchasher_${TIMESTAMP}"
 REPLAY_FILE="${OUT_PREFIX}.nsys-rep"
 SQLITE_FILE="${OUT_PREFIX}.sqlite"
-SQLITE_FILE="${OUT_PREFIX}.sqlite"
+LOG_FILE="${OUT_PREFIX}.log"
 
 mkdir -p "${OUTPUT_DIR}"
 
 cd "${ROOT_DIR}"
 
 echo "[nsys] Profiling Go workload, output前缀: ${OUT_PREFIX}"
+echo "[nsys] 日志文件: ${LOG_FILE}"
 echo "[nsys] 使用增强的 GPU 追踪选项来捕获动态库中的 GPU 调用..."
 echo "[nsys] 注意：GPU 内存分配主要在 setupDevicePointers() 中发生"
 echo "[nsys] 如果 nsys 显示的内存使用与 nvidia-smi 不符，可能是 icicle 使用了内存池或特殊的内存管理方式"
@@ -38,15 +37,13 @@ nsys profile \
   --force-overwrite=true \
   --sample=process-tree \
   --cpuctxsw=process-tree \
-  --cpuctxsw=process-tree \
   --trace=cuda,osrt,nvtx \
   --cuda-memory-usage=true \
   --cuda-trace-all-apis=true \
   --stats=true \
-  go run -tags icicle ./examples/mimchasher/main.go -count=1 -v
+  go run -tags icicle ./examples/mimchasher/main.go -count=1 -v 2>&1 | tee "${LOG_FILE}"
 
 # 确保 SQLite 文件被导出
-SQLITE_FILE="${OUT_PREFIX}.sqlite"
 if [ -f "${SQLITE_FILE}" ]; then
   echo "[nsys] SQLite 文件已自动生成: ${SQLITE_FILE}"
 else
@@ -72,7 +69,7 @@ cat <<EOF
 完成。关键输出：
   - Nsight Systems 原始数据: ${REPLAY_FILE}
   - SQLite 数据库: ${SQLITE_FILE}
-  - SQLite 数据库: ${SQLITE_FILE}
+  - 运行日志: ${LOG_FILE}
 
 查看 GPU 调用情况：
   1. 使用 GUI 查看时间线（推荐）:
@@ -81,15 +78,13 @@ cat <<EOF
 
   2. 使用 Python 脚本分析 SQLite 文件:
      python3 scripts/analyze_gpu_utilization.py ${SQLITE_FILE}
-  2. 使用 Python 脚本分析 SQLite 文件:
-     python3 scripts/analyze_gpu_utilization.py ${SQLITE_FILE}
 
   3. 使用 nsys stats 提取报告:
      nsys stats --report gpu-kern-summary --format csv ${REPLAY_FILE}
      nsys stats --report cuda-api --format csv ${REPLAY_FILE}
-  3. 使用 nsys stats 提取报告:
-     nsys stats --report gpu-kern-summary --format csv ${REPLAY_FILE}
-     nsys stats --report cuda-api --format csv ${REPLAY_FILE}
+
+  4. 查看运行日志:
+     cat ${LOG_FILE}
 
 提示：在 nsys-ui 中，GPU 活动会显示在时间线的 "CUDA API" 和 "GPU" 行中。
 EOF
