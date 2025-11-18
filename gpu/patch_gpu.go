@@ -45,8 +45,6 @@ import (
 	icicle_bls12_381 "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381"
 	icicle_ntt "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/ntt"
 	icicle_runtime "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/runtime"
-
-	"github.com/eon-protocol/eonark/gpu/nvtx"
 )
 
 const HasIcicle = true
@@ -85,45 +83,7 @@ const (
 	order_blinding_Z = 2
 )
 
-// getCPUMemoryInfo 获取当前 CPU 内存使用情况（MiB）
-func getCPUMemoryInfo() (allocated, total, sys uint64) {
-	var m runtime.MemStats
-	runtime.ReadMemStats(&m)
-
-	// allocated: 当前分配的堆内存
-	allocated = m.Alloc / 1024 / 1024 // 转换为 MiB
-
-	// total: 从系统分配的总内存
-	total = m.TotalAlloc / 1024 / 1024 // 转换为 MiB
-
-	// sys: 从系统获取的内存
-	sys = m.Sys / 1024 / 1024 // 转换为 MiB
-
-	return allocated, total, sys
-}
-
-// printMemoryInfo 打印 GPU 和 CPU 内存信息
-func printMemoryInfo(label string) {
-	// GPU 内存
-	if mem, err := icicle_runtime.GetAvailableMemory(); err == icicle_runtime.Success && mem != nil {
-		used := mem.Total - mem.Free
-		pct := 0.0
-		if mem.Total > 0 {
-			pct = (float64(used) / float64(mem.Total)) * 100.0
-		}
-		fmt.Printf("		[%s] GPU memory: used=%.0f MiB / total=%.0f MiB (%.1f%%)\n",
-			label, float64(used)/1024.0/1024.0, float64(mem.Total)/1024.0/1024.0, pct)
-	} else {
-		fmt.Printf("		[%s] GPU memory: <unavailable> (err=%v)\n", label, err)
-	}
-
-	// CPU 内存
-	allocated, total, sys := getCPUMemoryInfo()
-	fmt.Printf("		[%s] CPU memory: allocated=%d MiB, total_allocated=%d MiB, sys=%d MiB\n",
-		label, allocated, total, sys)
-}
-
-// TODO: compute communication cost
+// jade参考：memory layout + communication的cost（打点测一下copy的总时间+分布时间）
 func (pk *ProvingKey) setupDevicePointers(spr *cs.SparseR1CS) error {
 	// ① 选择/创建后端 & 设备
 	if st := icicle_runtime.LoadBackendFromEnvOrDefault(); st != icicle_runtime.Success {
@@ -143,40 +103,14 @@ func (pk *ProvingKey) setupDevicePointers(spr *cs.SparseR1CS) error {
 	// ② 在 device 上完成拷贝和 Montgomery 变换
 	var copyErr error
 	done := make(chan struct{})
-	// gpuSpan := profilerStart()
 	icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 		defer close(done)
 
-		// 记录 CopyToDevice 前的内存状态
-		fmt.Printf("		[Memory] Before CopyToDevice G1:\n")
-		printMemoryInfo("Before")
-
-		// 计算要传输的数据大小
-		g1Size := len(pk.Kzg.G1) * 96 // G1Affine 在 BLS12-381 中是 96 字节
-		fmt.Printf("		[Memory] G1 data size: %d elements, %d bytes (%.2f MiB)\n",
-			len(pk.Kzg.G1), g1Size, float64(g1Size)/1024.0/1024.0)
-
-		// NVTX 标记：开始 CopyToDevice G1
-		nvtx.RangePush("CopyToDevice: G1")
 		g1Host := icicle_core.HostSlice[curve.G1Affine](pk.Kzg.G1)
 		g1Host.CopyToDevice(&pk.deviceInfo.G1Device.G1, true)
-		nvtx.RangePop()
-
-		// 记录 CopyToDevice G1 后的内存状态
-		fmt.Printf("		[Memory] After CopyToDevice G1:\n")
-		printMemoryInfo("After G1")
-
-		// 计算 G1Lagrange 数据大小
-		g1LagSize := len(pk.KzgLagrange.G1) * 96
-		fmt.Printf("		[Memory] G1Lagrange data size: %d elements, %d bytes (%.2f MiB)\n",
-			len(pk.KzgLagrange.G1), g1LagSize, float64(g1LagSize)/1024.0/1024.0)
 
 		g1LagHost := icicle_core.HostSlice[curve.G1Affine](pk.KzgLagrange.G1)
 		g1LagHost.CopyToDevice(&pk.deviceInfo.G1Device.G1Lagrange, true)
-
-		// 记录 CopyToDevice G1Lagrange 后的内存状态
-		fmt.Printf("		[Memory] After CopyToDevice G1Lagrange:\n")
-		printMemoryInfo("After G1Lagrange")
 
 		if st := icicle_bls12_381.AffineFromMontgomery(pk.deviceInfo.G1Device.G1); st != icicle_runtime.Success {
 			copyErr = fmt.Errorf("AffineFromMontgomery(G1): %s", st.AsString())
@@ -204,16 +138,8 @@ func (pk *ProvingKey) setupDevicePointers(spr *cs.SparseR1CS) error {
 	done = make(chan struct{})
 	icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 		defer close(done)
-
-		// NVTX 标记：释放旧的 NTT Domain
-		nvtx.RangePush("NTT: ReleaseDomain")
 		stRls = icicle_ntt.ReleaseDomain()
-		nvtx.RangePop()
-
-		// NVTX 标记：初始化新的 NTT Domain
-		nvtx.RangePush("NTT: InitDomain")
 		stInit = icicle_ntt.InitDomain(rou, icicle_core.GetDefaultNTTInitDomainConfig())
-		nvtx.RangePop()
 	})
 	<-done
 	if stRls != icicle_runtime.Success {
@@ -258,96 +184,46 @@ func (pk *ProvingKey) setupDevicePointers(spr *cs.SparseR1CS) error {
 	copy(bigRevTwiddles, bigTwiddles)
 	fft.BitReverse(bigRevTwiddles)
 
-	// TODO: analysis the communication cost of copymemory
 	/***********************  上传到显存（并转非 Mont）  **************************/
 	done = make(chan struct{})
 	icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 		defer close(done)
 
-		// 记录上传前的内存状态
-		fmt.Printf("		[Memory] Before CopyToDevice tables:\n")
-		printMemoryInfo("Before Tables")
-
 		// —— cosetTable
-		cosetTableSize := len(cos) * 32 // fr.Element 是 32 字节
-		fmt.Printf("		[Memory] cosetTable size: %d elements, %d bytes (%.2f MiB)\n",
-			len(cos), cosetTableSize, float64(cosetTableSize)/1024.0/1024.0)
-		nvtx.RangePush("CopyToDevice: cosetTable")
 		hCos := icicle_core.HostSliceFromElements(cos)
 		hCos.CopyToDevice(&pk.deviceInfo.CosetTable, true)
-		nvtx.RangePop()
-		fmt.Printf("		[Memory] After CopyToDevice cosetTable:\n")
-		printMemoryInfo("After cosetTable")
 
 		// —— cosetTableRev
-		cosetTableRevSize := len(cosRev) * 32
-		fmt.Printf("		[Memory] cosetTableRev size: %d elements, %d bytes (%.2f MiB)\n",
-			len(cosRev), cosetTableRevSize, float64(cosetTableRevSize)/1024.0/1024.0)
-		nvtx.RangePush("CopyToDevice: cosetTableRev")
 		hCosRev := icicle_core.HostSliceFromElements(cosRev)
 		hCosRev.CopyToDevice(&pk.deviceInfo.CosetTableRev, true)
-		nvtx.RangePop()
-		fmt.Printf("		[Memory] After CopyToDevice cosetTableRev:\n")
-		printMemoryInfo("After cosetTableRev")
 
-		// 统一转为"非 Montgomery"，便于后续 VecMulOnDevice 直接使用
-		nvtx.RangePush("MontConv: cosetTable")
+		// 统一转为“非 Montgomery”，便于后续 VecMulOnDevice 直接使用
 		if st := kzg_bls12_381.MontConvOnDevice(pk.deviceInfo.CosetTable, false); st != icicle_runtime.Success {
 			copyErr = fmt.Errorf("FromMontgomery(cosetTable): %s", st.AsString())
-			nvtx.RangePop()
 			return
 		}
-		nvtx.RangePop()
-		nvtx.RangePush("MontConv: cosetTableRev")
 		if st := kzg_bls12_381.MontConvOnDevice(pk.deviceInfo.CosetTableRev, false); st != icicle_runtime.Success {
 			copyErr = fmt.Errorf("FromMontgomery(cosetTableRev): %s", st.AsString())
-			nvtx.RangePop()
 			return
 		}
-		nvtx.RangePop()
 
 		// —— big twiddles
-		bigTwiddlesSize := len(bigTwiddles) * 32
-		fmt.Printf("		[Memory] BigTwiddlesN size: %d elements, %d bytes (%.2f MiB)\n",
-			len(bigTwiddles), bigTwiddlesSize, float64(bigTwiddlesSize)/1024.0/1024.0)
-		nvtx.RangePush("CopyToDevice: BigTwiddlesN")
 		hBig := icicle_core.HostSliceFromElements(bigTwiddles)
 		hBig.CopyToDevice(&pk.deviceInfo.BigTwiddlesN, true)
-		nvtx.RangePop()
-		fmt.Printf("		[Memory] After CopyToDevice BigTwiddlesN:\n")
-		printMemoryInfo("After BigTwiddlesN")
 
 		// —— big twiddles rev
-		bigRevTwiddlesSize := len(bigRevTwiddles) * 32
-		fmt.Printf("		[Memory] BigTwiddlesNRev size: %d elements, %d bytes (%.2f MiB)\n",
-			len(bigRevTwiddles), bigRevTwiddlesSize, float64(bigRevTwiddlesSize)/1024.0/1024.0)
-		nvtx.RangePush("CopyToDevice: BigTwiddlesNRev")
 		hBigRev := icicle_core.HostSliceFromElements(bigRevTwiddles)
 		hBigRev.CopyToDevice(&pk.deviceInfo.BigTwiddlesNRev, true)
-		nvtx.RangePop()
-		fmt.Printf("		[Memory] After CopyToDevice BigTwiddlesNRev:\n")
-		printMemoryInfo("After BigTwiddlesNRev")
 
-		// 统一转为"非 Montgomery"，便于后续 VecMulOnDevice 直接使用
-		// ! do not count this step in the communication cost
-		nvtx.RangePush("MontConv: BigTwiddlesN")
+		// 统一转为“非 Montgomery”，便于后续 VecMulOnDevice 直接使用
 		if st := kzg_bls12_381.MontConvOnDevice(pk.deviceInfo.BigTwiddlesN, false); st != icicle_runtime.Success {
 			copyErr = fmt.Errorf("FromMontgomery(bigTwiddlesN): %s", st.AsString())
-			nvtx.RangePop()
 			return
 		}
-		nvtx.RangePop()
-		nvtx.RangePush("MontConv: BigTwiddlesNRev")
 		if st := kzg_bls12_381.MontConvOnDevice(pk.deviceInfo.BigTwiddlesNRev, false); st != icicle_runtime.Success {
 			copyErr = fmt.Errorf("FromMontgomery(bigTwiddlesNRev): %s", st.AsString())
-			nvtx.RangePop()
 			return
 		}
-		nvtx.RangePop()
-
-		// 记录所有操作完成后的内存状态
-		fmt.Printf("		[Memory] After all CopyToDevice operations:\n")
-		printMemoryInfo("Final")
 
 		// 供cpu回退懒加载使用
 		pk.deviceInfo.bigW = bigW
@@ -369,12 +245,9 @@ func hostFromFrSlice(v []fr.Element) icicle_core.HostSlice[fr.Element] {
 func prove(spr *cs.SparseR1CS, pk *ProvingKey, fullWitness witness.Witness, opts ...backend.ProverOption) (*plonkbls12381.Proof, error) {
 
 	if HasIcicle {
-		start := time.Now()
 		if err := pk.setupDevicePointers(spr); err != nil {
 			return nil, fmt.Errorf("icicle device setup: %w", err)
 		}
-		elapsed := time.Since(start)
-		fmt.Printf("prove() -> icicle device setup 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 	}
 
 	log := logger.Logger().With().
@@ -389,7 +262,6 @@ func prove(spr *cs.SparseR1CS, pk *ProvingKey, fullWitness witness.Witness, opts
 	}
 
 	start := time.Now()
-	start_prove_time := time.Now()
 
 	// init instance
 	g, ctx := errgroup.WithContext(context.Background())
@@ -399,92 +271,35 @@ func prove(spr *cs.SparseR1CS, pk *ProvingKey, fullWitness witness.Witness, opts
 	}
 
 	// solve constraints
-	g.Go(func() error {
-		start_solve_constraints_time := time.Now()
-		err := instance.solveConstraints()
-		elapsed_solve_constraints_time := time.Since(start_solve_constraints_time)
-		fmt.Printf("prove() -> solveConstraints 耗时: %.6fms\n", float64(elapsed_solve_constraints_time.Nanoseconds())/1e6)
-		return err
-	})
+	g.Go(instance.solveConstraints)
 
 	// complete qk
-	g.Go(func() error {
-		start_complete_qk_time := time.Now()
-		err := instance.completeQk()
-		elapsed_complete_qk_time := time.Since(start_complete_qk_time)
-		fmt.Printf("prove() -> completeQk 耗时: %.6fms\n", float64(elapsed_complete_qk_time.Nanoseconds())/1e6)
-		return err
-	})
+	g.Go(instance.completeQk)
 
 	// init blinding polynomials
-	g.Go(func() error {
-		start_init_blinding_polynomials_time := time.Now()
-		err := instance.initBlindingPolynomials()
-		elapsed_init_blinding_polynomials_time := time.Since(start_init_blinding_polynomials_time)
-		fmt.Printf("prove() -> initBlindingPolynomials 耗时: %.6fms\n", float64(elapsed_init_blinding_polynomials_time.Nanoseconds())/1e6)
-		return err
-	})
+	g.Go(instance.initBlindingPolynomials)
 
 	// derive gamma, beta (copy constraint)
-	g.Go(func() error {
-		start_derive_gamma_and_beta_time := time.Now()
-		err := instance.deriveGammaAndBeta()
-		elapsed_derive_gamma_and_beta_time := time.Since(start_derive_gamma_and_beta_time)
-		fmt.Printf("prove() -> deriveGammaAndBeta 耗时: %.6fms\n", float64(elapsed_derive_gamma_and_beta_time.Nanoseconds())/1e6)
-		return err
-	})
+	g.Go(instance.deriveGammaAndBeta)
 
 	// compute accumulating ratio for the copy constraint
-	g.Go(func() error {
-		start_build_ratio_copy_constraint_time := time.Now()
-		err := instance.buildRatioCopyConstraint()
-		elapsed_build_ratio_copy_constraint_time := time.Since(start_build_ratio_copy_constraint_time)
-		fmt.Printf("prove() -> buildRatioCopyConstraint 耗时: %.6fms\n", float64(elapsed_build_ratio_copy_constraint_time.Nanoseconds())/1e6)
-		return err
-	})
+	g.Go(instance.buildRatioCopyConstraint)
 
 	// compute h
-	g.Go(func() error {
-		start_compute_quotient_time := time.Now()
-		err := instance.computeQuotient()
-		elapsed_compute_quotient_time := time.Since(start_compute_quotient_time)
-		fmt.Printf("prove() -> computeQuotient 耗时: %.6fms\n", float64(elapsed_compute_quotient_time.Nanoseconds())/1e6)
-		return err
-	})
+	g.Go(instance.computeQuotient)
 
 	// open Z (blinded) at ωζ (proof.ZShiftedOpening)
-	g.Go(func() error {
-		start_open_z_time := time.Now()
-		err := instance.openZ()
-		elapsed_open_z_time := time.Since(start_open_z_time)
-		fmt.Printf("prove() -> openZ 耗时: %.6fms\n", float64(elapsed_open_z_time.Nanoseconds())/1e6)
-		return err
-	})
+	g.Go(instance.openZ)
 
 	// linearized polynomial
-	g.Go(func() error {
-		start_compute_linearized_polynomial_time := time.Now()
-		err := instance.computeLinearizedPolynomial()
-		elapsed_compute_linearized_polynomial_time := time.Since(start_compute_linearized_polynomial_time)
-		fmt.Printf("prove() -> computeLinearizedPolynomial 耗时: %.6fms\n", float64(elapsed_compute_linearized_polynomial_time.Nanoseconds())/1e6)
-		return err
-	})
+	g.Go(instance.computeLinearizedPolynomial)
 
 	// Batch opening
-	g.Go(func() error {
-		start_batch_opening_time := time.Now()
-		err := instance.batchOpening()
-		elapsed_batch_opening_time := time.Since(start_batch_opening_time)
-		fmt.Printf("prove() -> batchOpening 耗时: %.6fms\n", float64(elapsed_batch_opening_time.Nanoseconds())/1e6)
-		return err
-	})
+	g.Go(instance.batchOpening)
 
 	if err := g.Wait(); err != nil {
 		return nil, err
 	}
-
-	elapsed_prove_time := time.Since(start_prove_time)
-	fmt.Printf("prove() -> prove() 总耗时: %.6fms\n", float64(elapsed_prove_time.Nanoseconds())/1e6)
 
 	log.Debug().Dur("took", time.Since(start)).Msg("prover done")
 	return instance.proof, nil
@@ -645,15 +460,10 @@ func (s *instance) bsb22Hint(_ *big.Int, ins, outs []*big.Int) error {
 // solveConstraints computes the evaluation of the polynomials L, R, O
 // and sets x[id_L], x[id_R], x[id_O] in Lagrange form
 func (s *instance) solveConstraints() error {
-	start_time := time.Now()
 	_solution, err := s.spr.Solve(s.fullWitness, s.opt.SolverOpts...)
 	if err != nil {
 		return err
 	}
-	elapsed := time.Since(start_time)
-	fmt.Printf("	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
-
-	start_time = time.Now()
 	solution := _solution.(*cs.SparseR1CSSolution)
 	evaluationLDomainSmall := []fr.Element(solution.L)
 	evaluationRDomainSmall := []fr.Element(solution.R)
@@ -672,19 +482,12 @@ func (s *instance) solveConstraints() error {
 	s.x[id_O] = iop.NewPolynomial(&evaluationODomainSmall, iop.Form{Basis: iop.Lagrange, Layout: iop.Regular})
 
 	wg.Wait()
-	elapsed = time.Since(start_time)
-	fmt.Printf("	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	// commit to l, r, o and add blinding factors
-	start_time = time.Now()
 	if err := s.commitToLRO(); err != nil {
 		return err
 	}
-	elapsed = time.Since(start_time)
-	fmt.Printf("	solveConstraints() || commitToLRO() 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
-
 	close(s.chLRO)
-
 	return nil
 }
 
@@ -700,14 +503,11 @@ func (s *instance) completeQk() error {
 	copy(qkCoeffs, wWitness[:len(s.spr.Public)])
 
 	// wait for solver to be done
-	start_time := time.Now()
 	select {
 	case <-s.ctx.Done():
 		return errContextDone
 	case <-s.chLRO:
 	}
-	elapsed := time.Since(start_time)
-	fmt.Printf("		completeQk() || wait for solver to be done 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	for i := range s.commitmentInfo {
 		qkCoeffs[s.spr.GetNbPublicVariables()+s.commitmentInfo[i].CommitmentIndex] = s.commitmentVal[i]
@@ -738,10 +538,7 @@ func (s *instance) commitToLRO() error {
 	// g := new(errgroup.Group)
 
 	// g.Go(func() (err error) {
-	// 	start_time := time.Now()
 	// 	s.proof.LRO[0], err = s.commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl])
-	// 	elasped := time.Since(start_time)
-	// 	fmt.Printf("		commitToLRO() || commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl]) LRO[0] 耗时: %.6fms\n", float64(elasped.Nanoseconds())/1e6)
 	// 	return
 	// })
 
@@ -756,30 +553,16 @@ func (s *instance) commitToLRO() error {
 	// })
 
 	// return g.Wait()
-
-	// FIXME : this can be parallelized
 	var err error
-	start_time := time.Now()
 	if s.proof.LRO[0], err = s.commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl]); err != nil {
 		return err
 	}
-	elasped := time.Since(start_time)
-	fmt.Printf("		commitToLRO() || commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl]) LRO[0] 耗时: %.6fms\n", float64(elasped.Nanoseconds())/1e6)
-
-	start_time = time.Now()
 	if s.proof.LRO[1], err = s.commitToPolyAndBlinding(s.x[id_R], s.bp[id_Br]); err != nil {
 		return err
 	}
-	elasped = time.Since(start_time)
-	fmt.Printf("		commitToLRO() || commitToPolyAndBlinding(s.x[id_R], s.bp[id_Br]) LRO[1] 耗时: %.6fms\n", float64(elasped.Nanoseconds())/1e6)
-
-	start_time = time.Now()
 	if s.proof.LRO[2], err = s.commitToPolyAndBlinding(s.x[id_O], s.bp[id_Bo]); err != nil {
 		return err
 	}
-	elasped = time.Since(start_time)
-	fmt.Printf("		commitToLRO() || commitToPolyAndBlinding(s.x[id_O], s.bp[id_Bo]) LRO[2] 耗时: %.6fms\n", float64(elasped.Nanoseconds())/1e6)
-
 	return nil
 }
 
@@ -795,16 +578,12 @@ func (s *instance) deriveGammaAndBeta() error {
 	}
 
 	// wait for LRO to be committed
-	start_time := time.Now()
 	select {
 	case <-s.ctx.Done():
 		return errContextDone
 	case <-s.chLRO:
 	}
-	elapsed := time.Since(start_time)
-	fmt.Printf("		deriveGammaAndBeta() || wait for LRO to be committed 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
-	start_time = time.Now()
 	if err := s.fs.Bind(eon.CID_GAMMA, eon.HashG1(s.proof.LRO[0])); err != nil {
 		return err
 	}
@@ -871,28 +650,18 @@ func (s *instance) commitToPolyAndBlinding(p, b *iop.Polynomial) (commit curve.G
 	// 		return curve.G1Affine{}, err
 	// 	}
 	// }
-	start_time := time.Now()
 	commit, err = commitOnGPUOrCPU(p.Coefficients(), s.pk, true)
-	elasped := time.Since(start_time)
-	fmt.Printf("			commitToPolyAndBlinding() -> commit to p 耗时: %.6fms\n", float64(elasped.Nanoseconds())/1e6)
 
 	// commit, err = kzg.Commit(p.Coefficients(), s.pk.KzgLagrange)
 
 	// we add in the blinding contribution
-	start_time = time.Now()
 	n := int(s.domain0.Cardinality)
 	// cb := commitBlindingFactor(n, b, s.pk.Kzg)
 	cb, err2 := commitBlindingFactorGPUOrCPU(n, b, s.pk)
-	elasped = time.Since(start_time)
-	fmt.Printf("			commitToPolyAndBlinding() -> commit to b 耗时: %.6fms\n", float64(elasped.Nanoseconds())/1e6)
 	if err2 != nil {
 		return curve.G1Affine{}, err2
 	}
-
-	start_time = time.Now()
 	commit.Add(&commit, &cb)
-	elasped = time.Since(start_time)
-	fmt.Printf("			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: %.6fms\n", float64(elasped.Nanoseconds())/1e6)
 
 	return
 }
@@ -914,8 +683,6 @@ func (s *instance) deriveZeta() (err error) {
 
 // computeQuotient computes H
 func (s *instance) computeQuotient() (err error) {
-	start_time := time.Now()
-
 	s.x[id_Ql] = s.trace.Ql
 	s.x[id_Qr] = s.trace.Qr
 	s.x[id_Qm] = s.trace.Qm
@@ -933,28 +700,22 @@ func (s *instance) computeQuotient() (err error) {
 	lone[0].SetOne()
 
 	// wait for solver to be done
-	start_wait_for_solver_done := time.Now()
 	select {
 	case <-s.ctx.Done():
 		return errContextDone
 	case <-s.chLRO:
 	}
-	elapsed := time.Since(start_wait_for_solver_done)
-	fmt.Printf("		computeQuotient() || wait for solver to be done 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	for i := 0; i < len(s.commitmentInfo); i++ {
 		s.x[id_Qci+2*i+1] = s.cCommitments[i]
 	}
 
 	// wait for Z to be committed or context done
-	start_wait_for_z_committed := time.Now()
 	select {
 	case <-s.ctx.Done():
 		return errContextDone
 	case <-s.chZ:
 	}
-	elapsed = time.Since(start_wait_for_z_committed)
-	fmt.Printf("		computeQuotient() || wait for Z to be committed 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	// derive alpha
 	if err = s.deriveAlpha(); err != nil {
@@ -966,35 +727,23 @@ func (s *instance) computeQuotient() (err error) {
 	identity[1].Set(&s.beta)
 
 	s.x[id_ZS] = s.x[id_Z].ShallowClone().Shift(1)
-	elasped := time.Since(start_time)
-	fmt.Printf("	computeQuotient() || prepare to compute & derive alpha): %.6f ms\n", float64(elasped.Nanoseconds())/1e6)
 
-	start_time = time.Now()
 	numerator, err := s.computeNumerator()
 	if err != nil {
 		return err
 	}
-	elasped = time.Since(start_time)
-	fmt.Printf("	computeQuotient() || computeNumerator() 耗时: %.6f ms\n", float64(elasped.Nanoseconds())/1e6)
 
-	start_time = time.Now()
 	s.h, err = divideByZH(numerator, [2]*fft.Domain{s.domain0, s.domain1})
 	if err != nil {
 		return err
 	}
-	elasped = time.Since(start_time)
-	fmt.Printf("	computeQuotient() || divideByZH() 耗时: %.6f ms\n", float64(elasped.Nanoseconds())/1e6)
 
-	start_time = time.Now()
 	// commit to h
 	// if err := commitToQuotient(s.h1(), s.h2(), s.h3(), s.proof, s.pk.Kzg); err != nil {
 	if err := commitToQuotient(s.h1(), s.h2(), s.h3(), s.proof, s.pk); err != nil {
 		return err
 	}
-	elasped = time.Since(start_time)
-	fmt.Printf("	computeQuotient() || commitToQuotient() 耗时: %.6f ms\n", float64(elasped.Nanoseconds())/1e6)
 
-	start_time = time.Now()
 	if err := s.deriveZeta(); err != nil {
 		return err
 	}
@@ -1007,24 +756,18 @@ func (s *instance) computeQuotient() (err error) {
 	}
 
 	close(s.chH)
-	elasped = time.Since(start_time)
-	fmt.Printf("	computeQuotient() || deriveZeta() & clean up 耗时: %.6f ms\n", float64(elasped.Nanoseconds())/1e6)
 
 	return nil
 }
 
 func (s *instance) buildRatioCopyConstraint() (err error) {
 	// wait for gamma and beta to be derived (or ctx.Done())
-	start_time := time.Now()
 	select {
 	case <-s.ctx.Done():
 		return errContextDone
 	case <-s.chGammaBeta:
 	}
-	elapsed := time.Since(start_time)
-	fmt.Printf("		buildRatioCopyConstraint() || wait for gamma and beta to be derived 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
-	start_time = time.Now()
 	// TODO @gbotrel having iop.BuildRatioCopyConstraint return something
 	// with capacity = len() + 4 would avoid extra alloc / copy during openZ
 	s.x[id_Z], err = iop.BuildRatioCopyConstraint(
@@ -1042,14 +785,9 @@ func (s *instance) buildRatioCopyConstraint() (err error) {
 	if err != nil {
 		return err
 	}
-	elapsed = time.Since(start_time)
-	fmt.Printf("		buildRatioCopyConstraint() || iop.BuildRatioCopyConstraint 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	// commit to the blinded version of z
-	start_time = time.Now()
 	s.proof.Z, err = s.commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz])
-	elapsed = time.Since(start_time)
-	fmt.Printf("		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	close(s.chZ)
 
@@ -1059,28 +797,18 @@ func (s *instance) buildRatioCopyConstraint() (err error) {
 // open Z (blinded) at ωζ
 func (s *instance) openZ() (err error) {
 	// wait for H to be committed and zeta to be derived (or ctx.Done())
-	start_time := time.Now()
 	select {
 	case <-s.ctx.Done():
 		return errContextDone
 	case <-s.chH:
 	}
-	elapsed := time.Since(start_time)
-	fmt.Printf("		openZ() || wait for H to be committed and zeta to be derived 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
-
-	start_time = time.Now()
 	var zetaShifted fr.Element
 	zetaShifted.Mul(&s.zeta, &s.pk.Vk.Generator)
 	s.blindedZ = getBlindedCoefficients(s.x[id_Z], s.bp[id_Bz])
-	elapsed = time.Since(start_time)
-	fmt.Printf("		openZ() || getBlindedCoefficients 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
-
 	// open z at zeta
 	// s.proof.ZShiftedOpening, err = kzg.Open(s.blindedZ, zetaShifted, s.pk.Kzg)
-	start_time = time.Now()
 	s.proof.ZShiftedOpening, err = OpenOnGPUOrCPU(s.blindedZ, zetaShifted, s.pk)
-	elapsed = time.Since(start_time)
-	fmt.Printf("		openZ() || Open 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
+
 	if err != nil {
 		return err
 	}
@@ -1126,17 +854,14 @@ func (s *instance) h3() []fr.Element {
 }
 
 func (s *instance) computeLinearizedPolynomial() error {
-	start_time := time.Now()
+
 	// wait for H to be committed and zeta to be derived (or ctx.Done())
 	select {
 	case <-s.ctx.Done():
 		return errContextDone
 	case <-s.chH:
 	}
-	elapsed := time.Since(start_time)
-	fmt.Printf("		computeLinearizedPolynomial() || wait for H to be committed and zeta to be derived 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
-	start_time = time.Now()
 	qcpzeta := make([]fr.Element, len(s.commitmentInfo))
 	var blzeta, brzeta, bozeta fr.Element
 	var wg sync.WaitGroup
@@ -1188,15 +913,10 @@ func (s *instance) computeLinearizedPolynomial() error {
 		coefficients(s.cCommitments),
 		s.pk,
 	)
-	elapsed = time.Since(start_time)
-	fmt.Printf("		computeLinearizedPolynomial() || innerComputeLinearizedPoly 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	var err error
 	// s.linearizedPolynomialDigest, err = kzg.Commit(s.linearizedPolynomial, s.pk.Kzg, runtime.NumCPU()*2)
-	start_time = time.Now()
 	s.linearizedPolynomialDigest, err = commitOnGPUOrCPU(s.linearizedPolynomial, s.pk, false /* monomial */)
-	elapsed = time.Since(start_time)
-	fmt.Printf("		computeLinearizedPolynomial() || kzg.Commit 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	if err != nil {
 		return err
@@ -1208,16 +928,12 @@ func (s *instance) computeLinearizedPolynomial() error {
 func (s *instance) batchOpening() error {
 
 	// wait for linearizedPolynomial to be computed (or ctx.Done())
-	start_time := time.Now()
 	select {
 	case <-s.ctx.Done():
 		return errContextDone
 	case <-s.chLinearizedPolynomial:
 	}
-	elapsed := time.Since(start_time)
-	fmt.Printf("		batchOpening() || wait for linearizedPolynomial 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
-	start_time = time.Now()
 	polysQcp := coefficients(s.trace.Qcp)
 	polysToOpen := make([][]fr.Element, 6+len(polysQcp))
 	copy(polysToOpen[6:], polysQcp)
@@ -1238,10 +954,7 @@ func (s *instance) batchOpening() error {
 	digestsToOpen[3] = s.proof.LRO[2]
 	digestsToOpen[4] = s.pk.Vk.S[0]
 	digestsToOpen[5] = s.pk.Vk.S[1]
-	elapsed = time.Since(start_time)
-	fmt.Printf("		batchOpening() || prepare polysToOpen and digestsToOpen 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
 
-	start_time = time.Now()
 	var err error
 	s.proof.BatchedProof, err = BatchOpenSinglePoint(
 		polysToOpen,
@@ -1251,8 +964,7 @@ func (s *instance) batchOpening() error {
 		s.pk,
 		s.proof.ZShiftedOpening.ClaimedValue,
 	)
-	elapsed = time.Since(start_time)
-	fmt.Printf("		batchOpening() || BatchOpenSinglePoint 耗时: %.6fms\n", float64(elapsed.Nanoseconds())/1e6)
+
 	return err
 }
 
@@ -1451,66 +1163,25 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 
 		icicle_runtime.RunOnDevice(&s.pk.deviceInfo.Device, func(args ...any) {
 			defer close(doneUpload)
-
-			// 统计要上传的多项式数量
-			var totalCoeffs int
-			var totalBytes uint64
-			var polysToUpload int
 			for i := 0; i < len(s.x); i++ {
 				if i == id_ZS || s.x[i] == nil {
 					continue
 				}
-				polysToUpload++
-			}
-
-			// 记录上传前的内存状态
-			fmt.Printf("		[Memory] Before uploading polynomials to device:\n")
-			printMemoryInfo("Before Upload")
-			fmt.Printf("		[Memory] Total polynomials to upload: %d (out of %d)\n", polysToUpload, len(s.x))
-
-			var uploadedCount int
-			for i := 0; i < len(s.x); i++ {
-				if i == id_ZS || s.x[i] == nil {
-					continue
-				}
-
-				// 计算当前多项式的数据大小
-				coeffs := s.x[i].Coefficients()
-				coeffCount := len(coeffs)
-				polySize := uint64(coeffCount) * 32 // fr.Element 是 32 字节
-				totalCoeffs += coeffCount
-				totalBytes += polySize
-				uploadedCount++
-
-				fmt.Printf("		[Memory] Uploading poly[%d]: %d coefficients, %d bytes (%.2f MiB), basis=%v\n",
-					i, coeffCount, polySize, float64(polySize)/1024.0/1024.0, s.x[i].Basis)
 
 				// 上传到同一张卡
-				// TODO: 计算 communcation cost
-				nvtx.RangePush(fmt.Sprintf("CopyToDevice: poly[%d]", i))
-				host := icicle_core.HostSliceFromElements(coeffs)
+				host := icicle_core.HostSliceFromElements(s.x[i].Coefficients())
 				host.CopyToDevice(&devX[i], true)
-				nvtx.RangePop()
 
 				// device 侧统一规范为 Canonical（后续每轮：系数×缩放→NTT）
 				if s.x[i].Basis != iop.Canonical {
-					nvtx.RangePush(fmt.Sprintf("INttOnDevice: poly[%d]", i))
 					if st := kzg_bls12_381.INttOnDevice(devX[i]); st != icicle_runtime.Success {
 						upErr = fmt.Errorf("INttOnDevice poly[%d]: %s", i, st.AsString())
-						nvtx.RangePop()
 						return
 					}
-					nvtx.RangePop()
 				}
 				uploadedIdx = append(uploadedIdx, i)
 				poly2idx[s.x[i]] = i
 			}
-
-			// 记录所有上传完成后的内存状态
-			fmt.Printf("		[Memory] After uploading all polynomials:\n")
-			printMemoryInfo("After All Uploads")
-			fmt.Printf("		[Memory] Summary: uploaded %d polynomials, %d total coefficients, %d bytes (%.2f MiB)\n",
-				len(uploadedIdx), totalCoeffs, totalBytes, float64(totalBytes)/1024.0/1024.0)
 		})
 		<-doneUpload
 		if upErr != nil {
@@ -1525,30 +1196,6 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 			})
 		}
 	}
-	// 只释放这次上传的 dev 缓冲
-	defer func() {
-		if useGPU {
-			icicle_runtime.RunOnDevice(&s.pk.deviceInfo.Device, func(args ...any) {
-				fmt.Printf("		[Memory] Before freeing uploaded polynomials:\n")
-				printMemoryInfo("Before Free")
-				fmt.Printf("		[Memory] Freeing %d polynomial buffers\n", len(uploadedIdx))
-				for freeIdx, idx := range uploadedIdx {
-					nvtx.RangePush(fmt.Sprintf("Free: poly[%d]", idx))
-					devX[idx].Free()
-					nvtx.RangePop()
-
-					// 记录每次释放后的内存状态（仅对前几个和最后一个记录）
-					if freeIdx < 3 || freeIdx == len(uploadedIdx)-1 {
-						fmt.Printf("		[Memory] After freeing poly[%d] (%d/%d):\n", idx, freeIdx+1, len(uploadedIdx))
-						printMemoryInfo(fmt.Sprintf("After free poly[%d]", idx))
-					}
-				}
-				fmt.Printf("		[Memory] After freeing all uploaded polynomials:\n")
-				printMemoryInfo("After All Free")
-				fmt.Printf("		[Memory] Freed %d polynomial buffers\n", len(uploadedIdx))
-			})
-		}
-	}()
 
 	// ———————————————————————————————————————————————————————————————————————————— 分配两条长度 n 的数组，稍后装 1/(coset⋅ω^j−1)
 	s.precomputedDenominators = make([]fr.Element, s.domain0.Cardinality)
@@ -1598,29 +1245,12 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 			sk = scaleBig
 		}
 
-		// 把所有参与的多项式转换成"本块 coset 的 n 个点值"
+		// 把所有参与的多项式转换成“本块 coset 的 n 个点值”
 		// we do **a lot** of FFT here, but on the small domain.
 		// note that for all the polynomials in the proving key
 		// (Ql, Qr, Qm, Qo, S1, S2, S3, Qcp, Qc) and ID, LOne
 		// we could pre-compute these rho*2 FFTs and store them
 		// at the cost of a huge memory footprint.
-		var processingPolys []int
-		for j := 0; j < len(s.x); j++ {
-			if j != id_ZS && s.x[j] != nil {
-				processingPolys = append(processingPolys, j)
-			}
-		}
-		fmt.Printf("		[Memory] Processing %d polynomials in batchApply\n", len(processingPolys))
-		for _, polyIdx := range processingPolys {
-			if s.x[polyIdx] != nil {
-				coeffs := s.x[polyIdx].Coefficients()
-				fmt.Printf("		[Memory] Processing poly[%d] (GPU): %d coefficients, %d bytes (%.2f MiB)\n",
-					polyIdx, len(coeffs), len(coeffs)*32, float64(len(coeffs)*32)/1024.0/1024.0)
-			}
-		}
-		fmt.Printf("		[Memory] Before batchApply (toCosetLagrange):\n")
-		printMemoryInfo("Before batchApply")
-		start_time := time.Now()
 		batchApply(s.x, func(p *iop.Polynomial) {
 			if p == nil {
 				return
@@ -1636,11 +1266,6 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 			// GPU 不可用或该 poly 未上传 → CPU 回退
 			_ = s.toCosetLagrangeOnGPUorCPU_DEV(p, wDevReg, wDevRev, sk, nil)
 		})
-		elapsed := time.Since(start_time)
-		fmt.Printf("		computeNumerator() || batchApply 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
-		fmt.Printf("		[Memory] After batchApply (toCosetLagrange):\n")
-		printMemoryInfo("After batchApply")
-		fmt.Printf("		[Memory] Processed %d polynomials\n", len(processingPolys))
 
 		wgBuf.Wait()
 
@@ -1676,34 +1301,34 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 
 	// ——————————————————————————————————————————————————————————————————————— 启动异步“全局回滚”：把所有“按幂次相位污染”一次性撤掉
 	// scale everything back
-	// TODO: 测试下时间
-	go func() {
-		start_time := time.Now()
-		s.x[id_ZS] = nil
-		s.x[id_Qk] = nil
+	// go func() {
+	// 	s.x[id_ZS] = nil
+	// 	s.x[id_Qk] = nil
 
-		var cs fr.Element
-		cs.Set(&shifters[0])
-		for i := 1; i < len(shifters); i++ {
-			cs.Mul(&cs, &shifters[i])
-		}
-		cs.Inverse(&cs)
+	// 	var cs fr.Element
+	// 	cs.Set(&shifters[0])
+	// 	for i := 1; i < len(shifters); i++ {
+	// 		cs.Mul(&cs, &shifters[i])
+	// 	}
+	// 	cs.Inverse(&cs)
 
-		batchApply(s.x, func(p *iop.Polynomial) {
-			if p == nil {
-				return
-			}
-			p.ToCanonical(s.domain0, 8).ToRegular()
-			scalePowers(p, cs)
-		})
+	// 	batchApply(s.x, func(p *iop.Polynomial) {
+	// 		if p == nil {
+	// 			return
+	// 		}
+	// 		p.ToCanonical(s.domain0, 8).ToRegular()
+	// 		scalePowers(p, cs)
+	// 	})
 
-		for _, q := range s.bp {
-			scalePowers(q, cs)
-		}
-		elapsed := time.Since(start_time)
-		fmt.Printf("		computeNumerator() || restore LRO 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
-		close(s.chRestoreLRO)
-	}()
+	// 	for _, q := range s.bp {
+	// 		scalePowers(q, cs)
+	// 	}
+
+	// 	close(s.chRestoreLRO)
+	// }()
+	// —— GPU 优化的“全局回滚”（失败会自动 CPU 回退）
+
+	go s.scaleEverythingBackGPUorCPU(shifters, poly2idx, devX)
 
 	// ——————————————————————————————————————————————————————————————————————— 确保所有块的 buf → cres 写入都完成；然后把 cres 封装成“大域 coset上的点值多项式（位反序布局）”返回。
 	// ensure all the goroutines are done
@@ -1878,27 +1503,17 @@ func commitToQuotient(h1, h2, h3 []fr.Element, proof *plonkbls12381.Proof, pk *P
 	// return g.Wait()
 	var err error
 
-	start_time := time.Now()
-	fmt.Printf("		commitToQuotient() || commit h1 开始\n")
 	proof.H[0], err = commitOnGPUOrCPU(h1, pk, false /* monomial */)
-	elapsed := time.Since(start_time)
-	fmt.Printf("		commitToQuotient() || commit h1 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 	if err != nil {
 		return err
 	}
 
-	start_time = time.Now()
 	proof.H[1], err = commitOnGPUOrCPU(h2, pk, false /* monomial */)
-	elapsed = time.Since(start_time)
-	fmt.Printf("		commitToQuotient() || commit h2 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 	if err != nil {
 		return err
 	}
 
-	start_time = time.Now()
 	proof.H[2], err = commitOnGPUOrCPU(h3, pk, false /* monomial */)
-	elapsed = time.Since(start_time)
-	fmt.Printf("		commitToQuotient() || commit h3 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 	if err != nil {
 		return err
 	}
@@ -1925,22 +1540,15 @@ func divideByZH(a *iop.Polynomial, domains [2]*fft.Domain) (*iop.Polynomial, err
 	n := uint64(len(r))
 	nn := uint64(64 - bits.TrailingZeros64(n))
 
-	start_time := time.Now()
 	parallelize(len(r), func(start, end int) {
 		for i := start; i < end; i++ {
 			iRev := bits.Reverse64(uint64(i)) >> nn
 			r[i].Mul(&r[i], &xnMinusOneInverseLagrangeCoset[int(iRev)%rho])
 		}
 	})
-	elapsed := time.Since(start_time)
-	fmt.Printf("		divideByZH() || parallelize divide 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	// since a is in bit reverse order, ToRegular shouldn't do anything
-	// TODO: change to GPU FFT
-	start_time = time.Now()
 	a.ToCanonical(domains[1]).ToRegular()
-	elapsed = time.Since(start_time)
-	fmt.Printf("		divideByZH() || ToCanonical 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	return a, nil
 
@@ -2544,30 +2152,18 @@ func Dev_deriveRandomness(fs *Transcript, challenge fr.Element, points ...*curve
 func commitOnGPUOrCPU(coeffs []fr.Element, pk *ProvingKey, useLagrange bool) (curve.G1Affine, error) {
 	// GPU
 	if HasIcicle && pk != nil && pk.deviceInfo != nil {
-		nvtxEnd := nvtx.Scope("kzg.Commit GPU", nvtx.ColorCommit)
-		defer nvtxEnd()
-
-		var (
-			dig kzg.Digest
-			st  icicle_runtime.EIcicleError
-		)
+		var dig kzg.Digest
+		var st icicle_runtime.EIcicleError
 
 		done := make(chan struct{})
-		fmt.Printf("		commitOnGPUOrCPU() || GPU 开始\n")
-		// gpuSpan := profilerStart()
 		icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 			defer close(done)
-			stageEnd := nvtx.Scope("kzg.Commit::OnDevice", nvtx.ColorDeviceStage)
-			defer stageEnd()
-
 			if useLagrange {
 				// dig, st = kzg_bls12_381.OnDeviceCommit(coeffs, pk.deviceInfo.G1Device.G1Lagrange)
-				fmt.Printf("		commitOnGPUOrCPU() || GPU 开始 commitLagrange\n")
 				base := pk.deviceInfo.G1Device.G1Lagrange.RangeTo(len(coeffs), false)
 				dig, st = kzg_bls12_381.OnDeviceCommit(coeffs, base)
 			} else {
 				// dig, st = kzg_bls12_381.OnDeviceCommit(coeffs, pk.deviceInfo.G1Device.G1)
-				fmt.Printf("		commitOnGPUOrCPU() || GPU 开始 commitMonomial\n")
 				base := pk.deviceInfo.G1Device.G1.RangeTo(len(coeffs), false)
 				dig, st = kzg_bls12_381.OnDeviceCommit(coeffs, base)
 			}
@@ -2575,7 +2171,6 @@ func commitOnGPUOrCPU(coeffs []fr.Element, pk *ProvingKey, useLagrange bool) (cu
 		<-done
 
 		if st == icicle_runtime.Success {
-			fmt.Printf("		commitOnGPUOrCPU() || GPU 成功\n")
 			return curve.G1Affine(dig), nil
 		}
 		log.Printf("[GPU failed -> CPU] kzg.Commit")
@@ -2583,10 +2178,8 @@ func commitOnGPUOrCPU(coeffs []fr.Element, pk *ProvingKey, useLagrange bool) (cu
 
 	// CPU
 	if useLagrange {
-		fmt.Printf("		commitOnGPUOrCPU() || CPU 开始 commitLagrange\n")
 		return kzg.Commit(coeffs, pk.KzgLagrange)
 	}
-	fmt.Printf("		commitOnGPUOrCPU() || CPU 开始 commitMonomial\n")
 	return kzg.Commit(coeffs, pk.Kzg)
 }
 
@@ -2604,7 +2197,6 @@ func commitBlindingFactorGPUOrCPU(n int, b *iop.Polynomial, pk *ProvingKey) (cur
 		)
 
 		done := make(chan struct{})
-		// gpuSpan := profilerStart()
 		icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 			defer close(done)
 
@@ -2620,7 +2212,6 @@ func commitBlindingFactorGPUOrCPU(n int, b *iop.Polynomial, pk *ProvingKey) (cur
 			}
 		})
 		<-done
-		// profilerAddGPU(gpuSpan)
 
 		if stLo == icicle_runtime.Success && stHi == icicle_runtime.Success {
 			res := curve.G1Affine(hi)
@@ -2643,14 +2234,12 @@ func OpenOnGPUOrCPU(p []fr.Element, point fr.Element, pk *ProvingKey) (kzg.Openi
 		var st icicle_runtime.EIcicleError
 
 		done := make(chan struct{})
-		// gpuSpan := profilerStart()
 		icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 			defer close(done)
 			// 传入 monomial SRS（和 Commit 一致）
 			pr, st = kzg_bls12_381.OnDeviceOpen(p, point, pk.deviceInfo.G1Device.G1)
 		})
 		<-done
-		// profilerAddGPU(gpuSpan)
 
 		if st == icicle_runtime.Success {
 			return pr, nil
@@ -2694,10 +2283,6 @@ func (s *instance) toCosetLagrangeOnGPUorCPU_DEV(
 			defer close(done)
 			dev := *xdev
 
-			// NVTX 标记：toCosetLagrange 处理
-			nvtx.RangePush(fmt.Sprintf("toCosetLagrange: poly[%d] (GPU)", len(coeffs)))
-			defer nvtx.RangePop()
-
 			// 约定：每次调用结束前把 dev 恢复为 Canonical（见尾部 INTT），
 			// 因此这里 dev 一定是 Canonical。
 
@@ -2715,36 +2300,20 @@ func (s *instance) toCosetLagrangeOnGPUorCPU_DEV(
 			}
 
 			// 正变换 NTT：Canonical -> Lagrange(小域)
-			start_fft_time := time.Now()
 			if st = kzg_bls12_381.NttOnDevice(dev); st != icicle_runtime.Success {
 				gpuErr = fmt.Errorf("NttOnDevice failed: %s", st.AsString())
 				return
 			}
-			elapsed := time.Since(start_fft_time)
-			fmt.Printf("		computeNumerator() || polynomial fft (NttOnDevice) 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 
 			// 4) 回拷 + 释放
-			// TODO: 计算 communcation cost
-			polySize := len(coeffs) * 32 // fr.Element 是 32 字节
-			fmt.Printf("		[Memory] Before CopyFromDevice (D2H): poly size=%d coefficients, %d bytes (%.2f MiB)\n",
-				len(coeffs), polySize, float64(polySize)/1024.0/1024.0)
-			fmt.Printf("		[Memory] Before CopyFromDevice (D2H):\n")
-			printMemoryInfo("Before D2H")
-			nvtx.RangePush(fmt.Sprintf("CopyFromDevice: D2H (poly, %d coeffs)", len(coeffs)))
 			host := icicle_core.HostSliceFromElements(coeffs)
 			host.CopyFromDevice(&dev)
-			nvtx.RangePop()
-			fmt.Printf("		[Memory] After CopyFromDevice (D2H):\n")
-			printMemoryInfo("After D2H")
 
 			// 4) 立刻把 dev 恢复为 Canonical，方便下一个 coset 继续复用
-			start_ifft_time := time.Now()
 			if st = kzg_bls12_381.INttOnDevice(dev); st != icicle_runtime.Success {
 				gpuErr = fmt.Errorf("INttOnDevice (restore canonical) failed: %s", st.AsString())
 				return
 			}
-			elapsed = time.Since(start_ifft_time)
-			fmt.Printf("		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 		})
 		<-done
 
@@ -2755,7 +2324,7 @@ func (s *instance) toCosetLagrangeOnGPUorCPU_DEV(
 		}
 		log.Printf("[GPU failed -> CPU] %v", gpuErr)
 	}
-	// ---------------- CPU 回退（保持你原有逻辑） ----------------
+	// ---------------- CPU 回退（保持原有逻辑） ----------------
 	nbTasks := calculateNbTasks(len(s.x)-1) * 2
 	p.ToCanonical(s.domain0, nbTasks)
 
@@ -2797,3 +2366,155 @@ const (
 	scaleCoset scalingKind = iota // 使用 coset 表（首块）
 	scaleBig                      // 使用大域 w^j 表（其余块）
 )
+
+// GPU/CPU 二选一的“全局回滚”实现：把所有多项式的系数乘以 cs^j，并统一回到 Canonical+Regular。
+//
+// 注意：
+//   - 必须跳过 ZS（id_ZS）以及已经置 nil 的 Qk（id_Qk）
+//   - 尽可能使用 GPU；失败则回退 CPU
+//   - 语义与参考实现一致：在 CPU fallback 中仍然是
+//     p.ToCanonical(s.domain0, 8).ToRegular() 再做 cs^j 缩放
+//     在 GPU 路径中：用 INTT 把 Lagrange 评估值变回 Canonical 系数，再做 cs^j 缩放。
+func (s *instance) scaleEverythingBackGPUorCPU(
+	shifters []fr.Element,
+	_ map[*iop.Polynomial]int, // 现在不再依赖 poly2idx/devX，这两个参数可以忽略
+	_ []icicle_core.DeviceSlice,
+) {
+	// 1. 和原逻辑保持一致：先把 ZS / Qk 清掉
+	s.x[id_ZS] = nil
+	s.x[id_Qk] = nil
+
+	// 2. 计算 cs = (∏ shifters)^(-1)
+	var cs fr.Element
+	cs.Set(&shifters[0])
+	for i := 1; i < len(shifters); i++ {
+		cs.Mul(&cs, &shifters[i])
+	}
+	cs.Inverse(&cs)
+
+	// 3. 预计算 cs^j：accList[j] = cs^j，长度 = |domain0|
+	n := int(s.domain0.Cardinality)
+	accList := make([]fr.Element, n)
+	{
+		var acc fr.Element
+		acc.SetOne()
+		for j := 0; j < n; j++ {
+			accList[j].Set(&acc)
+			acc.Mul(&acc, &cs)
+		}
+	}
+
+	useGPU := HasIcicle && s.pk != nil && s.pk.deviceInfo != nil
+
+	if useGPU {
+		var gpuErr error
+		done := make(chan struct{})
+
+		s.pk.deviceInfo.mu.Lock()
+		icicle_runtime.RunOnDevice(&s.pk.deviceInfo.Device, func(args ...any) {
+			defer s.pk.deviceInfo.mu.Unlock()
+			defer close(done)
+
+			// 3.1 把 accList 上传到 GPU，并转为非 Montgomery，供 VecMul 使用
+			hostW := icicle_core.HostSliceFromElements(accList)
+			var wDevFull icicle_core.DeviceSlice
+			hostW.CopyToDevice(&wDevFull, true)
+			defer wDevFull.Free()
+
+			if st := kzg_bls12_381.MontConvOnDevice(wDevFull, false /* FromMontgomery */); st != icicle_runtime.Success {
+				gpuErr = fmt.Errorf("FromMontgomery(accList) failed: %s", st.AsString())
+				return
+			}
+
+			// 3.2 遍历所有多项式：先用 GPU INTT 把 Lagrange 评估值变成 Canonical 系数，再乘 cs^j
+			for idx := 0; idx < len(s.x); idx++ {
+				if idx == id_ZS {
+					continue
+				}
+				p := s.x[idx]
+				if p == nil {
+					continue
+				}
+
+				coeffs := p.Coefficients()
+				deg := len(coeffs)
+				if deg == 0 {
+					continue
+				}
+
+				// 只用 cs^0..cs^{deg-1}
+				wDev := wDevFull.RangeTo(deg, false)
+
+				// 把当前 poly 的“系数/评估值”上传到设备
+				hostP := icicle_core.HostSliceFromElements(coeffs)
+				var dev icicle_core.DeviceSlice
+				hostP.CopyToDevice(&dev, true)
+
+				// (1) 用 GPU INTT 把 Lagrange 评估值 -> Canonical 系数
+				if st := kzg_bls12_381.INttOnDevice(dev); st != icicle_runtime.Success {
+					gpuErr = fmt.Errorf("poly[%d] INTT failed: %s", idx, st.AsString())
+					dev.Free()
+					return
+				}
+				p.Form.Basis = iop.Canonical
+				p.Form.Layout = iop.Regular
+
+				// (2) 在 Canonical 系数上做 cs^j 缩放（VecOps 期望非 Montgomery）
+				if st := kzg_bls12_381.MontConvOnDevice(dev, false /* FromMontgomery */); st != icicle_runtime.Success {
+					gpuErr = fmt.Errorf("poly[%d] FromMontgomery: %s", idx, st.AsString())
+					dev.Free()
+					return
+				}
+
+				if st := kzg_bls12_381.VecMulOnDevice(dev, wDev); st != icicle_runtime.Success {
+					gpuErr = fmt.Errorf("poly[%d] VecMul: %s", idx, st.AsString())
+					dev.Free()
+					return
+				}
+				if st := kzg_bls12_381.MontConvOnDevice(dev, true /* ToMontgomery */); st != icicle_runtime.Success {
+					gpuErr = fmt.Errorf("poly[%d] ToMontgomery: %s", idx, st.AsString())
+					dev.Free()
+					return
+				}
+
+				// (3) 回拷到 host：覆盖原来的数据
+				hostP.CopyFromDevice(&dev)
+				dev.Free()
+
+				// 这里不再调用 p.ToCanonical/ToRegular：
+				//   - 值语义上，已经是 canonical + regular 对应的系数；
+				//   - Form 元数据如果后面没有再做 Basis 变换，是安全的。
+			}
+		})
+		<-done
+
+		if gpuErr != nil {
+			log.Printf("[GPU failed -> CPU] scaleEverythingBack: %v", gpuErr)
+			useGPU = false
+		}
+	}
+
+	// 4. CPU fallback：严格按照参考实现语义：
+	//    对每个 poly 先 ToCanonical(s.domain0).ToRegular()，再做 cs^j 缩放。
+	if !useGPU {
+		batchApply(s.x, func(p *iop.Polynomial) {
+			if p == nil {
+				return
+			}
+			p.ToCanonical(s.domain0, 8).ToRegular()
+			scalePowers(p, cs)
+		})
+	} else {
+		// GPU 路径中，coeff 已经在 canonical 系数上乘过 cs^j，这里不再做任何额外缩放。
+	}
+
+	// 5. blinding 多项式也要乘 cs^j（参考实现是用 CPU 做的）
+	for _, q := range s.bp {
+		if q == nil {
+			continue
+		}
+		scalePowers(q, cs)
+	}
+
+	close(s.chRestoreLRO)
+}
