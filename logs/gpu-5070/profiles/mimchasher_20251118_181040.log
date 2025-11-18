@@ -1,0 +1,955 @@
+compile inner 耗时: 1540.891309 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/usr/local/lib/backend
+		OnDeviceCommit() || 输入验证: nScalars=512
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=512)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1362 MiB / total=12227 MiB (11.1%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=8% mem=2213/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=512, 期望 bases>=512)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:10:45.507149]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=512
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:10:45.516100]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=8.956397 ms [18:10:45.516105]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=512
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=512)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1362 MiB / total=12227 MiB (11.1%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=3% mem=2213/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=512, 期望 bases>=512)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:10:45.715173]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=512
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:10:45.721343]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=6.175464 ms [18:10:45.721348]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=2
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=2)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1362 MiB / total=12227 MiB (11.1%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=3% mem=2208/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=2, 期望 bases>=2)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:10:45.897369]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=2
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:10:45.902613]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=5.248571 ms [18:10:45.902618]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=2
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=2)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1364 MiB / total=12227 MiB (11.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=3% mem=2210/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=2, 期望 bases>=2)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:10:46.082777]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=2
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:10:46.087818]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=5.045480 ms [18:10:46.087822]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=512
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=512)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1364 MiB / total=12227 MiB (11.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=3% mem=2205/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=512, 期望 bases>=512)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:10:46.266447]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=512
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:10:46.272727]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=6.283934 ms [18:10:46.272731]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=2
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=2)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1364 MiB / total=12227 MiB (11.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=3% mem=2205/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=2, 期望 bases>=2)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:10:46.463415]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=2
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:10:46.468537]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=5.128563 ms [18:10:46.468544]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=2
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=2)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1364 MiB / total=12227 MiB (11.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=3% mem=2205/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=2, 期望 bases>=2)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:10:46.654143]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=2
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:10:46.658800]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=4.661842 ms [18:10:46.658805]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=512
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=512)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1364 MiB / total=12227 MiB (11.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=2% mem=2205/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=512, 期望 bases>=512)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:10:46.836567]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=512
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:10:46.842569]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=6.005823 ms [18:10:46.842573]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=2
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=2)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1364 MiB / total=12227 MiB (11.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=3% mem=2205/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=2, 期望 bases>=2)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:10:47.030387]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=2
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:10:47.035044]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=4.661852 ms [18:10:47.035049]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=2
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=2)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1364 MiB / total=12227 MiB (11.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=3% mem=2205/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=2, 期望 bases>=2)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:10:47.223430]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=2
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:10:47.227976]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=4.550779 ms [18:10:47.227981]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=512
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=512)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1364 MiB / total=12227 MiB (11.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=3% mem=2205/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=512, 期望 bases>=512)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:10:47.407511]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=512
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:10:47.413002]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=5.495393 ms [18:10:47.413006]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=3
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=3)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1364 MiB / total=12227 MiB (11.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=3% mem=2205/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=3, 期望 bases>=3)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:10:47.592221]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=3
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:10:47.596942]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=4.725831 ms [18:10:47.596947]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=3
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=3)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1364 MiB / total=12227 MiB (11.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=2% mem=2205/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=3, 期望 bases>=3)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:10:47.788801]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=3
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:10:47.793454]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=4.657129 ms [18:10:47.793458]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=514
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=514)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1364 MiB / total=12227 MiB (11.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=5% mem=2205/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=514, 期望 bases>=514)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:10:48.009814]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=514
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:10:48.016944]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=7.136090 ms [18:10:48.016950]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=514
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=514)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1364 MiB / total=12227 MiB (11.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=3% mem=2201/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=514, 期望 bases>=514)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:10:48.198910]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=514
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:10:48.204540]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=5.634457 ms [18:10:48.204545]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=514
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=514)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1364 MiB / total=12227 MiB (11.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=3% mem=2201/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=514, 期望 bases>=514)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:10:48.391110]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=514
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:10:48.396656]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=5.550902 ms [18:10:48.396660]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=514
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=514)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1364 MiB / total=12227 MiB (11.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=3% mem=2201/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=514, 期望 bases>=514)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:10:48.582848]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=514
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:10:48.589275]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=6.431468 ms [18:10:48.589280]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=515
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=515)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1364 MiB / total=12227 MiB (11.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=4% mem=2201/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=515, 期望 bases>=515)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:10:48.771442]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=515
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:10:48.778045]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=6.607807 ms [18:10:48.778050]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=514
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=514)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1364 MiB / total=12227 MiB (11.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=4% mem=2201/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=514, 期望 bases>=514)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:10:48.958216]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=514
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:10:48.964044]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=5.833003 ms [18:10:48.964049]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+prove inner 耗时: 5521.135602 ms
+verify inner 耗时: 2.821207 ms
+assemble Poseidon2-FS inputs 耗时: 1.499523 ms
+compile outer(frontend.Compile) 耗时: 3518.529115 ms
+[outer] nbConstraints=6312224 nbPublic=4 nbSecret=168
+solve outer 耗时: 2006.523088ms
+outer circuit solved
+compile outer(pkOuter.Compile) 耗时: 27790.533095 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/usr/local/lib/backend
+		OnDeviceCommit() || 输入验证: nScalars=8388608
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=8388608)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=4182 MiB / total=12227 MiB (34.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=9% mem=5010/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=8388608, 期望 bases>=8388608)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:11:29.330857]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=8388608
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:11:29.534128]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=203.431723 ms [18:11:29.534289]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=8388608
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=8388608)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=4182 MiB / total=12227 MiB (34.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=9% mem=5010/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=8388608, 期望 bases>=8388608)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:11:30.350155]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=8388608
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:11:30.458411]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=108.264092 ms [18:11:30.458419]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=2
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=2)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=3926 MiB / total=12227 MiB (32.1%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=37% mem=4754/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=2, 期望 bases>=2)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:11:30.646166]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=2
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:11:30.652485]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=6.324225 ms [18:11:30.652491]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=2
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=2)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=3926 MiB / total=12227 MiB (32.1%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=3% mem=4754/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=2, 期望 bases>=2)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:11:30.850337]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=2
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:11:30.856666]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=6.338615 ms [18:11:30.856675]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=8388608
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=8388608)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=4182 MiB / total=12227 MiB (34.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=11% mem=5010/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=8388608, 期望 bases>=8388608)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:11:31.075363]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=8388608
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:11:31.191266]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=116.007114 ms [18:11:31.191370]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=2
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=2)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=3926 MiB / total=12227 MiB (32.1%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=1% mem=4754/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=2, 期望 bases>=2)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:11:31.402611]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=2
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:11:31.408894]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=6.287598 ms [18:11:31.408899]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=2
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=2)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=3926 MiB / total=12227 MiB (32.1%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=3% mem=4754/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=2, 期望 bases>=2)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:11:31.607353]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=2
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:11:31.614231]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=6.885279 ms [18:11:31.614238]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=8388608
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=8388608)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=4182 MiB / total=12227 MiB (34.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=11% mem=5010/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=8388608, 期望 bases>=8388608)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:11:31.835032]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=8388608
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:11:31.939104]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=104.194688 ms [18:11:31.939227]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=2
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=2)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=3926 MiB / total=12227 MiB (32.1%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=41% mem=4754/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=2, 期望 bases>=2)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:11:32.158981]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=2
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:11:32.165265]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=6.291902 ms [18:11:32.165273]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=2
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=2)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=3926 MiB / total=12227 MiB (32.1%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=2% mem=4754/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=2, 期望 bases>=2)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:11:32.356549]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=2
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:11:32.362961]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=6.417521 ms [18:11:32.362966]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=8388608
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=8388608)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=4182 MiB / total=12227 MiB (34.2%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=7% mem=5010/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=8388608, 期望 bases>=8388608)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:11:34.016545]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=8388608
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:11:34.254724]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=238.185586 ms [18:11:34.254731]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=3
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=3)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=3926 MiB / total=12227 MiB (32.1%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=3% mem=4754/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=3, 期望 bases>=3)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:11:34.446286]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=3
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:11:34.452537]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=6.255427 ms [18:11:34.452541]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=3
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=3)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=3926 MiB / total=12227 MiB (32.1%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=3% mem=4754/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=3, 期望 bases>=3)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:11:34.637307]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=3
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:11:34.643333]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=6.031105 ms [18:11:34.643338]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=8388610
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=8388610)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=8280 MiB / total=12227 MiB (67.7%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=75% mem=9263/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=8388610, 期望 bases>=8388610)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:12:05.949335]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=8388610
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:12:07.293211]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=1343.882336 ms [18:12:07.293217]
+		OnDeviceCommit() || ⚠️  MSM 耗时较长: 1.34 秒 (规模=8388610)
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=8388610
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=8388610)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=8280 MiB / total=12227 MiB (67.7%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=72% mem=9264/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=8388610, 期望 bases>=8388610)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:12:07.531721]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=8388610
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:12:08.419973]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=888.258013 ms [18:12:08.419979]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=8388610
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=8388610)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=8280 MiB / total=12227 MiB (67.7%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=83% mem=9234/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=8388610, 期望 bases>=8388610)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:12:08.740367]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=8388610
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:12:08.914361]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=174.001064 ms [18:12:08.914369]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=8388610
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=8388610)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=7768 MiB / total=12227 MiB (63.5%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=7% mem=8702/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=8388610, 期望 bases>=8388610)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:12:09.796890]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=8388610
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:12:09.967049]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=170.166390 ms [18:12:09.967057]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=8388611
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=8388611)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=7768 MiB / total=12227 MiB (63.5%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=8% mem=8648/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=8388611, 期望 bases>=8388611)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:12:10.984300]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=8388611
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:12:11.148237]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=163.943441 ms [18:12:11.148243]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+		OnDeviceCommit() || 输入验证: nScalars=8388610
+		OnDeviceCommit() || host 开始
+		OnDeviceCommit() || host 拷贝到 device 开始 (len=8388610)
+		OnDeviceCommit() || host 拷贝到 device 成功
+		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=true, AreBasesMontgomeryForm=false)
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=7768 MiB / total=12227 MiB (63.5%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=8% mem=8641/12227 MiB
+		OnDeviceCommit() || MSM 运行开始 (scalars=8388610, 期望 bases>=8388610)
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [18:12:11.949707]
+		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配
+		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=8388610
+		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？
+		OnDeviceCommit() || 当前活动设备: type=CUDA id=0
+		OnDeviceCommit() || icicle_msm.Msm() 调用返回
+		OnDeviceCommit() || MSM 返回时间戳: [18:12:12.113773]
+		OnDeviceCommit() || MSM 返回成功状态
+		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=EIcicleError.Success，耗时=164.074550 ms [18:12:12.113781]
+		OnDeviceCommit() || MSM 运行成功
+		OnDeviceCommit() || 开始转换 Projective -> Affine
+		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功
+		OnDeviceCommit() || 完成，返回结果
+prove outer 耗时: 51722.835299 ms
+verify outer 耗时: 2.876562 ms
+outer circuit verified
+GPU 0: General Metrics for NVIDIA GB20x (any frequency)
+Collecting data...
+Generating '/tmp/nsys-report-b483.qdstrm'
+[1/8] [0%                          ] mimchasher_20251118_181040.nsys-rep[1/8] [0%                          ] mimchasher_20251118_181040.nsys-rep[1/8] [13%                         ] mimchasher_20251118_181040.nsys-rep[1/8] [10%                         ] mimchasher_20251118_181040.nsys-rep[1/8] [10%                         ] mimchasher_20251118_181040.nsys-rep[1/8] [9%                          ] mimchasher_20251118_181040.nsys-rep[1/8] [5%                          ] mimchasher_20251118_181040.nsys-rep[1/8] [5%                          ] mimchasher_20251118_181040.nsys-rep[1/8] [7%                          ] mimchasher_20251118_181040.nsys-rep[1/8] [10%                         ] mimchasher_20251118_181040.nsys-rep[1/8] [11%                         ] mimchasher_20251118_181040.nsys-rep[1/8] [=15%                        ] mimchasher_20251118_181040.nsys-rep[1/8] [=17%                        ] mimchasher_20251118_181040.nsys-rep[1/8] [==18%                       ] mimchasher_20251118_181040.nsys-rep[1/8] [==19%                       ] mimchasher_20251118_181040.nsys-rep[1/8] [==20%                       ] mimchasher_20251118_181040.nsys-rep[1/8] [==21%                       ] mimchasher_20251118_181040.nsys-rep[1/8] [===22%                      ] mimchasher_20251118_181040.nsys-rep[1/8] [===23%                      ] mimchasher_20251118_181040.nsys-rep[1/8] [===24%                      ] mimchasher_20251118_181040.nsys-rep[1/8] [====25%                     ] mimchasher_20251118_181040.nsys-rep[1/8] [====26%                     ] mimchasher_20251118_181040.nsys-rep[1/8] [====27%                     ] mimchasher_20251118_181040.nsys-rep[1/8] [====28%                     ] mimchasher_20251118_181040.nsys-rep[1/8] [=====29%                    ] mimchasher_20251118_181040.nsys-rep[1/8] [=====30%                    ] mimchasher_20251118_181040.nsys-rep[1/8] [=====31%                    ] mimchasher_20251118_181040.nsys-rep[1/8] [=====32%                    ] mimchasher_20251118_181040.nsys-rep[1/8] [======33%                   ] mimchasher_20251118_181040.nsys-rep[1/8] [======34%                   ] mimchasher_20251118_181040.nsys-rep[1/8] [======35%                   ] mimchasher_20251118_181040.nsys-rep[1/8] [=======36%                  ] mimchasher_20251118_181040.nsys-rep[1/8] [=======37%                  ] mimchasher_20251118_181040.nsys-rep[1/8] [=======38%                  ] mimchasher_20251118_181040.nsys-rep[1/8] [=======39%                  ] mimchasher_20251118_181040.nsys-rep[1/8] [========40%                 ] mimchasher_20251118_181040.nsys-rep[1/8] [========41%                 ] mimchasher_20251118_181040.nsys-rep[1/8] [========42%                 ] mimchasher_20251118_181040.nsys-rep[1/8] [=========43%                ] mimchasher_20251118_181040.nsys-rep[1/8] [=========44%                ] mimchasher_20251118_181040.nsys-rep[1/8] [=========45%                ] mimchasher_20251118_181040.nsys-rep[1/8] [=========46%                ] mimchasher_20251118_181040.nsys-rep[1/8] [==========47%               ] mimchasher_20251118_181040.nsys-rep[1/8] [==========48%               ] mimchasher_20251118_181040.nsys-rep[1/8] [==========49%               ] mimchasher_20251118_181040.nsys-rep[1/8] [===========50%              ] mimchasher_20251118_181040.nsys-rep[1/8] [===========51%              ] mimchasher_20251118_181040.nsys-rep[1/8] [===========52%              ] mimchasher_20251118_181040.nsys-rep[1/8] [===========53%              ] mimchasher_20251118_181040.nsys-rep[1/8] [============54%             ] mimchasher_20251118_181040.nsys-rep[1/8] [============55%             ] mimchasher_20251118_181040.nsys-rep[1/8] [============56%             ] mimchasher_20251118_181040.nsys-rep[1/8] [============57%             ] mimchasher_20251118_181040.nsys-rep[1/8] [=============58%            ] mimchasher_20251118_181040.nsys-rep[1/8] [=============59%            ] mimchasher_20251118_181040.nsys-rep[1/8] [=============60%            ] mimchasher_20251118_181040.nsys-rep[1/8] [==============61%           ] mimchasher_20251118_181040.nsys-rep[1/8] [==============62%           ] mimchasher_20251118_181040.nsys-rep[1/8] [==============63%           ] mimchasher_20251118_181040.nsys-rep[1/8] [==============64%           ] mimchasher_20251118_181040.nsys-rep[1/8] [===============65%          ] mimchasher_20251118_181040.nsys-rep[1/8] [===============66%          ] mimchasher_20251118_181040.nsys-rep[1/8] [===============67%          ] mimchasher_20251118_181040.nsys-rep[1/8] [========================100%] mimchasher_20251118_181040.nsys-rep[1/8] [========================100%] mimchasher_20251118_181040.nsys-rep
+[2/8] [0%                          ] mimchasher_20251118_181040.sqlite[2/8] [1%                          ] mimchasher_20251118_181040.sqlite[2/8] [2%                          ] mimchasher_20251118_181040.sqlite[2/8] [3%                          ] mimchasher_20251118_181040.sqlite[2/8] [4%                          ] mimchasher_20251118_181040.sqlite[2/8] [5%                          ] mimchasher_20251118_181040.sqlite[2/8] [6%                          ] mimchasher_20251118_181040.sqlite[2/8] [7%                          ] mimchasher_20251118_181040.sqlite[2/8] [8%                          ] mimchasher_20251118_181040.sqlite[2/8] [9%                          ] mimchasher_20251118_181040.sqlite[2/8] [10%                         ] mimchasher_20251118_181040.sqlite[2/8] [11%                         ] mimchasher_20251118_181040.sqlite[2/8] [12%                         ] mimchasher_20251118_181040.sqlite[2/8] [13%                         ] mimchasher_20251118_181040.sqlite[2/8] [14%                         ] mimchasher_20251118_181040.sqlite[2/8] [=15%                        ] mimchasher_20251118_181040.sqlite[2/8] [=16%                        ] mimchasher_20251118_181040.sqlite[2/8] [=17%                        ] mimchasher_20251118_181040.sqlite[2/8] [==18%                       ] mimchasher_20251118_181040.sqlite[2/8] [==19%                       ] mimchasher_20251118_181040.sqlite[2/8] [==20%                       ] mimchasher_20251118_181040.sqlite[2/8] [==21%                       ] mimchasher_20251118_181040.sqlite[2/8] [===22%                      ] mimchasher_20251118_181040.sqlite[2/8] [===23%                      ] mimchasher_20251118_181040.sqlite[2/8] [===24%                      ] mimchasher_20251118_181040.sqlite[2/8] [====25%                     ] mimchasher_20251118_181040.sqlite[2/8] [====26%                     ] mimchasher_20251118_181040.sqlite[2/8] [====27%                     ] mimchasher_20251118_181040.sqlite[2/8] [====28%                     ] mimchasher_20251118_181040.sqlite[2/8] [=====29%                    ] mimchasher_20251118_181040.sqlite[2/8] [=====30%                    ] mimchasher_20251118_181040.sqlite[2/8] [=====31%                    ] mimchasher_20251118_181040.sqlite[2/8] [=====32%                    ] mimchasher_20251118_181040.sqlite[2/8] [======33%                   ] mimchasher_20251118_181040.sqlite[2/8] [======34%                   ] mimchasher_20251118_181040.sqlite[2/8] [======35%                   ] mimchasher_20251118_181040.sqlite[2/8] [=======36%                  ] mimchasher_20251118_181040.sqlite[2/8] [=======37%                  ] mimchasher_20251118_181040.sqlite[2/8] [=======38%                  ] mimchasher_20251118_181040.sqlite[2/8] [=======39%                  ] mimchasher_20251118_181040.sqlite[2/8] [========40%                 ] mimchasher_20251118_181040.sqlite[2/8] [========41%                 ] mimchasher_20251118_181040.sqlite[2/8] [========42%                 ] mimchasher_20251118_181040.sqlite[2/8] [=========43%                ] mimchasher_20251118_181040.sqlite[2/8] [=========44%                ] mimchasher_20251118_181040.sqlite[2/8] [=========45%                ] mimchasher_20251118_181040.sqlite[2/8] [=========46%                ] mimchasher_20251118_181040.sqlite[2/8] [==========47%               ] mimchasher_20251118_181040.sqlite[2/8] [==========48%               ] mimchasher_20251118_181040.sqlite[2/8] [==========49%               ] mimchasher_20251118_181040.sqlite[2/8] [===========50%              ] mimchasher_20251118_181040.sqlite[2/8] [===========51%              ] mimchasher_20251118_181040.sqlite[2/8] [===========52%              ] mimchasher_20251118_181040.sqlite[2/8] [===========53%              ] mimchasher_20251118_181040.sqlite[2/8] [============54%             ] mimchasher_20251118_181040.sqlite[2/8] [============55%             ] mimchasher_20251118_181040.sqlite[2/8] [============56%             ] mimchasher_20251118_181040.sqlite[2/8] [============57%             ] mimchasher_20251118_181040.sqlite[2/8] [=============58%            ] mimchasher_20251118_181040.sqlite[2/8] [=============59%            ] mimchasher_20251118_181040.sqlite[2/8] [=============60%            ] mimchasher_20251118_181040.sqlite[2/8] [==============61%           ] mimchasher_20251118_181040.sqlite[2/8] [==============62%           ] mimchasher_20251118_181040.sqlite[2/8] [==============63%           ] mimchasher_20251118_181040.sqlite[2/8] [==============64%           ] mimchasher_20251118_181040.sqlite[2/8] [===============65%          ] mimchasher_20251118_181040.sqlite[2/8] [===============66%          ] mimchasher_20251118_181040.sqlite[2/8] [===============67%          ] mimchasher_20251118_181040.sqlite[2/8] [================68%         ] mimchasher_20251118_181040.sqlite[2/8] [================69%         ] mimchasher_20251118_181040.sqlite[2/8] [================70%         ] mimchasher_20251118_181040.sqlite[2/8] [================71%         ] mimchasher_20251118_181040.sqlite[2/8] [=================72%        ] mimchasher_20251118_181040.sqlite[2/8] [=================73%        ] mimchasher_20251118_181040.sqlite[2/8] [=================74%        ] mimchasher_20251118_181040.sqlite[2/8] [==================75%       ] mimchasher_20251118_181040.sqlite[2/8] [==================76%       ] mimchasher_20251118_181040.sqlite[2/8] [==================77%       ] mimchasher_20251118_181040.sqlite[2/8] [==================78%       ] mimchasher_20251118_181040.sqlite[2/8] [===================79%      ] mimchasher_20251118_181040.sqlite[2/8] [===================80%      ] mimchasher_20251118_181040.sqlite[2/8] [===================81%      ] mimchasher_20251118_181040.sqlite[2/8] [===================82%      ] mimchasher_20251118_181040.sqlite[2/8] [====================83%     ] mimchasher_20251118_181040.sqlite[2/8] [====================84%     ] mimchasher_20251118_181040.sqlite[2/8] [====================85%     ] mimchasher_20251118_181040.sqlite[2/8] [=====================86%    ] mimchasher_20251118_181040.sqlite[2/8] [=====================87%    ] mimchasher_20251118_181040.sqlite[2/8] [=====================88%    ] mimchasher_20251118_181040.sqlite[2/8] [=====================89%    ] mimchasher_20251118_181040.sqlite[2/8] [======================90%   ] mimchasher_20251118_181040.sqlite[2/8] [======================91%   ] mimchasher_20251118_181040.sqlite[2/8] [======================92%   ] mimchasher_20251118_181040.sqlite[2/8] [=======================93%  ] mimchasher_20251118_181040.sqlite[2/8] [=======================94%  ] mimchasher_20251118_181040.sqlite[2/8] [=======================95%  ] mimchasher_20251118_181040.sqlite[2/8] [=======================96%  ] mimchasher_20251118_181040.sqlite[2/8] [========================97% ] mimchasher_20251118_181040.sqlite[2/8] [========================98% ] mimchasher_20251118_181040.sqlite[2/8] [========================99% ] mimchasher_20251118_181040.sqlite[2/8] [========================100%] mimchasher_20251118_181040.sqlite[2/8] [========================100%] mimchasher_20251118_181040.sqlite
+[3/8] Executing 'nvtx_sum' stats report
+
+ Time (%)  Total Time (ns)  Instances   Avg (ns)    Med (ns)   Min (ns)   Max (ns)   StdDev (ns)   Style                    Range                 
+ --------  ---------------  ---------  -----------  ---------  --------  ----------  -----------  -------  ---------------------------------------
+     95.1       3836982716         38  100973229.4  6354360.0   4570041  1345126224  257825730.5  PushPop  :BLS12-381: OnDeviceCommit.MSM         
+      4.0        160937973        183     879442.5    74660.0      7342    34979965    4947446.5  PushPop  CCCL:cub::DeviceRadixSort              
+      0.9         34716598         61     569124.6    24876.0     15585    32428099    4147246.4  PushPop  CCCL:cub::DeviceRunLengthEncode::Encode
+      0.0          1951692         61      31995.0    21421.0     16588      273753      37869.3  PushPop  CCCL:cub::DeviceScan::ExclusiveSum     
+      0.0           422095         11      38372.3    23057.0     19173       91130      27954.5  PushPop  CCCL:cub::DeviceScan::InclusiveSum     
+
+[4/8] Executing 'osrt_sum' stats report
+
+ Time (%)  Total Time (ns)  Num Calls    Avg (ns)     Med (ns)    Min (ns)   Max (ns)     StdDev (ns)            Name         
+ --------  ---------------  ---------  ------------  -----------  --------  -----------  -------------  ----------------------
+     83.1      45053599460         12  3754466621.7  191960451.5    122823  41813263853  11987462863.9  sem_wait              
+     10.3       5591119212        104    53760761.7   85471735.5      1000    101427367     47907780.2  poll                  
+      4.5       2419112856         98    24684825.1   28025001.5      1014     62341133     14472832.1  read                  
+      1.1        590529640       5456      108234.9      37093.5       998     11110727       617464.6  ioctl                 
+      0.7        391743228         76     5154516.2    5152481.0   5068151      5256528        43014.6  nanosleep             
+      0.2         85403097         77     1109131.1    1088238.0    766422      1652810       120090.6  waitpid               
+      0.1         33247565          3    11082521.7     215233.0     92150     32940182     18929389.2  fread                 
+      0.0         12994728         77      168762.7     141213.0    113039       689231        92636.6  posix_spawn           
+      0.0          8462006         77      109896.2     107955.0     44730       244750        33383.0  pthread_cond_wait     
+      0.0          8172610        102       80123.6      74919.5     41711       177795        24084.9  pthread_create        
+      0.0          6169671        919        6713.5       3053.0      1001       603353        23625.5  fopen                 
+      0.0          3493976        744        4696.2       3263.0      1383        92615         6890.8  mprotect              
+      0.0          2188343        215       10178.3       6923.0      1096       463670        32141.4  mmap                  
+      0.0          2037351        210        9701.7       1650.5      1013       276237        24242.7  fclose                
+      0.0          1902058         76       25027.1      23939.0     22397        61932         4904.3  fgets                 
+      0.0          1563034        114       13710.8      12213.0      5161        60684         6153.1  fflush                
+      0.0          1163409         80       14542.6      13801.0      1136        37996         5450.2  pthread_cond_broadcast
+      0.0           760483        155        4906.3       4842.0      1075        35783         5171.0  pipe2                 
+      0.0           475088          1      475088.0     475088.0    475088       475088            0.0  pthread_join          
+      0.0           329828         76        4339.8       3683.0      2621        33828         3965.5  fwrite_unlocked       
+      0.0           327550         39        8398.7       8854.0      1008        36812         7070.6  write                 
+      0.0           228169          2      114084.5     114084.SKIPPED: /home/jinjin/jinjin/code/eonark-gpu/scripts/../logs/gpu-5070/profiles//mimchasher_20251118_181040.sqlite does not contain CUDA kernel data.
+SKIPPED: /home/jinjin/jinjin/code/eonark-gpu/scripts/../logs/gpu-5070/profiles//mimchasher_20251118_181040.sqlite does not contain GPU memory data.
+SKIPPED: /home/jinjin/jinjin/code/eonark-gpu/scripts/../logs/gpu-5070/profiles//mimchasher_20251118_181040.sqlite does not contain GPU memory data.
+5     88427       139742        36285.2  pthread_rwlock_wrlock 
+      0.0           206991          1      206991.0     206991.0    206991       206991            0.0  pthread_mutex_lock    
+      0.0           192920          3       64306.7      49096.0     45509        98315        29506.6  sem_timedwait         
+      0.0           160197         76        2107.9       1288.0      1016        21873         3264.8  fwrite                
+      0.0           140292          6       23382.0      21201.0     20090        29501         4129.0  munmap                
+      0.0            57294          8        7161.8       1624.5      1234        42111        14186.2  stat                  
+      0.0            52031         41        1269.0       1190.0      1014         1945          241.6  fcntl                 
+      0.0            50003         38        1315.9       1215.5      1005         2265          315.2  fstat                 
+      0.0            15695          3        5231.7       6827.0       999         7869         3702.4  putc                  
+      0.0             5989          1        5989.0       5989.0      5989         5989            0.0  open                  
+
+[5/8] Executing 'cuda_api_sum' stats report
+
+ Time (%)  Total Time (ns)  Num Calls  Avg (ns)  Med (ns)  Min (ns)  Max (ns)  StdDev (ns)           Name         
+ --------  ---------------  ---------  --------  --------  --------  --------  -----------  ----------------------
+    100.0             2215          1    2215.0    2215.0      2215      2215          0.0  cuModuleGetLoadingMode
+
+[6/8] Executing 'cuda_gpu_kern_sum' stats report
+[7/8] Executing 'cuda_gpu_mem_time_sum' stats report
+[8/8] Executing 'cuda_gpu_mem_size_sum' stats report
+Generated:
+    /home/jinjin/jinjin/code/eonark-gpu/scripts/../logs/gpu-5070/profiles//mimchasher_20251118_181040.nsys-rep
+    /home/jinjin/jinjin/code/eonark-gpu/scripts/../logs/gpu-5070/profiles//mimchasher_20251118_181040.sqlite
