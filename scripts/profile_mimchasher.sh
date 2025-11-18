@@ -27,6 +27,14 @@ mkdir -p "${OUTPUT_DIR}"
 
 cd "${ROOT_DIR}"
 
+# 加载环境变量配置（如果存在 .envrc）
+if [ -f "${ROOT_DIR}/.envrc" ]; then
+  echo "[env] 加载 .envrc 配置..."
+  set +e  # 临时关闭错误退出，因为 source 可能失败
+  source "${ROOT_DIR}/.envrc" 2>/dev/null || true
+  set -e  # 恢复错误退出
+fi
+
 echo "[nsys] Profiling Go workload, output前缀: ${OUT_PREFIX}"
 echo "[nsys] 日志文件: ${LOG_FILE}"
 echo "[nsys] 使用增强的 GPU 追踪选项来捕获动态库中的 GPU 调用..."
@@ -39,7 +47,7 @@ nsys profile \
   --cpuctxsw=process-tree \
   --trace=cuda,osrt,nvtx \
   --cuda-memory-usage=true \
-  --cuda-trace-all-apis=true \
+  --gpu-metrics-devices=all \
   --stats=true \
   go run -tags icicle ./examples/mimchasher/main.go -count=1 -v 2>&1 | tee "${LOG_FILE}"
 
