@@ -143,7 +143,6 @@ func (pk *ProvingKey) setupDevicePointers(spr *cs.SparseR1CS) error {
 	// ② 在 device 上完成拷贝和 Montgomery 变换
 	var copyErr error
 	done := make(chan struct{})
-	// gpuSpan := profilerStart()
 	icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 		defer close(done)
 
@@ -328,7 +327,7 @@ func (pk *ProvingKey) setupDevicePointers(spr *cs.SparseR1CS) error {
 		fmt.Printf("		[Memory] After CopyToDevice BigTwiddlesNRev:\n")
 		printMemoryInfo("After BigTwiddlesNRev")
 
-		// 统一转为"非 Montgomery"，便于后续 VecMulOnDevice 直接使用
+		// 统一转为“非 Montgomery”，便于后续 VecMulOnDevice 直接使用
 		// ! do not count this step in the communication cost
 		nvtx.RangePush("MontConv: BigTwiddlesN")
 		if st := kzg_bls12_381.MontConvOnDevice(pk.deviceInfo.BigTwiddlesN, false); st != icicle_runtime.Success {
@@ -684,7 +683,6 @@ func (s *instance) solveConstraints() error {
 	fmt.Printf("	solveConstraints() || commitToLRO() 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	close(s.chLRO)
-
 	return nil
 }
 
@@ -738,10 +736,7 @@ func (s *instance) commitToLRO() error {
 	// g := new(errgroup.Group)
 
 	// g.Go(func() (err error) {
-	// 	start_time := time.Now()
 	// 	s.proof.LRO[0], err = s.commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl])
-	// 	elasped := time.Since(start_time)
-	// 	fmt.Printf("		commitToLRO() || commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl]) LRO[0] 耗时: %.6fms\n", float64(elasped.Nanoseconds())/1e6)
 	// 	return
 	// })
 
@@ -1625,6 +1620,7 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 	res := iop.NewPolynomial(&cres, iop.Form{Basis: iop.LagrangeCoset, Layout: iop.BitReverse})
 
 	return res, nil
+
 }
 
 // batchInvert modifies in place vec, with vec[i]<-vec[i]^{-1}, using
@@ -1767,51 +1763,55 @@ func coefficients(p []*iop.Polynomial) [][]fr.Element {
 
 // func commitToQuotient(h1, h2, h3 []fr.Element, proof *plonkbls12381.Proof, kzgPk kzg.ProvingKey) error {
 func commitToQuotient(h1, h2, h3 []fr.Element, proof *plonkbls12381.Proof, pk *ProvingKey) error {
-	// 使用 errgroup 并行执行三个 commit 操作，利用 GPU streaming 实现并行
+	// g := new(errgroup.Group)
+
+	// g.Go(func() (err error) {
+	// 	// proof.H[0], err = kzg.Commit(h1, kzgPk)
+	// 	proof.H[0], err = commitOnGPUOrCPU(h1, pk, false /* monomial */)
+	// 	return
+	// })
+
+	// g.Go(func() (err error) {
+	// 	// proof.H[1], err = kzg.Commit(h2, kzgPk)
+	// 	proof.H[1], err = commitOnGPUOrCPU(h2, pk, false /* monomial */)
+	// 	return
+	// })
+
+	// g.Go(func() (err error) {
+	// 	// proof.H[2], err = kzg.Commit(h3, kzgPk)
+	// 	proof.H[2], err = commitOnGPUOrCPU(h3, pk, false /* monomial */)
+	// 	return
+	// })
+
+	// return g.Wait()
+	var err error
 	totalStart := time.Now()
-	g, _ := errgroup.WithContext(context.Background())
-
-	var err0, err1, err2 error
-
-	// 并行执行 commit h1
-	g.Go(func() error {
-		startTime := time.Now()
-		fmt.Printf("		commitToQuotient() || commit h1 开始\n")
-		proof.H[0], err0 = commitOnGPUOrCPU(h1, pk, false /* monomial */)
-		elapsed := time.Since(startTime)
-		fmt.Printf("		commitToQuotient() || commit h1 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
-		return err0
-	})
-
-	// 并行执行 commit h2
-	g.Go(func() error {
-		startTime := time.Now()
-		fmt.Printf("		commitToQuotient() || commit h2 开始\n")
-		proof.H[1], err1 = commitOnGPUOrCPU(h2, pk, false /* monomial */)
-		elapsed := time.Since(startTime)
-		fmt.Printf("		commitToQuotient() || commit h2 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
-		return err1
-	})
-
-	// 并行执行 commit h3
-	g.Go(func() error {
-		startTime := time.Now()
-		fmt.Printf("		commitToQuotient() || commit h3 开始\n")
-		proof.H[2], err2 = commitOnGPUOrCPU(h3, pk, false /* monomial */)
-		elapsed := time.Since(startTime)
-		fmt.Printf("		commitToQuotient() || commit h3 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
-		return err2
-	})
-
-	// 等待所有操作完成
-	if err := g.Wait(); err != nil {
+	start_time := time.Now()
+	proof.H[0], err = commitOnGPUOrCPU(h1, pk, false /* monomial */)
+	elapsed := time.Since(start_time)
+	fmt.Printf("		commitToQuotient() || commit h1 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
+	if err != nil {
 		return err
 	}
 
-	// 计算总耗时
-	totalElapsed := time.Since(totalStart)
-	fmt.Printf("		commitToQuotient() || 并行执行总耗时: %.6f ms\n", float64(totalElapsed.Nanoseconds())/1e6)
+	start_time = time.Now()
+	proof.H[1], err = commitOnGPUOrCPU(h2, pk, false /* monomial */)
+	elapsed = time.Since(start_time)
+	fmt.Printf("		commitToQuotient() || commit h2 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
+	if err != nil {
+		return err
+	}
 
+	start_time = time.Now()
+	proof.H[2], err = commitOnGPUOrCPU(h3, pk, false /* monomial */)
+	elapsed = time.Since(start_time)
+	fmt.Printf("		commitToQuotient() || commit h3 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
+	if err != nil {
+		return err
+	}
+
+	elapsed = time.Since(totalStart)
+	fmt.Printf("		commitToQuotient() || commitToQuotient() 总耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 	return nil
 
 }
@@ -2455,15 +2455,10 @@ func commitOnGPUOrCPU(coeffs []fr.Element, pk *ProvingKey, useLagrange bool) (cu
 	if HasIcicle && pk != nil && pk.deviceInfo != nil {
 		nvtxEnd := nvtx.Scope("kzg.Commit GPU", nvtx.ColorCommit)
 		defer nvtxEnd()
-
-		var (
-			dig kzg.Digest
-			st  icicle_runtime.EIcicleError
-		)
+		var dig kzg.Digest
+		var st icicle_runtime.EIcicleError
 
 		done := make(chan struct{})
-		fmt.Printf("		commitOnGPUOrCPU() || GPU 开始\n")
-		// gpuSpan := profilerStart()
 		icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 			defer close(done)
 			stageEnd := nvtx.Scope("kzg.Commit::OnDevice", nvtx.ColorDeviceStage)
@@ -2471,12 +2466,10 @@ func commitOnGPUOrCPU(coeffs []fr.Element, pk *ProvingKey, useLagrange bool) (cu
 
 			if useLagrange {
 				// dig, st = kzg_bls12_381.OnDeviceCommit(coeffs, pk.deviceInfo.G1Device.G1Lagrange)
-				fmt.Printf("		commitOnGPUOrCPU() || GPU 开始 commitLagrange\n")
 				base := pk.deviceInfo.G1Device.G1Lagrange.RangeTo(len(coeffs), false)
 				dig, st = kzg_bls12_381.OnDeviceCommit(coeffs, base)
 			} else {
 				// dig, st = kzg_bls12_381.OnDeviceCommit(coeffs, pk.deviceInfo.G1Device.G1)
-				fmt.Printf("		commitOnGPUOrCPU() || GPU 开始 commitMonomial\n")
 				base := pk.deviceInfo.G1Device.G1.RangeTo(len(coeffs), false)
 				dig, st = kzg_bls12_381.OnDeviceCommit(coeffs, base)
 			}
@@ -2484,7 +2477,6 @@ func commitOnGPUOrCPU(coeffs []fr.Element, pk *ProvingKey, useLagrange bool) (cu
 		<-done
 
 		if st == icicle_runtime.Success {
-			fmt.Printf("		commitOnGPUOrCPU() || GPU 成功\n")
 			return curve.G1Affine(dig), nil
 		}
 		log.Printf("[GPU failed -> CPU] kzg.Commit")
@@ -2492,10 +2484,8 @@ func commitOnGPUOrCPU(coeffs []fr.Element, pk *ProvingKey, useLagrange bool) (cu
 
 	// CPU
 	if useLagrange {
-		fmt.Printf("		commitOnGPUOrCPU() || CPU 开始 commitLagrange\n")
 		return kzg.Commit(coeffs, pk.KzgLagrange)
 	}
-	fmt.Printf("		commitOnGPUOrCPU() || CPU 开始 commitMonomial\n")
 	return kzg.Commit(coeffs, pk.Kzg)
 }
 
@@ -2513,7 +2503,6 @@ func commitBlindingFactorGPUOrCPU(n int, b *iop.Polynomial, pk *ProvingKey) (cur
 		)
 
 		done := make(chan struct{})
-		// gpuSpan := profilerStart()
 		icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 			defer close(done)
 
@@ -2529,7 +2518,6 @@ func commitBlindingFactorGPUOrCPU(n int, b *iop.Polynomial, pk *ProvingKey) (cur
 			}
 		})
 		<-done
-		// profilerAddGPU(gpuSpan)
 
 		if stLo == icicle_runtime.Success && stHi == icicle_runtime.Success {
 			res := curve.G1Affine(hi)
@@ -2552,14 +2540,12 @@ func OpenOnGPUOrCPU(p []fr.Element, point fr.Element, pk *ProvingKey) (kzg.Openi
 		var st icicle_runtime.EIcicleError
 
 		done := make(chan struct{})
-		// gpuSpan := profilerStart()
 		icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 			defer close(done)
 			// 传入 monomial SRS（和 Commit 一致）
 			pr, st = kzg_bls12_381.OnDeviceOpen(p, point, pk.deviceInfo.G1Device.G1)
 		})
 		<-done
-		// profilerAddGPU(gpuSpan)
 
 		if st == icicle_runtime.Success {
 			return pr, nil
@@ -2664,7 +2650,7 @@ func (s *instance) toCosetLagrangeOnGPUorCPU_DEV(
 		}
 		log.Printf("[GPU failed -> CPU] %v", gpuErr)
 	}
-	// ---------------- CPU 回退（保持你原有逻辑） ----------------
+	// ---------------- CPU 回退（保持原有逻辑） ----------------
 	nbTasks := calculateNbTasks(len(s.x)-1) * 2
 	p.ToCanonical(s.domain0, nbTasks)
 
@@ -2706,3 +2692,155 @@ const (
 	scaleCoset scalingKind = iota // 使用 coset 表（首块）
 	scaleBig                      // 使用大域 w^j 表（其余块）
 )
+
+// GPU/CPU 二选一的“全局回滚”实现：把所有多项式的系数乘以 cs^j，并统一回到 Canonical+Regular。
+//
+// 注意：
+//   - 必须跳过 ZS（id_ZS）以及已经置 nil 的 Qk（id_Qk）
+//   - 尽可能使用 GPU；失败则回退 CPU
+//   - 语义与参考实现一致：在 CPU fallback 中仍然是
+//     p.ToCanonical(s.domain0, 8).ToRegular() 再做 cs^j 缩放
+//     在 GPU 路径中：用 INTT 把 Lagrange 评估值变回 Canonical 系数，再做 cs^j 缩放。
+func (s *instance) scaleEverythingBackGPUorCPU(
+	shifters []fr.Element,
+	_ map[*iop.Polynomial]int, // 现在不再依赖 poly2idx/devX，这两个参数可以忽略
+	_ []icicle_core.DeviceSlice,
+) {
+	// 1. 和原逻辑保持一致：先把 ZS / Qk 清掉
+	s.x[id_ZS] = nil
+	s.x[id_Qk] = nil
+
+	// 2. 计算 cs = (∏ shifters)^(-1)
+	var cs fr.Element
+	cs.Set(&shifters[0])
+	for i := 1; i < len(shifters); i++ {
+		cs.Mul(&cs, &shifters[i])
+	}
+	cs.Inverse(&cs)
+
+	// 3. 预计算 cs^j：accList[j] = cs^j，长度 = |domain0|
+	n := int(s.domain0.Cardinality)
+	accList := make([]fr.Element, n)
+	{
+		var acc fr.Element
+		acc.SetOne()
+		for j := 0; j < n; j++ {
+			accList[j].Set(&acc)
+			acc.Mul(&acc, &cs)
+		}
+	}
+
+	useGPU := HasIcicle && s.pk != nil && s.pk.deviceInfo != nil
+
+	if useGPU {
+		var gpuErr error
+		done := make(chan struct{})
+
+		s.pk.deviceInfo.mu.Lock()
+		icicle_runtime.RunOnDevice(&s.pk.deviceInfo.Device, func(args ...any) {
+			defer s.pk.deviceInfo.mu.Unlock()
+			defer close(done)
+
+			// 3.1 把 accList 上传到 GPU，并转为非 Montgomery，供 VecMul 使用
+			hostW := icicle_core.HostSliceFromElements(accList)
+			var wDevFull icicle_core.DeviceSlice
+			hostW.CopyToDevice(&wDevFull, true)
+			defer wDevFull.Free()
+
+			if st := kzg_bls12_381.MontConvOnDevice(wDevFull, false /* FromMontgomery */); st != icicle_runtime.Success {
+				gpuErr = fmt.Errorf("FromMontgomery(accList) failed: %s", st.AsString())
+				return
+			}
+
+			// 3.2 遍历所有多项式：先用 GPU INTT 把 Lagrange 评估值变成 Canonical 系数，再乘 cs^j
+			for idx := 0; idx < len(s.x); idx++ {
+				if idx == id_ZS {
+					continue
+				}
+				p := s.x[idx]
+				if p == nil {
+					continue
+				}
+
+				coeffs := p.Coefficients()
+				deg := len(coeffs)
+				if deg == 0 {
+					continue
+				}
+
+				// 只用 cs^0..cs^{deg-1}
+				wDev := wDevFull.RangeTo(deg, false)
+
+				// 把当前 poly 的“系数/评估值”上传到设备
+				hostP := icicle_core.HostSliceFromElements(coeffs)
+				var dev icicle_core.DeviceSlice
+				hostP.CopyToDevice(&dev, true)
+
+				// (1) 用 GPU INTT 把 Lagrange 评估值 -> Canonical 系数
+				if st := kzg_bls12_381.INttOnDevice(dev); st != icicle_runtime.Success {
+					gpuErr = fmt.Errorf("poly[%d] INTT failed: %s", idx, st.AsString())
+					dev.Free()
+					return
+				}
+				p.Form.Basis = iop.Canonical
+				p.Form.Layout = iop.Regular
+
+				// (2) 在 Canonical 系数上做 cs^j 缩放（VecOps 期望非 Montgomery）
+				if st := kzg_bls12_381.MontConvOnDevice(dev, false /* FromMontgomery */); st != icicle_runtime.Success {
+					gpuErr = fmt.Errorf("poly[%d] FromMontgomery: %s", idx, st.AsString())
+					dev.Free()
+					return
+				}
+
+				if st := kzg_bls12_381.VecMulOnDevice(dev, wDev); st != icicle_runtime.Success {
+					gpuErr = fmt.Errorf("poly[%d] VecMul: %s", idx, st.AsString())
+					dev.Free()
+					return
+				}
+				if st := kzg_bls12_381.MontConvOnDevice(dev, true /* ToMontgomery */); st != icicle_runtime.Success {
+					gpuErr = fmt.Errorf("poly[%d] ToMontgomery: %s", idx, st.AsString())
+					dev.Free()
+					return
+				}
+
+				// (3) 回拷到 host：覆盖原来的数据
+				hostP.CopyFromDevice(&dev)
+				dev.Free()
+
+				// 这里不再调用 p.ToCanonical/ToRegular：
+				//   - 值语义上，已经是 canonical + regular 对应的系数；
+				//   - Form 元数据如果后面没有再做 Basis 变换，是安全的。
+			}
+		})
+		<-done
+
+		if gpuErr != nil {
+			log.Printf("[GPU failed -> CPU] scaleEverythingBack: %v", gpuErr)
+			useGPU = false
+		}
+	}
+
+	// 4. CPU fallback：严格按照参考实现语义：
+	//    对每个 poly 先 ToCanonical(s.domain0).ToRegular()，再做 cs^j 缩放。
+	if !useGPU {
+		batchApply(s.x, func(p *iop.Polynomial) {
+			if p == nil {
+				return
+			}
+			p.ToCanonical(s.domain0, 8).ToRegular()
+			scalePowers(p, cs)
+		})
+	} else {
+		// GPU 路径中，coeff 已经在 canonical 系数上乘过 cs^j，这里不再做任何额外缩放。
+	}
+
+	// 5. blinding 多项式也要乘 cs^j（参考实现是用 CPU 做的）
+	for _, q := range s.bp {
+		if q == nil {
+			continue
+		}
+		scalePowers(q, cs)
+	}
+
+	close(s.chRestoreLRO)
+}
