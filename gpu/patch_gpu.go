@@ -1451,66 +1451,25 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 
 		icicle_runtime.RunOnDevice(&s.pk.deviceInfo.Device, func(args ...any) {
 			defer close(doneUpload)
-
-			// 统计要上传的多项式数量
-			var totalCoeffs int
-			var totalBytes uint64
-			var polysToUpload int
 			for i := 0; i < len(s.x); i++ {
 				if i == id_ZS || s.x[i] == nil {
 					continue
 				}
-				polysToUpload++
-			}
-
-			// 记录上传前的内存状态
-			fmt.Printf("		[Memory] Before uploading polynomials to device:\n")
-			printMemoryInfo("Before Upload")
-			fmt.Printf("		[Memory] Total polynomials to upload: %d (out of %d)\n", polysToUpload, len(s.x))
-
-			var uploadedCount int
-			for i := 0; i < len(s.x); i++ {
-				if i == id_ZS || s.x[i] == nil {
-					continue
-				}
-
-				// 计算当前多项式的数据大小
-				coeffs := s.x[i].Coefficients()
-				coeffCount := len(coeffs)
-				polySize := uint64(coeffCount) * 32 // fr.Element 是 32 字节
-				totalCoeffs += coeffCount
-				totalBytes += polySize
-				uploadedCount++
-
-				fmt.Printf("		[Memory] Uploading poly[%d]: %d coefficients, %d bytes (%.2f MiB), basis=%v\n",
-					i, coeffCount, polySize, float64(polySize)/1024.0/1024.0, s.x[i].Basis)
 
 				// 上传到同一张卡
-				// TODO: 计算 communcation cost
-				nvtx.RangePush(fmt.Sprintf("CopyToDevice: poly[%d]", i))
-				host := icicle_core.HostSliceFromElements(coeffs)
+				host := icicle_core.HostSliceFromElements(s.x[i].Coefficients())
 				host.CopyToDevice(&devX[i], true)
-				nvtx.RangePop()
 
 				// device 侧统一规范为 Canonical（后续每轮：系数×缩放→NTT）
 				if s.x[i].Basis != iop.Canonical {
-					nvtx.RangePush(fmt.Sprintf("INttOnDevice: poly[%d]", i))
 					if st := kzg_bls12_381.INttOnDevice(devX[i]); st != icicle_runtime.Success {
 						upErr = fmt.Errorf("INttOnDevice poly[%d]: %s", i, st.AsString())
-						nvtx.RangePop()
 						return
 					}
-					nvtx.RangePop()
 				}
 				uploadedIdx = append(uploadedIdx, i)
 				poly2idx[s.x[i]] = i
 			}
-
-			// 记录所有上传完成后的内存状态
-			fmt.Printf("		[Memory] After uploading all polynomials:\n")
-			printMemoryInfo("After All Uploads")
-			fmt.Printf("		[Memory] Summary: uploaded %d polynomials, %d total coefficients, %d bytes (%.2f MiB)\n",
-				len(uploadedIdx), totalCoeffs, totalBytes, float64(totalBytes)/1024.0/1024.0)
 		})
 		<-doneUpload
 		if upErr != nil {
@@ -1525,30 +1484,6 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 			})
 		}
 	}
-	// 只释放这次上传的 dev 缓冲
-	defer func() {
-		if useGPU {
-			icicle_runtime.RunOnDevice(&s.pk.deviceInfo.Device, func(args ...any) {
-				fmt.Printf("		[Memory] Before freeing uploaded polynomials:\n")
-				printMemoryInfo("Before Free")
-				fmt.Printf("		[Memory] Freeing %d polynomial buffers\n", len(uploadedIdx))
-				for freeIdx, idx := range uploadedIdx {
-					nvtx.RangePush(fmt.Sprintf("Free: poly[%d]", idx))
-					devX[idx].Free()
-					nvtx.RangePop()
-
-					// 记录每次释放后的内存状态（仅对前几个和最后一个记录）
-					if freeIdx < 3 || freeIdx == len(uploadedIdx)-1 {
-						fmt.Printf("		[Memory] After freeing poly[%d] (%d/%d):\n", idx, freeIdx+1, len(uploadedIdx))
-						printMemoryInfo(fmt.Sprintf("After free poly[%d]", idx))
-					}
-				}
-				fmt.Printf("		[Memory] After freeing all uploaded polynomials:\n")
-				printMemoryInfo("After All Free")
-				fmt.Printf("		[Memory] Freed %d polynomial buffers\n", len(uploadedIdx))
-			})
-		}
-	}()
 
 	// ———————————————————————————————————————————————————————————————————————————— 分配两条长度 n 的数组，稍后装 1/(coset⋅ω^j−1)
 	s.precomputedDenominators = make([]fr.Element, s.domain0.Cardinality)
@@ -1598,29 +1533,12 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 			sk = scaleBig
 		}
 
-		// 把所有参与的多项式转换成"本块 coset 的 n 个点值"
+		// 把所有参与的多项式转换成“本块 coset 的 n 个点值”
 		// we do **a lot** of FFT here, but on the small domain.
 		// note that for all the polynomials in the proving key
 		// (Ql, Qr, Qm, Qo, S1, S2, S3, Qcp, Qc) and ID, LOne
 		// we could pre-compute these rho*2 FFTs and store them
 		// at the cost of a huge memory footprint.
-		var processingPolys []int
-		for j := 0; j < len(s.x); j++ {
-			if j != id_ZS && s.x[j] != nil {
-				processingPolys = append(processingPolys, j)
-			}
-		}
-		fmt.Printf("		[Memory] Processing %d polynomials in batchApply\n", len(processingPolys))
-		for _, polyIdx := range processingPolys {
-			if s.x[polyIdx] != nil {
-				coeffs := s.x[polyIdx].Coefficients()
-				fmt.Printf("		[Memory] Processing poly[%d] (GPU): %d coefficients, %d bytes (%.2f MiB)\n",
-					polyIdx, len(coeffs), len(coeffs)*32, float64(len(coeffs)*32)/1024.0/1024.0)
-			}
-		}
-		fmt.Printf("		[Memory] Before batchApply (toCosetLagrange):\n")
-		printMemoryInfo("Before batchApply")
-		start_time := time.Now()
 		batchApply(s.x, func(p *iop.Polynomial) {
 			if p == nil {
 				return
@@ -1636,11 +1554,6 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 			// GPU 不可用或该 poly 未上传 → CPU 回退
 			_ = s.toCosetLagrangeOnGPUorCPU_DEV(p, wDevReg, wDevRev, sk, nil)
 		})
-		elapsed := time.Since(start_time)
-		fmt.Printf("		computeNumerator() || batchApply 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
-		fmt.Printf("		[Memory] After batchApply (toCosetLagrange):\n")
-		printMemoryInfo("After batchApply")
-		fmt.Printf("		[Memory] Processed %d polynomials\n", len(processingPolys))
 
 		wgBuf.Wait()
 
@@ -1676,34 +1589,34 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 
 	// ——————————————————————————————————————————————————————————————————————— 启动异步“全局回滚”：把所有“按幂次相位污染”一次性撤掉
 	// scale everything back
-	// TODO: 测试下时间
-	go func() {
-		start_time := time.Now()
-		s.x[id_ZS] = nil
-		s.x[id_Qk] = nil
+	// go func() {
+	// 	s.x[id_ZS] = nil
+	// 	s.x[id_Qk] = nil
 
-		var cs fr.Element
-		cs.Set(&shifters[0])
-		for i := 1; i < len(shifters); i++ {
-			cs.Mul(&cs, &shifters[i])
-		}
-		cs.Inverse(&cs)
+	// 	var cs fr.Element
+	// 	cs.Set(&shifters[0])
+	// 	for i := 1; i < len(shifters); i++ {
+	// 		cs.Mul(&cs, &shifters[i])
+	// 	}
+	// 	cs.Inverse(&cs)
 
-		batchApply(s.x, func(p *iop.Polynomial) {
-			if p == nil {
-				return
-			}
-			p.ToCanonical(s.domain0, 8).ToRegular()
-			scalePowers(p, cs)
-		})
+	// 	batchApply(s.x, func(p *iop.Polynomial) {
+	// 		if p == nil {
+	// 			return
+	// 		}
+	// 		p.ToCanonical(s.domain0, 8).ToRegular()
+	// 		scalePowers(p, cs)
+	// 	})
 
-		for _, q := range s.bp {
-			scalePowers(q, cs)
-		}
-		elapsed := time.Since(start_time)
-		fmt.Printf("		computeNumerator() || restore LRO 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
-		close(s.chRestoreLRO)
-	}()
+	// 	for _, q := range s.bp {
+	// 		scalePowers(q, cs)
+	// 	}
+
+	// 	close(s.chRestoreLRO)
+	// }()
+	// —— GPU 优化的“全局回滚”（失败会自动 CPU 回退）
+
+	go s.scaleEverythingBackGPUorCPU(shifters, poly2idx, devX)
 
 	// ——————————————————————————————————————————————————————————————————————— 确保所有块的 buf → cres 写入都完成；然后把 cres 封装成“大域 coset上的点值多项式（位反序布局）”返回。
 	// ensure all the goroutines are done
@@ -1712,7 +1625,6 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 	res := iop.NewPolynomial(&cres, iop.Form{Basis: iop.LagrangeCoset, Layout: iop.BitReverse})
 
 	return res, nil
-
 }
 
 // batchInvert modifies in place vec, with vec[i]<-vec[i]^{-1}, using
