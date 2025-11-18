@@ -12,13 +12,13 @@ import (
 	"github.com/consensys/gnark-crypto/ecc/bls12-381/fr"
 	"github.com/consensys/gnark-crypto/ecc/bls12-381/kzg"
 
+	eon_nvtx "github.com/eon-protocol/eonark/gpu/nvtx"
 	icicle_core "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/core"
 	icicle_bls12_381 "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381"
 	icicle_msm "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/msm"
 	icicle_ntt "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/ntt"
 	icicle_vecops "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/vecOps"
 	icicle_runtime "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/runtime"
-	eon_nvtx "github.com/eon-protocol/eonark/gpu/nvtx"
 )
 
 func printDeviceAndMemory() {
@@ -105,8 +105,7 @@ func OnDeviceCommit(p []fr.Element, G1Device icicle_core.DeviceSlice) (kzg.Diges
 	if nScalars == 0 {
 		return kzg.Digest{}, icicle_runtime.InvalidArgument
 	}
-	
-	
+
 	// 1) 把标量拷到设备
 	fmt.Printf("		OnDeviceCommit() || host 开始\n")
 	host := icicle_core.HostSliceFromElements(p)
@@ -114,10 +113,10 @@ func OnDeviceCommit(p []fr.Element, G1Device icicle_core.DeviceSlice) (kzg.Diges
 	var scalarsDev icicle_core.DeviceSlice
 	host.CopyToDevice(&scalarsDev, true)
 	fmt.Printf("		OnDeviceCommit() || host 拷贝到 device 成功\n")
-	
+
 	// 1.1) 验证设备端数据长度（如果可能）
 	// 注意：DeviceSlice 可能没有直接的 Len() 方法，这里先跳过，在 MSM 调用时验证
-	
+
 	// 2) 配置 MSM
 	cfg := icicle_msm.GetDefaultMSMConfig()
 	// gnark-crypto 的标量/基点默认在 Montgomery 形式
@@ -128,7 +127,7 @@ func OnDeviceCommit(p []fr.Element, G1Device icicle_core.DeviceSlice) (kzg.Diges
 	}
 	// 确保同步执行（如果配置支持）
 	// cfg.IsAsync = false  // 如果存在此选项，设置为 false
-	fmt.Printf("		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=%v, AreBasesMontgomeryForm=%v)\n", 
+	fmt.Printf("		OnDeviceCommit() || MSM 配置成功 (AreScalarsMontgomeryForm=%v, AreBasesMontgomeryForm=%v)\n",
 		cfg.AreScalarsMontgomeryForm, cfg.AreBasesMontgomeryForm)
 
 	// 2.1) 打印当前设备与可用显存/占用情况（如可用则额外查询 nvidia-smi 利用率）
@@ -137,74 +136,74 @@ func OnDeviceCommit(p []fr.Element, G1Device icicle_core.DeviceSlice) (kzg.Diges
 	// 3) 运行 MSM（输出 1 个 projective 点）
 	fmt.Printf("		OnDeviceCommit() || MSM 运行开始 (scalars=%d, 期望 bases>=%d)\n", nScalars, nScalars)
 	eon_nvtx.RangePush("BLS12-381: OnDeviceCommit.MSM")
-	
+
 	// 3.1) 确保输出缓冲区在设备上（如果 MSM 需要）
 	// 注意：根据 icicle 文档，out 可以是 HostSlice，MSM 会自动处理 D2H
 	var outDev icicle_core.DeviceSlice
 	var outHost icicle_core.HostSlice[icicle_bls12_381.Projective]
-	
+
 	// 先尝试使用 HostSlice（标准用法）
 	outHost = make(icicle_core.HostSlice[icicle_bls12_381.Projective], 1)
-	
+
 	// 记录 MSM 调用前的时间
 	msmStartTime := time.Now()
 	fmt.Printf("		OnDeviceCommit() || 调用 icicle_msm.Msm() 前 [%s]\n", msmStartTime.Format("15:04:05.000000"))
 	fmt.Printf("		OnDeviceCommit() || scalarsDev 已分配，G1Device 已就绪，outHost 已分配\n")
-	
+
 	// 调用 MSM（这里可能会阻塞或耗时很长）
 	// 注意：MSM 调用可能会阻塞，特别是对于大规模输入（8.4M）
 	// 重要：确保在 RunOnDevice 闭包内调用，RunOnDevice 会自动同步
 	fmt.Printf("		OnDeviceCommit() || 开始调用 icicle_msm.Msm()，规模=%d\n", nScalars)
 	fmt.Printf("		OnDeviceCommit() || 检查：当前是否在 RunOnDevice 闭包内？\n")
-	
+
 	// 尝试获取当前设备上下文（用于调试）
 	if dev, err := icicle_runtime.GetActiveDevice(); err == icicle_runtime.Success && dev != nil {
 		fmt.Printf("		OnDeviceCommit() || 当前活动设备: type=%s id=%d\n", dev.GetDeviceType(), dev.Id)
 	} else {
 		fmt.Printf("		OnDeviceCommit() || ⚠️  无法获取活动设备: err=%v\n", err)
 	}
-	
+
 	// // 在 MSM 调用前添加额外的诊断信息和验证
 	// fmt.Printf("		OnDeviceCommit() || MSM 调用前诊断: scalarsDev 已分配, G1Device 已就绪, outHost 已分配\n")
-	// fmt.Printf("		OnDeviceCommit() || MSM 配置: AreScalarsMontgomeryForm=%v, AreBasesMontgomeryForm=%v\n", 
+	// fmt.Printf("		OnDeviceCommit() || MSM 配置: AreScalarsMontgomeryForm=%v, AreBasesMontgomeryForm=%v\n",
 	// 	cfg.AreScalarsMontgomeryForm, cfg.AreBasesMontgomeryForm)
-	
+
 	// // 验证关键参数
 	// if nScalars > 0 {
 	// 	fmt.Printf("		OnDeviceCommit() || 参数验证: nScalars=%d, 期望 G1Device 长度 >= %d\n", nScalars, nScalars)
 	// } else {
 	// 	fmt.Printf("		OnDeviceCommit() || ⚠️  警告: nScalars=%d (应该 > 0)\n", nScalars)
 	// }
-	
+
 	// // 调用 MSM - 这应该是同步调用，会阻塞直到完成
 	// fmt.Printf("		OnDeviceCommit() || 执行 icicle_msm.Msm() 调用...\n")
 	// fmt.Printf("		OnDeviceCommit() || MSM 调用时间戳: [%s]\n", time.Now().Format("15:04:05.000000"))
-	
+
 	// // 记录调用前的内存状态
 	// if mem, err := icicle_runtime.GetAvailableMemory(); err == icicle_runtime.Success && mem != nil {
 	// 	used := mem.Total - mem.Free
 	// 	fmt.Printf("		OnDeviceCommit() || MSM 调用前显存: used=%.0f MiB / total=%.0f MiB (%.1f%%)\n",
-	// 		float64(used)/1024.0/1024.0, float64(mem.Total)/1024.0/1024.0, 
+	// 		float64(used)/1024.0/1024.0, float64(mem.Total)/1024.0/1024.0,
 	// 		(float64(used)/float64(mem.Total))*100.0)
 	// } else {
 	// 	fmt.Printf("		OnDeviceCommit() || ⚠️  无法获取调用前显存状态: err=%v\n", err)
 	// }
-	
+
 	// // 强制刷新输出缓冲区，确保所有日志都被打印
 	// os.Stdout.Sync()
-	
+
 	// // 最后一次验证：确保所有参数都准备就绪
 	// fmt.Printf("		OnDeviceCommit() || 准备调用 MSM: scalars=%d, 配置已设置, 输出缓冲区已分配\n", nScalars)
 	// fmt.Printf("		OnDeviceCommit() || ⚠️  即将进入 CUDA kernel，如果卡住请检查 GPU 状态\n")
-	
+
 	// 调用 MSM - 这应该是同步调用，会阻塞直到完成
 	// 注意：如果这里卡住，可能是 CUDA kernel 死锁或设备驱动问题
 	st := icicle_msm.Msm(scalarsDev, G1Device, &cfg, outHost)
-	
+
 	// MSM 调用后立即检查状态
 	fmt.Printf("		OnDeviceCommit() || icicle_msm.Msm() 调用返回\n")
 	fmt.Printf("		OnDeviceCommit() || MSM 返回时间戳: [%s]\n", time.Now().Format("15:04:05.000000"))
-	
+
 	// 检查返回状态
 	if st != icicle_runtime.Success {
 		fmt.Printf("		OnDeviceCommit() || ⚠️  MSM 返回错误状态: %s\n", st.AsString())
@@ -217,27 +216,27 @@ func OnDeviceCommit(p []fr.Element, G1Device icicle_core.DeviceSlice) (kzg.Diges
 	} else {
 		fmt.Printf("		OnDeviceCommit() || MSM 返回成功状态\n")
 	}
-	
+
 	msmEndTime := time.Now()
 	msmDuration := msmEndTime.Sub(msmStartTime)
-	fmt.Printf("		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=%s，耗时=%.6f ms [%s]\n", 
+	fmt.Printf("		OnDeviceCommit() || 调用 icicle_msm.Msm() 后，状态=%s，耗时=%.6f ms [%s]\n",
 		st.AsString(), float64(msmDuration.Nanoseconds())/1e6, msmEndTime.Format("15:04:05.000000"))
-	
+
 	// 如果耗时超过 1 秒，打印警告
 	if msmDuration > time.Second {
-		fmt.Printf("		OnDeviceCommit() || ⚠️  MSM 耗时较长: %.2f 秒 (规模=%d)\n", 
+		fmt.Printf("		OnDeviceCommit() || ⚠️  MSM 耗时较长: %.2f 秒 (规模=%d)\n",
 			msmDuration.Seconds(), nScalars)
 	}
-	
+
 	eon_nvtx.RangePop()
-	
+
 	// 3.2) 检查 MSM 返回状态
 	if st != icicle_runtime.Success {
 		fmt.Printf("		OnDeviceCommit() || MSM 失败: %s\n", st.AsString())
 		_ = scalarsDev.Free()
 		return kzg.Digest{}, st
 	}
-	
+
 	fmt.Printf("		OnDeviceCommit() || MSM 运行成功\n")
 	_ = scalarsDev.Free()
 	_ = outDev // 如果未使用，忽略
@@ -246,7 +245,7 @@ func OnDeviceCommit(p []fr.Element, G1Device icicle_core.DeviceSlice) (kzg.Diges
 	fmt.Printf("		OnDeviceCommit() || 开始转换 Projective -> Affine\n")
 	res := blsProjectiveToGnarkAffine(outHost[0])
 	fmt.Printf("		OnDeviceCommit() || blsProjectiveToGnarkAffine 成功\n")
-	
+
 	fmt.Printf("		OnDeviceCommit() || 完成，返回结果\n")
 	return kzg.Digest(res), icicle_runtime.Success
 }

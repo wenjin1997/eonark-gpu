@@ -1855,53 +1855,50 @@ func coefficients(p []*iop.Polynomial) [][]fr.Element {
 
 // func commitToQuotient(h1, h2, h3 []fr.Element, proof *plonkbls12381.Proof, kzgPk kzg.ProvingKey) error {
 func commitToQuotient(h1, h2, h3 []fr.Element, proof *plonkbls12381.Proof, pk *ProvingKey) error {
-	// g := new(errgroup.Group)
+	// 使用 errgroup 并行执行三个 commit 操作，利用 GPU streaming 实现并行
+	totalStart := time.Now()
+	g, _ := errgroup.WithContext(context.Background())
 
-	// g.Go(func() (err error) {
-	// 	// proof.H[0], err = kzg.Commit(h1, kzgPk)
-	// 	proof.H[0], err = commitOnGPUOrCPU(h1, pk, false /* monomial */)
-	// 	return
-	// })
+	var err0, err1, err2 error
 
-	// g.Go(func() (err error) {
-	// 	// proof.H[1], err = kzg.Commit(h2, kzgPk)
-	// 	proof.H[1], err = commitOnGPUOrCPU(h2, pk, false /* monomial */)
-	// 	return
-	// })
+	// 并行执行 commit h1
+	g.Go(func() error {
+		startTime := time.Now()
+		fmt.Printf("		commitToQuotient() || commit h1 开始\n")
+		proof.H[0], err0 = commitOnGPUOrCPU(h1, pk, false /* monomial */)
+		elapsed := time.Since(startTime)
+		fmt.Printf("		commitToQuotient() || commit h1 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
+		return err0
+	})
 
-	// g.Go(func() (err error) {
-	// 	// proof.H[2], err = kzg.Commit(h3, kzgPk)
-	// 	proof.H[2], err = commitOnGPUOrCPU(h3, pk, false /* monomial */)
-	// 	return
-	// })
+	// 并行执行 commit h2
+	g.Go(func() error {
+		startTime := time.Now()
+		fmt.Printf("		commitToQuotient() || commit h2 开始\n")
+		proof.H[1], err1 = commitOnGPUOrCPU(h2, pk, false /* monomial */)
+		elapsed := time.Since(startTime)
+		fmt.Printf("		commitToQuotient() || commit h2 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
+		return err1
+	})
 
-	// return g.Wait()
-	var err error
+	// 并行执行 commit h3
+	g.Go(func() error {
+		startTime := time.Now()
+		fmt.Printf("		commitToQuotient() || commit h3 开始\n")
+		proof.H[2], err2 = commitOnGPUOrCPU(h3, pk, false /* monomial */)
+		elapsed := time.Since(startTime)
+		fmt.Printf("		commitToQuotient() || commit h3 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
+		return err2
+	})
 
-	start_time := time.Now()
-	fmt.Printf("		commitToQuotient() || commit h1 开始\n")
-	proof.H[0], err = commitOnGPUOrCPU(h1, pk, false /* monomial */)
-	elapsed := time.Since(start_time)
-	fmt.Printf("		commitToQuotient() || commit h1 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
-	if err != nil {
+	// 等待所有操作完成
+	if err := g.Wait(); err != nil {
 		return err
 	}
 
-	start_time = time.Now()
-	proof.H[1], err = commitOnGPUOrCPU(h2, pk, false /* monomial */)
-	elapsed = time.Since(start_time)
-	fmt.Printf("		commitToQuotient() || commit h2 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
-	if err != nil {
-		return err
-	}
-
-	start_time = time.Now()
-	proof.H[2], err = commitOnGPUOrCPU(h3, pk, false /* monomial */)
-	elapsed = time.Since(start_time)
-	fmt.Printf("		commitToQuotient() || commit h3 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
-	if err != nil {
-		return err
-	}
+	// 计算总耗时
+	totalElapsed := time.Since(totalStart)
+	fmt.Printf("		commitToQuotient() || 并行执行总耗时: %.6f ms\n", float64(totalElapsed.Nanoseconds())/1e6)
 
 	return nil
 
