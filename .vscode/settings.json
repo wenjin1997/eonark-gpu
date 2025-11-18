@@ -1,0 +1,9 @@
+{
+  "gopls": {
+    "buildFlags": ["-tags=icicle"]
+  },
+  "go.toolsEnvVars": {
+    "CGO_ENABLED": "1"
+  }
+}
+
