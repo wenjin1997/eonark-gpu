@@ -1264,6 +1264,8 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 
 	// —————————————————————————————————————————————————————————————————————————— 准备小域H的幂表[1,𝜔,𝜔^2,…,𝜔^𝑛−1], 对于每一个coset来说，第i个点小域坐标(块内相位)都是𝜔^i，实际上evaluation的point是 coset_j * 𝜔^i
 	n := s.domain0.Cardinality
+	fmt.Printf("		computeNumerator() || n = %d\n", n)
+	// TODO： check 如果已经预计算了，这里就不需要再计算了
 	twiddles0 := make([]fr.Element, n)
 	if n == 1 {
 		// edge case
@@ -1289,6 +1291,7 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 
 	// —————————————————————————————————————————————————————————————————————————— 算门约束 gate constraint Ql​L+Qr​R+Qm​LR+Qo​O+Qk​+∑Qci​Qci+1​ 在大域上的evaluation点值，也就是在X_{i,j} = coset_j * 𝜔^i 上的值
 	nbBsbGates := len(s.proof.Bsb22Commitments)
+	fmt.Printf("		computeNumerator() || nbBsbGates = %d\n", nbBsbGates)
 
 	gateConstraint := func(u ...fr.Element) fr.Element {
 
@@ -1364,7 +1367,9 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 	}
 
 	// —————————————————————————————————————————————————————————————————————————— 算 行数 = ρ（coset 块），第一个coset偏移量（shifters[0]）为s，之后的步长（shifters[i>=1]）都为w，真实评估点为Xi,j​=(s⋅wi)⋅ωj,j=0,…,n−1,
+	// rho = 4
 	rho := int(s.domain1.Cardinality / n)
+	fmt.Printf("		computeNumerator() || rho = %d\n", rho)
 	shifters := make([]fr.Element, rho)
 	// 选一个不在小域 H里的乘法生成元 s，作为首块的 coset 偏移
 	shifters[0].Set(&s.domain1.FrMultiplicativeGen)
@@ -1381,6 +1386,7 @@ func (s *instance) computeNumerator() (*iop.Polynomial, error) {
 	// —————————————————————————————————————————————————————————————————————————— cres存整个大域的点值，buf存当前n个点的中间结果
 	// init the result polynomial & buffer
 	cres := make([]fr.Element, s.domain1.Cardinality)
+	fmt.Printf("		computeNumerator() || cres = %d\n", len(cres))
 	buf := make([]fr.Element, n)
 	var wgBuf sync.WaitGroup
 

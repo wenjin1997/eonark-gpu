@@ -1,0 +1,1390 @@
+compile inner 耗时: 1345.336474 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/usr/local/lib/backend
+		[Memory] Before CopyToDevice G1:
+		[Before] GPU memory: used=1298 MiB / total=12227 MiB (10.6%)
+		[Before] CPU memory: allocated=1537 MiB, total_allocated=3075 MiB, sys=3095 MiB
+		[Memory] G1 data size: 515 elements, 49440 bytes (0.05 MiB)
+		[Memory] After CopyToDevice G1:
+		[After G1] GPU memory: used=1300 MiB / total=12227 MiB (10.6%)
+		[After G1] CPU memory: allocated=1537 MiB, total_allocated=3075 MiB, sys=3095 MiB
+		[Memory] G1Lagrange data size: 512 elements, 49152 bytes (0.05 MiB)
+		[Memory] After CopyToDevice G1Lagrange:
+		[After G1Lagrange] GPU memory: used=1300 MiB / total=12227 MiB (10.6%)
+		[After G1Lagrange] CPU memory: allocated=1537 MiB, total_allocated=3075 MiB, sys=3095 MiB
+		[Memory] Before CopyToDevice tables:
+		[Before Tables] GPU memory: used=1334 MiB / total=12227 MiB (10.9%)
+		[Before Tables] CPU memory: allocated=1537 MiB, total_allocated=3076 MiB, sys=3095 MiB
+		[Memory] cosetTable size: 512 elements, 16384 bytes (0.02 MiB)
+		[Memory] After CopyToDevice cosetTable:
+		[After cosetTable] GPU memory: used=1334 MiB / total=12227 MiB (10.9%)
+		[After cosetTable] CPU memory: allocated=1537 MiB, total_allocated=3076 MiB, sys=3095 MiB
+		[Memory] cosetTableRev size: 512 elements, 16384 bytes (0.02 MiB)
+		[Memory] After CopyToDevice cosetTableRev:
+		[After cosetTableRev] GPU memory: used=1334 MiB / total=12227 MiB (10.9%)
+		[After cosetTableRev] CPU memory: allocated=1537 MiB, total_allocated=3076 MiB, sys=3095 MiB
+		[Memory] BigTwiddlesN size: 512 elements, 16384 bytes (0.02 MiB)
+		[Memory] After CopyToDevice BigTwiddlesN:
+		[After BigTwiddlesN] GPU memory: used=1334 MiB / total=12227 MiB (10.9%)
+		[After BigTwiddlesN] CPU memory: allocated=1537 MiB, total_allocated=3076 MiB, sys=3095 MiB
+		[Memory] BigTwiddlesNRev size: 512 elements, 16384 bytes (0.02 MiB)
+		[Memory] After CopyToDevice BigTwiddlesNRev:
+		[After BigTwiddlesNRev] GPU memory: used=1334 MiB / total=12227 MiB (10.9%)
+		[After BigTwiddlesNRev] CPU memory: allocated=1537 MiB, total_allocated=3076 MiB, sys=3095 MiB
+		[Memory] After all CopyToDevice operations:
+		[Final] GPU memory: used=1334 MiB / total=12227 MiB (10.9%)
+		[Final] CPU memory: allocated=1537 MiB, total_allocated=3076 MiB, sys=3095 MiB
+prove() -> icicle device setup 耗时: 200.247366ms
+prove() -> initBlindingPolynomials 耗时: 0.135313ms
+		OnDeviceCommit() || 输入验证: nScalars=512
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1334 MiB / total=12227 MiB (10.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=6% mem=2174/12227 MiB
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 84.846872 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.016109 ms
+		OnDeviceCommit() || 输入验证: nScalars=512
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1334 MiB / total=12227 MiB (10.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=4% mem=2174/12227 MiB
+			commitToPolyAndBlinding() -> commit to p 耗时: 78.956405ms
+		OnDeviceCommit() || 输入验证: nScalars=2
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1334 MiB / total=12227 MiB (10.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=4% mem=2169/12227 MiB
+		OnDeviceCommit() || 输入验证: nScalars=2
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=4% mem=2171/12227 MiB
+			commitToPolyAndBlinding() -> commit to b 耗时: 145.138438ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.004007ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl]) LRO[0] 耗时: 224.129632ms
+		OnDeviceCommit() || 输入验证: nScalars=512
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=7% mem=2171/12227 MiB
+			commitToPolyAndBlinding() -> commit to p 耗时: 72.349225ms
+		OnDeviceCommit() || 输入验证: nScalars=2
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=7% mem=2171/12227 MiB
+		OnDeviceCommit() || 输入验证: nScalars=2
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=7% mem=2171/12227 MiB
+			commitToPolyAndBlinding() -> commit to b 耗时: 132.392063ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.004111ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_R], s.bp[id_Br]) LRO[1] 耗时: 204.775837ms
+		OnDeviceCommit() || 输入验证: nScalars=512
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=7% mem=2171/12227 MiB
+			commitToPolyAndBlinding() -> commit to p 耗时: 85.115997ms
+		OnDeviceCommit() || 输入验证: nScalars=2
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=7% mem=2171/12227 MiB
+		OnDeviceCommit() || 输入验证: nScalars=2
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=5% mem=2171/12227 MiB
+			commitToPolyAndBlinding() -> commit to b 耗时: 161.397736ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.004378ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_O], s.bp[id_Bo]) LRO[2] 耗时: 246.547433ms
+	solveConstraints() || commitToLRO() 耗时: 675.458028 ms
+prove() -> solveConstraints 耗时: 760.356568ms
+		computeQuotient() || wait for solver to be done 耗时: 760.365514ms
+		deriveGammaAndBeta() || wait for LRO to be committed 耗时: 760.058383ms
+		completeQk() || wait for solver to be done 耗时: 760.379243ms
+prove() -> completeQk 耗时: 760.396976ms
+prove() -> deriveGammaAndBeta 耗时: 760.583507ms
+		buildRatioCopyConstraint() || wait for gamma and beta to be derived 耗时: 760.596750ms
+		buildRatioCopyConstraint() || iop.BuildRatioCopyConstraint 耗时: 0.250155ms
+		OnDeviceCommit() || 输入验证: nScalars=512
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=5% mem=2168/12227 MiB
+			commitToPolyAndBlinding() -> commit to p 耗时: 77.720526ms
+		OnDeviceCommit() || 输入验证: nScalars=3
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=5% mem=2168/12227 MiB
+		OnDeviceCommit() || 输入验证: nScalars=3
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=7% mem=2168/12227 MiB
+			commitToPolyAndBlinding() -> commit to b 耗时: 141.707733ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.004072ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 219.473167ms
+prove() -> buildRatioCopyConstraint 耗时: 980.341249ms
+		computeQuotient() || wait for Z to be committed 耗时: 219.964516ms
+	computeQuotient() || prepare to compute & derive alpha): 980.417642 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.060488 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.122094 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.061038 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.161458 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.059467 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.089783 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.046198 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.122960 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.048249 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.088431 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.048293 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.154908 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.047824 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.081736 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.048109 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.084744 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.050331 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.107714 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.047153 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.093012 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.155557 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.111662 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.053662 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.109676 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.083446 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.134804 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.053350 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.113395 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.049623 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.105811 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.064582 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.086864 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.050244 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.082743 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.051379 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.079770 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.074815 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.092911 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.056399 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.111542 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.084641 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.079122 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.054592 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.094489 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.047499 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.067071 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.053862 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.111848 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.045783 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.114777 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.116518 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.090755 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.050068 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.158866 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.048031 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.073948 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.049639 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.087010 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.047315 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.154002 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.048195 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.077548 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.086881 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.131312 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.051021 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.081708 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.047357 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.081470 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.048223 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.064550 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.068906 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.076681 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.048226 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.143752 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.113565 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.107566 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.051929 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.101302 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.091249 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.098549 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.060682 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.098519 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.086605 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.093622 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.050294 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.081990 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.049070 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.081092 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.121945 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.079345 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.132030 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.082161 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.051380 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.072863 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.049250 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.068915 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.050141 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.069591 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.054438 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.070403 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.051119 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.064687 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.050313 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.077090 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.049318 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.072629 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.056596 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.065182 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.050799 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.094966 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 0.054199 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=512 coefficients, 16384 bytes (0.02 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[After D2H] CPU memory: allocated=1539 MiB, total_allocated=3077 MiB, sys=3095 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 0.080002 ms
+	computeQuotient() || computeNumerator() 耗时: 38.781798 ms
+		divideByZH() || parallelize divide 耗时: 0.047236 ms
+		divideByZH() || ToCanonical 耗时: 0.260022 ms
+	computeQuotient() || divideByZH() 耗时: 0.329247 ms
+		OnDeviceCommit() || 输入验证: nScalars=514
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=7% mem=2168/12227 MiB
+		commitToQuotient() || commit h1 耗时: 81.781426 ms
+		OnDeviceCommit() || 输入验证: nScalars=514
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=7% mem=2168/12227 MiB
+		commitToQuotient() || commit h2 耗时: 79.525126 ms
+		OnDeviceCommit() || 输入验证: nScalars=514
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=7% mem=2168/12227 MiB
+		commitToQuotient() || commit h3 耗时: 80.419991 ms
+		commitToQuotient() || commitToQuotient() 总耗时: 241.789149 ms
+	computeQuotient() || commitToQuotient() 耗时: 241.794055 ms
+	computeQuotient() || deriveZeta() & clean up 耗时: 0.208848 ms
+prove() -> computeQuotient 耗时: 1261.576408ms
+		openZ() || wait for H to be committed and zeta to be derived 耗时: 1261.565994ms
+		openZ() || getBlindedCoefficients 耗时: 0.005729ms
+		OnDeviceCommit() || 输入验证: nScalars=514
+		[ICICLE] active device: type=CUDA id=0
+		computeLinearizedPolynomial() || wait for H to be committed and zeta to be derived 耗时: 1261.735018ms
+		[ICICLE] memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=7% mem=2168/12227 MiB
+		openZ() || Open 耗时: 78.254743ms
+prove() -> openZ 耗时: 1339.856004ms
+		computeLinearizedPolynomial() || innerComputeLinearizedPoly 耗时: 78.147514ms
+		OnDeviceCommit() || 输入验证: nScalars=515
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=7% mem=2168/12227 MiB
+		computeLinearizedPolynomial() || kzg.Commit 耗时: 81.686759 ms
+prove() -> computeLinearizedPolynomial 耗时: 1421.758032ms
+		batchOpening() || wait for linearizedPolynomial 耗时: 1421.782429ms
+		batchOpening() || prepare polysToOpen and digestsToOpen 耗时: 0.005898ms
+		OnDeviceCommit() || 输入验证: nScalars=514
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=7% mem=2168/12227 MiB
+		batchOpening() || BatchOpenSinglePoint 耗时: 79.341252ms
+prove() -> batchOpening 耗时: 1501.145756ms
+prove() -> prove() 总耗时: 1501.314348ms
+prove inner 耗时: 3076.107515 ms
+verify inner 耗时: 2.683411 ms
+assemble Poseidon2-FS inputs 耗时: 0.842782 ms
+compile outer(frontend.Compile) 耗时: 3293.110204 ms
+[outer] nbConstraints=6312223 nbPublic=4 nbSecret=168
+solve outer 耗时: 2046.302539ms
+outer circuit solved
+compile outer(pkOuter.Compile) 耗时: 27674.217638 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/usr/local/lib/backend
+		[Memory] Before CopyToDevice G1:
+		[Before] GPU memory: used=1336 MiB / total=12227 MiB (10.9%)
+		[Before] CPU memory: allocated=5377 MiB, total_allocated=31085 MiB, sys=10210 MiB
+		[Memory] G1 data size: 8388611 elements, 805306656 bytes (768.00 MiB)
+		[Memory] After CopyToDevice G1:
+		[After G1] GPU memory: used=2106 MiB / total=12227 MiB (17.2%)
+		[After G1] CPU memory: allocated=5377 MiB, total_allocated=31085 MiB, sys=10210 MiB
+		[Memory] G1Lagrange data size: 8388608 elements, 805306368 bytes (768.00 MiB)
+		[Memory] After CopyToDevice G1Lagrange:
+		[After G1Lagrange] GPU memory: used=2874 MiB / total=12227 MiB (23.5%)
+		[After G1Lagrange] CPU memory: allocated=5377 MiB, total_allocated=31085 MiB, sys=10210 MiB
+		[Memory] Before CopyToDevice tables:
+		[Before Tables] GPU memory: used=2874 MiB / total=12227 MiB (23.5%)
+		[Before Tables] CPU memory: allocated=3089 MiB, total_allocated=32125 MiB, sys=10210 MiB
+		[Memory] cosetTable size: 8388608 elements, 268435456 bytes (256.00 MiB)
+		[Memory] After CopyToDevice cosetTable:
+		[After cosetTable] GPU memory: used=3130 MiB / total=12227 MiB (25.6%)
+		[After cosetTable] CPU memory: allocated=3089 MiB, total_allocated=32125 MiB, sys=10210 MiB
+		[Memory] cosetTableRev size: 8388608 elements, 268435456 bytes (256.00 MiB)
+		[Memory] After CopyToDevice cosetTableRev:
+		[After cosetTableRev] GPU memory: used=3386 MiB / total=12227 MiB (27.7%)
+		[After cosetTableRev] CPU memory: allocated=3089 MiB, total_allocated=32125 MiB, sys=10210 MiB
+		[Memory] BigTwiddlesN size: 8388608 elements, 268435456 bytes (256.00 MiB)
+		[Memory] After CopyToDevice BigTwiddlesN:
+		[After BigTwiddlesN] GPU memory: used=3642 MiB / total=12227 MiB (29.8%)
+		[After BigTwiddlesN] CPU memory: allocated=3089 MiB, total_allocated=32125 MiB, sys=10210 MiB
+		[Memory] BigTwiddlesNRev size: 8388608 elements, 268435456 bytes (256.00 MiB)
+		[Memory] After CopyToDevice BigTwiddlesNRev:
+		[After BigTwiddlesNRev] GPU memory: used=3898 MiB / total=12227 MiB (31.9%)
+		[After BigTwiddlesNRev] CPU memory: allocated=3089 MiB, total_allocated=32125 MiB, sys=10210 MiB
+		[Memory] After all CopyToDevice operations:
+		[Final] GPU memory: used=3898 MiB / total=12227 MiB (31.9%)
+		[Final] CPU memory: allocated=3089 MiB, total_allocated=32125 MiB, sys=10210 MiB
+prove() -> icicle device setup 耗时: 2073.056594ms
+prove() -> initBlindingPolynomials 耗时: 0.014426ms
+		OnDeviceCommit() || 输入验证: nScalars=8388608
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=4154 MiB / total=12227 MiB (34.0%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=0% mem=5019/12227 MiB
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 2078.352255 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.062050 ms
+		OnDeviceCommit() || 输入验证: nScalars=8388608
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=4154 MiB / total=12227 MiB (34.0%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=0% mem=5018/12227 MiB
+			commitToPolyAndBlinding() -> commit to p 耗时: 215.878415ms
+		OnDeviceCommit() || 输入验证: nScalars=2
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=3898 MiB / total=12227 MiB (31.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=27% mem=4740/12227 MiB
+		OnDeviceCommit() || 输入验证: nScalars=2
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=3898 MiB / total=12227 MiB (31.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=26% mem=4730/12227 MiB
+			commitToPolyAndBlinding() -> commit to b 耗时: 165.509688ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.004133ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl]) LRO[0] 耗时: 381.427087ms
+		OnDeviceCommit() || 输入验证: nScalars=8388608
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=4154 MiB / total=12227 MiB (34.0%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=26% mem=4986/12227 MiB
+			commitToPolyAndBlinding() -> commit to p 耗时: 224.501977ms
+		OnDeviceCommit() || 输入验证: nScalars=2
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=3898 MiB / total=12227 MiB (31.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=39% mem=4730/12227 MiB
+		OnDeviceCommit() || 输入验证: nScalars=2
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=3898 MiB / total=12227 MiB (31.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=39% mem=4730/12227 MiB
+			commitToPolyAndBlinding() -> commit to b 耗时: 150.362023ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.004125ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_R], s.bp[id_Br]) LRO[1] 耗时: 374.901097ms
+		OnDeviceCommit() || 输入验证: nScalars=8388608
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=4154 MiB / total=12227 MiB (34.0%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=21% mem=4986/12227 MiB
+			commitToPolyAndBlinding() -> commit to p 耗时: 199.344353ms
+		OnDeviceCommit() || 输入验证: nScalars=2
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=3898 MiB / total=12227 MiB (31.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=50% mem=4760/12227 MiB
+		OnDeviceCommit() || 输入验证: nScalars=2
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=3898 MiB / total=12227 MiB (31.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=50% mem=4760/12227 MiB
+			commitToPolyAndBlinding() -> commit to b 耗时: 162.398698ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.004216ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_O], s.bp[id_Bo]) LRO[2] 耗时: 361.784154ms
+	solveConstraints() || commitToLRO() 耗时: 1118.116732 ms
+prove() -> solveConstraints 耗时: 3196.595114ms
+		deriveGammaAndBeta() || wait for LRO to be committed 耗时: 3196.071137ms
+		completeQk() || wait for solver to be done 耗时: 3024.823859ms
+prove() -> completeQk 耗时: 3196.655829ms
+		computeQuotient() || wait for solver to be done 耗时: 3059.315325ms
+prove() -> deriveGammaAndBeta 耗时: 3196.854527ms
+		buildRatioCopyConstraint() || wait for gamma and beta to be derived 耗时: 3196.887638ms
+		buildRatioCopyConstraint() || iop.BuildRatioCopyConstraint 耗时: 1395.801624ms
+		OnDeviceCommit() || 输入验证: nScalars=8388608
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=4154 MiB / total=12227 MiB (34.0%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=9% mem=5016/12227 MiB
+			commitToPolyAndBlinding() -> commit to p 耗时: 300.154017ms
+		OnDeviceCommit() || 输入验证: nScalars=3
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=3898 MiB / total=12227 MiB (31.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=56% mem=4760/12227 MiB
+		OnDeviceCommit() || 输入验证: nScalars=3
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=3898 MiB / total=12227 MiB (31.9%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=25% mem=4760/12227 MiB
+			commitToPolyAndBlinding() -> commit to b 耗时: 164.445195ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.004023ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 464.659696ms
+prove() -> buildRatioCopyConstraint 耗时: 5057.402451ms
+		computeQuotient() || wait for Z to be committed 耗时: 1860.688052ms
+	computeQuotient() || prepare to compute & derive alpha): 5194.903339 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 184.431626 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 178.983106 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 173.907410 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 174.545701 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 173.384156 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 161.764470 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 154.644804 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 161.633207 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 156.978671 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 161.750568 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 161.946113 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 159.364510 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 157.459620 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 159.588592 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 166.709687 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 162.380018 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 156.693285 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 161.766222 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 161.125039 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 157.983915 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 154.618783 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 158.844335 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 160.768993 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 158.425973 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 155.168497 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 157.254078 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 155.867776 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 160.564183 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 156.565992 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 158.429292 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 154.846345 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 159.305092 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 157.520503 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 158.144947 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 154.697238 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 192.140972 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 158.226681 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 161.533993 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 158.111690 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 169.912189 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 157.615179 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 174.877826 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 157.258385 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 163.000312 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 158.649741 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 170.905999 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 155.082557 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 158.776465 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 155.993060 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 160.869934 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 156.518954 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 159.651191 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 167.390708 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 160.523994 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 154.821716 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 164.101318 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 157.456377 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 160.259164 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 156.279289 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 168.223683 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 155.356617 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 158.291023 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 155.259069 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 159.311595 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 155.303249 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 159.358970 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 155.316886 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 158.625536 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 155.567424 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 159.928254 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 159.906167 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 167.087162 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 156.911004 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 157.921725 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 156.773658 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 169.151249 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 156.754186 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 188.001323 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 172.884093 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 161.764290 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 163.915491 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 175.413437 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 160.616964 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 162.058446 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 154.727000 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 162.844812 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 154.901855 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 169.296545 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 173.487212 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 164.069609 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 158.612005 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 172.506118 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 155.140411 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 169.426253 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 156.259486 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 157.913243 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 156.735027 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 159.828395 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 156.805239 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 158.349912 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 159.828890 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 177.191079 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 161.002437 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 162.884847 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 156.819073 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 160.048363 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 158.119488 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 161.960436 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 181.646437 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 157.820831 ms
+		computeNumerator() || polynomial fft (NttOnDevice) 耗时: 158.300884 ms
+		[Memory] Before CopyFromDevice (D2H): poly size=8388608 coefficients, 268435456 bytes (256.00 MiB)
+		[Memory] Before CopyFromDevice (D2H):
+		[Before D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[Before D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		[Memory] After CopyFromDevice (D2H):
+		[After D2H] GPU memory: used=7482 MiB / total=12227 MiB (61.2%)
+		[After D2H] CPU memory: allocated=11599 MiB, total_allocated=42679 MiB, sys=12260 MiB
+		computeNumerator() || polynomial ifft (INttOnDevice) 耗时: 166.619858 ms
+	computeQuotient() || computeNumerator() 耗时: 28522.142516 ms
+		divideByZH() || parallelize divide 耗时: 86.360333 ms
+		divideByZH() || ToCanonical 耗时: 1438.679004 ms
+	computeQuotient() || divideByZH() 耗时: 1525.104556 ms
+		OnDeviceCommit() || 输入验证: nScalars=8388610
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=8252 MiB / total=12227 MiB (67.5%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=77% mem=9115/12227 MiB
+		commitToQuotient() || commit h1 耗时: 1398.418161 ms
+		OnDeviceCommit() || 输入验证: nScalars=8388610
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=8252 MiB / total=12227 MiB (67.5%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=90% mem=9082/12227 MiB
+		commitToQuotient() || commit h2 耗时: 1289.427809 ms
+		OnDeviceCommit() || 输入验证: nScalars=8388610
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=8252 MiB / total=12227 MiB (67.5%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=63% mem=8574/12227 MiB
+		commitToQuotient() || commit h3 耗时: 284.201350 ms
+		commitToQuotient() || commitToQuotient() 总耗时: 2972.112945 ms
+	computeQuotient() || commitToQuotient() 耗时: 2972.115012 ms
+	computeQuotient() || deriveZeta() & clean up 耗时: 0.120684 ms
+prove() -> computeQuotient 耗时: 38214.446148ms
+		openZ() || wait for H to be committed and zeta to be derived 耗时: 38213.698052ms
+		computeLinearizedPolynomial() || wait for H to be committed and zeta to be derived 耗时: 38213.715674ms
+		openZ() || getBlindedCoefficients 耗时: 165.902968ms
+		OnDeviceCommit() || 输入验证: nScalars=8388610
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=7740 MiB / total=12227 MiB (63.3%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=1% mem=8584/12227 MiB
+		openZ() || Open 耗时: 792.901598ms
+prove() -> openZ 耗时: 39172.551554ms
+		computeLinearizedPolynomial() || innerComputeLinearizedPoly 耗时: 1756.867509ms
+		OnDeviceCommit() || 输入验证: nScalars=8388611
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=7740 MiB / total=12227 MiB (63.3%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=8% mem=8585/12227 MiB
+		computeLinearizedPolynomial() || kzg.Commit 耗时: 282.735502 ms
+prove() -> computeLinearizedPolynomial 耗时: 40253.414151ms
+		batchOpening() || wait for linearizedPolynomial 耗时: 40254.193775ms
+		batchOpening() || prepare polysToOpen and digestsToOpen 耗时: 0.011641ms
+		OnDeviceCommit() || 输入验证: nScalars=8388610
+		[ICICLE] active device: type=CUDA id=0
+		[ICICLE] memory: used=7740 MiB / total=12227 MiB (63.3%)
+		[SMI] raw="Field "cuda_version" is not a valid field to query."
+		[SMI] util=4% mem=8587/12227 MiB
+		batchOpening() || BatchOpenSinglePoint 耗时: 838.749395ms
+prove() -> batchOpening 耗时: 41092.983399ms
+prove() -> prove() 总耗时: 42402.900973ms
+prove outer 耗时: 47879.342434 ms
+verify outer 耗时: 2.847580 ms
+outer circuit verified

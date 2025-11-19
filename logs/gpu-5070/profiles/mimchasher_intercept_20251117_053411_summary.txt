@@ -1,9 +1,0 @@
-=== CUDA API 拦截摘要 ===
-生成时间: Mon Nov 17 05:35:39 CST 2025
-日志文件: /home/jinjin/jinjin/code/eonark-gpu/scripts/../logs/gpu-5070/profiles//mimchasher_intercept_20251117_053411.log
-
-警告: 未找到摘要信息
-
-=== 内存分配模式分析 ===
-
-分配大小分布（前10个最大的分配）:
