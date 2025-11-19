@@ -1,0 +1,17 @@
+[msm batch version 0]
+compile inner 耗时: 1892.461457 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/usr/local/lib/backend
+2025/11/19 15:38:30 [MSM batch] size=512, BatchSize=3, PrecomputeFactor=1, C=0, Bitsize=0
+2025/11/19 15:38:30 [TIMING] commitToLRO: total=35.623338ms, bigMSM=7.554563ms, blinding=28.068159ms
+prove inner 耗时: 1849.487988 ms
+verify inner 耗时: 2.910567 ms
+assemble Poseidon2-FS inputs 耗时: 0.919703 ms
+compile outer(frontend.Compile) 耗时: 3517.411786 ms
+[outer] nbConstraints=6312222 nbPublic=4 nbSecret=168
+solve outer 耗时: 2055.153624ms
+outer circuit solved
+compile outer(pkOuter.Compile) 耗时: 26808.139993 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/usr/local/lib/backend
+2025/11/19 15:39:11 [MSM batch] size=8388608, BatchSize=3, PrecomputeFactor=1, C=0, Bitsize=0
+[WARNING] msm: msm size (including precomputation) is too large for batching, running sequential msms instead
+2025/11/19 15:39:11 [TIMING] commitToLRO: total=1.068246023s, bigMSM=1.033770877s, blinding=34.474346ms
