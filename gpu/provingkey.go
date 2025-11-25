@@ -3,6 +3,7 @@
 package gpu
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/consensys/gnark-crypto/ecc/bls12-381/fr"
@@ -12,6 +13,8 @@ import (
 	plonkbls12381 "github.com/consensys/gnark/backend/plonk/bls12-381"
 
 	icicle_core "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/core"
+	icicle_bls12_381 "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381"
+	icicle_msm "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/msm"
 	icicle_runtime "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/runtime"
 )
 
@@ -41,12 +44,14 @@ type deviceInfo struct {
 	// Lagrange bases 的预计算结果（用于 L/R/O 等多项式的 commit）
 	// 注意：这些字段在 setupDevicePointers 中通过 initMsmPrecomputeLag 初始化
 	G1LagPrecomp  icicle_core.DeviceSlice
-	hasLagPrecomp bool // 标记是否已初始化预计算
+	hasLagPrecomp bool                  // 标记是否已初始化预计算
+	MsmCfgLag     icicle_core.MSMConfig // Lagrange bases 的 MSM 配置
 
 	// Monomial bases 的预计算结果（用于普通 KZG commit）
 	// 注意：这些字段在 setupDevicePointers 中通过 initMsmPrecomputeG1 初始化
 	G1Precomp    icicle_core.DeviceSlice
-	hasG1Precomp bool // 标记是否已初始化预计算
+	hasG1Precomp bool                  // 标记是否已初始化预计算
+	MsmCfgG1     icicle_core.MSMConfig // Monomial bases 的 MSM 配置
 
 	mu sync.Mutex
 }
@@ -98,4 +103,127 @@ func (di *deviceInfo) ensureHostBigTables(n uint64) ([]fr.Element, []fr.Element)
 		fft.BitReverse(di.hostBigRev)
 	})
 	return di.hostBigReg, di.hostBigRev
+}
+
+// initMsmPrecomputeLag 对 Lagrange bases 做一次预计算，存储到 G1LagPrecomp
+// N: 多项式长度（例如 domain0.Cardinality）
+func (di *deviceInfo) initMsmPrecomputeLag(N int) error {
+	cfg := icicle_msm.GetDefaultMSMConfig()
+	cfg.AreScalarsMontgomeryForm = true
+	cfg.AreBasesMontgomeryForm = false
+	cfg.BatchSize = 0 // 单次 MSM
+	cfg.ArePointsSharedInBatch = true
+
+	// 根据 N 选择 precompute_factor 和 c
+	// 只对大 MSM 开启预计算（N >= 2^21）
+	if N >= 2097152 { // 2^21
+		if N >= 8388608 { // 2^23 或更大（包括 8388610 等）
+			// 对于 2^23 规模及以上的 MSM，使用较大的预计算参数
+			cfg.PrecomputeFactor = 4
+			// cfg.C = 16
+		} else if N >= 4194304 { // 2^22
+			cfg.PrecomputeFactor = 4
+			// cfg.C = 16
+		} else {
+			// N >= 2^21 但 < 2^22，使用较小的预计算
+			cfg.PrecomputeFactor = 4
+			// cfg.C = 8
+		}
+	} else {
+		// 小规模 MSM，不使用预计算
+		cfg.PrecomputeFactor = 1
+		cfg.C = 0
+	}
+
+	var sample icicle_bls12_381.Affine
+	precomputeSize := N * int(cfg.PrecomputeFactor)
+
+	var precomputeErr icicle_runtime.EIcicleError
+	done := make(chan struct{})
+	icicle_runtime.RunOnDevice(&di.Device, func(args ...any) {
+		defer close(done)
+		if _, st := di.G1LagPrecomp.Malloc(sample.Size(), precomputeSize); st != icicle_runtime.Success {
+			precomputeErr = st
+			return
+		}
+
+		base := di.G1Device.G1Lagrange.RangeTo(N, false)
+		if st := icicle_msm.PrecomputeBases(base, &cfg, di.G1LagPrecomp); st != icicle_runtime.Success {
+			precomputeErr = st
+			return
+		}
+	})
+	<-done
+
+	if precomputeErr != icicle_runtime.Success {
+		return fmt.Errorf("initMsmPrecomputeLag failed: %s", precomputeErr.AsString())
+	}
+
+	di.MsmCfgLag = cfg
+	di.hasLagPrecomp = true
+	return nil
+}
+
+// initMsmPrecomputeG1 对 Monomial bases 做一次预计算，存储到 G1Precomp
+// N: 多项式长度（例如 domain0.Cardinality）
+// 注意：考虑到 quotient 多项式 h1/h2/h3 的长度可能是 N+2 或 N+3，预计算时使用 N+3 以确保覆盖
+func (di *deviceInfo) initMsmPrecomputeG1(N int) error {
+	cfg := icicle_msm.GetDefaultMSMConfig()
+	cfg.AreScalarsMontgomeryForm = true
+	cfg.AreBasesMontgomeryForm = false
+	cfg.BatchSize = 0 // 单次 MSM
+	cfg.ArePointsSharedInBatch = true
+
+	// 根据 N 选择 precompute_factor 和 c
+	// 只对大 MSM 开启预计算（N >= 2^21）
+	if N >= 2097152 { // 2^21
+		if N >= 8388608 { // 2^23 或更大（包括 8388610 等）
+			// 对于 2^23 规模及以上的 MSM，使用较大的预计算参数
+			cfg.PrecomputeFactor = 4
+			// cfg.C = 22
+		} else if N >= 4194304 { // 2^22
+			cfg.PrecomputeFactor = 4
+			// cfg.C = 22
+		} else {
+			// N >= 2^21 但 < 2^22，使用较小的预计算
+			cfg.PrecomputeFactor = 4
+			// cfg.C = 20
+		}
+	} else {
+		// 小规模 MSM，不使用预计算
+		cfg.PrecomputeFactor = 1
+		cfg.C = 0
+	}
+
+	// 预计算 N+3 个点，以覆盖 h1/h2/h3 的最大可能长度（N+2 或 N+3）
+	// 注意：实际预计算大小仍然是 (N+3) * PrecomputeFactor
+	maxPolyLen := N + 3
+	var sample icicle_bls12_381.Affine
+	precomputeSize := maxPolyLen * int(cfg.PrecomputeFactor)
+
+	var precomputeErr icicle_runtime.EIcicleError
+	done := make(chan struct{})
+	icicle_runtime.RunOnDevice(&di.Device, func(args ...any) {
+		defer close(done)
+		if _, st := di.G1Precomp.Malloc(sample.Size(), precomputeSize); st != icicle_runtime.Success {
+			precomputeErr = st
+			return
+		}
+
+		// 使用前 maxPolyLen 个 bases 进行预计算
+		base := di.G1Device.G1.RangeTo(maxPolyLen, false)
+		if st := icicle_msm.PrecomputeBases(base, &cfg, di.G1Precomp); st != icicle_runtime.Success {
+			precomputeErr = st
+			return
+		}
+	})
+	<-done
+
+	if precomputeErr != icicle_runtime.Success {
+		return fmt.Errorf("initMsmPrecomputeG1 failed: %s", precomputeErr.AsString())
+	}
+
+	di.MsmCfgG1 = cfg
+	di.hasG1Precomp = true
+	return nil
 }

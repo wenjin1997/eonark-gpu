@@ -41,6 +41,7 @@ func blsProjectiveToGnarkAffine(p icicle_bls12_381.Projective) curve.G1Affine {
 // p: 多项式系数（假设是 Montgomery 形式；gnark-crypto/fr 默认就是）
 // G1Device: 已在设备端的 G1 bases（例如 pk.deviceInfo.G1Device.G1）
 // 返回：kzg.Digest (= curve.G1Affine)
+// 注意：此函数不使用预计算，如需使用预计算请调用 OnDeviceCommitWithPrecompute
 func OnDeviceCommit(p []fr.Element, G1Device icicle_core.DeviceSlice) (kzg.Digest, icicle_runtime.EIcicleError) {
 	// 1) 把标量拷到设备
 	host := icicle_core.HostSliceFromElements(p)
@@ -49,58 +50,48 @@ func OnDeviceCommit(p []fr.Element, G1Device icicle_core.DeviceSlice) (kzg.Diges
 	host.CopyToDevice(&scalarsDev, true)
 	defer scalarsDev.Free()
 
-	// 2) 配置 MSM
+	// 2) 配置 MSM（不使用预计算，保持向后兼容）
 	cfg := icicle_msm.GetDefaultMSMConfig()
-	// gnark-crypto 的标量/基点默认在 Montgomery 形式
 	cfg.AreScalarsMontgomeryForm = true
 	cfg.AreBasesMontgomeryForm = false
+	cfg.PrecomputeFactor = 1 // 不使用预计算
 
-	// 根据多项式长度设置 PrecomputeFactor（与 OnDeviceCommitBatchLRO 保持一致）
-	N := len(p)
-	if N == 8388608 {
-		cfg.PrecomputeFactor = 8
-		cfg.C = 16
-	}
-
-	// 3) 预计算基点（如果 PrecomputeFactor > 1）
-	var basesToUse icicle_core.DeviceSlice
-	var precomputeOut icicle_core.DeviceSlice
-	needPrecompute := cfg.PrecomputeFactor > 1
-
-	if needPrecompute {
-		// 获取单个 Affine 点的大小（用于计算预计算输出的内存大小）
-		var samplePoint icicle_bls12_381.Affine
-		precomputeSize := N * int(cfg.PrecomputeFactor)
-
-		_, err := precomputeOut.Malloc(samplePoint.Size(), precomputeSize)
-		if err != icicle_runtime.Success {
-			log.Printf("[OnDeviceCommit] Failed to allocate memory for PrecomputeBases: %v", err)
-			return kzg.Digest{}, err
-		}
-		defer precomputeOut.Free()
-
-		// 调用 PrecomputeBases 进行预计算
-		err = icicle_msm.PrecomputeBases(G1Device, &cfg, precomputeOut)
-		if err != icicle_runtime.Success {
-			log.Printf("[OnDeviceCommit] PrecomputeBases failed: %v", err)
-			return kzg.Digest{}, err
-		}
-
-		basesToUse = precomputeOut
-	} else {
-		// 不使用预计算，直接使用原始基点
-		basesToUse = G1Device
-	}
-
-	// 4) 运行 MSM（输出 1 个 projective 点）
+	// 3) 运行 MSM（输出 1 个 projective 点）
 	out := make(icicle_core.HostSlice[icicle_bls12_381.Projective], 1)
-	st := icicle_msm.Msm(scalarsDev, basesToUse, &cfg, out)
+	st := icicle_msm.Msm(scalarsDev, G1Device, &cfg, out)
 
 	if st != icicle_runtime.Success {
 		return kzg.Digest{}, st
 	}
 
-	// 5) 转成 gnark 的 Affine（= kzg.Digest）
+	// 4) 转成 gnark 的 Affine（= kzg.Digest）
+	res := blsProjectiveToGnarkAffine(out[0])
+
+	return kzg.Digest(res), icicle_runtime.Success
+}
+
+// OnDeviceCommitWithPrecompute 使用预计算的 bases 做 MSM
+// p: 多项式系数
+// precomputedBases: 预计算的 bases（DeviceSlice），长度应该匹配 N * PrecomputeFactor
+// cfg: MSM 配置（必须与预计算时使用的配置一致）
+// 返回：kzg.Digest
+func OnDeviceCommitWithPrecompute(p []fr.Element, precomputedBases icicle_core.DeviceSlice, cfg *icicle_core.MSMConfig) (kzg.Digest, icicle_runtime.EIcicleError) {
+	// 1) 把标量拷到设备
+	host := icicle_core.HostSliceFromElements(p)
+
+	var scalarsDev icicle_core.DeviceSlice
+	host.CopyToDevice(&scalarsDev, true)
+	defer scalarsDev.Free()
+
+	// 2) 运行 MSM（输出 1 个 projective 点）
+	out := make(icicle_core.HostSlice[icicle_bls12_381.Projective], 1)
+	st := icicle_msm.Msm(scalarsDev, precomputedBases, cfg, out)
+
+	if st != icicle_runtime.Success {
+		return kzg.Digest{}, st
+	}
+
+	// 3) 转成 gnark 的 Affine（= kzg.Digest）
 	res := blsProjectiveToGnarkAffine(out[0])
 
 	return kzg.Digest(res), icicle_runtime.Success
@@ -112,6 +103,8 @@ func OnDeviceCommit(p []fr.Element, G1Device icicle_core.DeviceSlice) (kzg.Diges
 //   - polys 长度 = batchSize（例如 3）
 //   - 每个 polys[i] 都是长度相同的 []fr.Element（例如 N = domain0.Cardinality）
 //   - G1Lagrange 是长度 >= N 的 DeviceSlice（例如 pk.deviceInfo.G1Device.G1Lagrange.RangeTo(N, false)）
+//
+// 注意：此函数不使用预计算，如需使用预计算请调用 OnDeviceCommitBatchLROWithPrecompute
 func OnDeviceCommitBatchLRO(
 	polys [][]fr.Element,
 	G1Lagrange icicle_core.DeviceSlice,
@@ -172,104 +165,23 @@ func OnDeviceCommitBatchLRO(
 	elapsed := time.Since(start_time)
 	fmt.Printf("	OnDeviceCommitBatchLRO() || icicle_core.HostSliceFromElements() 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 
-	// 3) MSMConfig：开启 batch + 共享 bases
+	// 3) MSMConfig：开启 batch + 共享 bases（不使用预计算，保持向后兼容）
 	cfg := icicle_msm.GetDefaultMSMConfig()
 	cfg.BatchSize = int32(batchSize)
 	cfg.ArePointsSharedInBatch = true
-	cfg.AreScalarsMontgomeryForm = true // 跟你现有 OnDeviceCommit 保持一致
-	cfg.AreBasesMontgomeryForm = false  // G1Lagrange 是非 Montgomery
-	// cfg.IsAsync = true
-	// cfg.PrecomputeFactor = 4
-	// cfg.C = 16
-	if N == 8388608 {
-		cfg.PrecomputeFactor = 8
-		cfg.C = 16
-		// cfg.Bitsize = 255
-		// cfg.IsAsync = true
-	}
-
-	fmt.Println("")
-	fmt.Println("========= cfg config info ==========")
-	fmt.Printf("StreamHandle: %v\n", cfg.StreamHandle)
-	fmt.Printf("PrecomputeFactor: %v\n", cfg.PrecomputeFactor)
-	fmt.Printf("C: %v\n", cfg.C)
-	fmt.Printf("Bitsize: %v\n", cfg.Bitsize)
-	fmt.Printf("BatchSize: %v\n", cfg.BatchSize)
-	fmt.Printf("ArePointsSharedInBatch: %v\n", cfg.ArePointsSharedInBatch)
-	fmt.Printf("AreScalarsMontgomeryForm: %v\n", cfg.AreScalarsMontgomeryForm)
-	fmt.Printf("AreBasesMontgomeryForm: %v\n", cfg.AreBasesMontgomeryForm)
-	fmt.Printf("IsAsync: %v\n", cfg.IsAsync)
-	fmt.Printf("Ext: %v\n", cfg.Ext)
-	fmt.Println("========= cfg config info ==========")
-	fmt.Println("")
-
-	log.Printf("[MSM batch] size=%d, BatchSize=%d, PrecomputeFactor=%d, C=%d, Bitsize=%d",
-		N, cfg.BatchSize, cfg.PrecomputeFactor, cfg.C, cfg.Bitsize)
-
-	// 追踪：MSM 配置完成后的内存状态
-	printMemoryInfo("After MSM Config")
-
-	// 4) 预计算基点（PrecomputeBases）
-	// 获取单个 Affine 点的大小（用于计算预计算输出的内存大小）
-	var samplePoint icicle_bls12_381.Affine
-	precomputeSize := N * int(cfg.PrecomputeFactor)
-
-	var precomputeOut icicle_core.DeviceSlice
-	_, err := precomputeOut.Malloc(samplePoint.Size(), precomputeSize)
-	if err != icicle_runtime.Success {
-		log.Printf("[OnDeviceCommitBatchLRO] Failed to allocate memory for PrecomputeBases: %v", err)
-		return nil, err
-	}
-	defer precomputeOut.Free()
-
-	// 追踪：预计算内存分配后的内存状态
-	printMemoryInfo("After Precompute Memory Allocated")
-
-	// 调用 PrecomputeBases 进行预计算
-	start_time = time.Now()
-	err = icicle_msm.PrecomputeBases(G1Lagrange, &cfg, precomputeOut)
-	elapsed = time.Since(start_time)
-	if err != icicle_runtime.Success {
-		log.Printf("[OnDeviceCommitBatchLRO] PrecomputeBases failed: %v", err)
-		return nil, err
-	}
-	fmt.Printf("	OnDeviceCommitBatchLRO() || icicle_msm.PrecomputeBases() 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
-
-	// 追踪：预计算完成后的内存状态
-	printMemoryInfo("After PrecomputeBases")
+	cfg.AreScalarsMontgomeryForm = true
+	cfg.AreBasesMontgomeryForm = false
+	cfg.PrecomputeFactor = 1 // 不使用预计算
 
 	// 5) 准备结果 HostSlice，长度 = batchSize
 	out := make(icicle_core.HostSlice[icicle_bls12_381.Projective], batchSize)
 
-	// 追踪：结果数组创建后的内存状态
-	printMemoryInfo("After Result Array Created")
-
-	// 6) 调用 MSM：使用预计算的基点，一次性算出 batchSize 个结果
-	// 打印 MSM 调用前的内存信息
-	printMemoryInfo("Before MSM")
-
+	// 6) 调用 MSM：直接使用原始基点（不使用预计算）
 	start_time = time.Now()
-	st := icicle_msm.Msm(scalarsDev, precomputeOut, &cfg, out)
+	st := icicle_msm.Msm(scalarsDev, G1Lagrange, &cfg, out)
 	elapsed = time.Since(start_time)
 	fmt.Printf("	OnDeviceCommitBatchLRO() || icicle_msm.Msm() 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 
-	fmt.Println("")
-	fmt.Println("========= cfg config info (after MSM) ==========")
-	fmt.Printf("StreamHandle: %v\n", cfg.StreamHandle)
-	fmt.Printf("PrecomputeFactor: %v\n", cfg.PrecomputeFactor)
-	fmt.Printf("C: %v\n", cfg.C)
-	fmt.Printf("Bitsize: %v\n", cfg.Bitsize)
-	fmt.Printf("BatchSize: %v\n", cfg.BatchSize)
-	fmt.Printf("ArePointsSharedInBatch: %v\n", cfg.ArePointsSharedInBatch)
-	fmt.Printf("AreScalarsMontgomeryForm: %v\n", cfg.AreScalarsMontgomeryForm)
-	fmt.Printf("AreBasesMontgomeryForm: %v\n", cfg.AreBasesMontgomeryForm)
-	fmt.Printf("IsAsync: %v\n", cfg.IsAsync)
-	fmt.Printf("Ext: %v\n", cfg.Ext)
-	fmt.Println("========= cfg config info (after MSM) ==========")
-	fmt.Println("")
-
-	// 打印 MSM 调用后的内存信息
-	printMemoryInfo("After MSM")
 	if st != icicle_runtime.Success {
 		return nil, st
 	}
@@ -284,12 +196,65 @@ func OnDeviceCommitBatchLRO(
 	elapsed = time.Since(start_time)
 	fmt.Printf("	OnDeviceCommitBatchLRO() || blsProjectiveToGnarkAffine() 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 
-	// 追踪：转换完成后的内存状态
-	printMemoryInfo("After Conversion")
+	return res, icicle_runtime.Success
+}
 
-	fmt.Println("")
-	// 追踪：函数返回前的内存状态
-	printMemoryInfo("Function End")
+// OnDeviceCommitBatchLROWithPrecompute 使用预计算的 bases 做 batch MSM
+// polys: 多项式数组
+// precomputedBases: 预计算的 bases（DeviceSlice），长度应该匹配 N * PrecomputeFactor
+// cfg: MSM 配置（必须与预计算时使用的配置一致，且 BatchSize 和 ArePointsSharedInBatch 已设置）
+// 返回：kzg.Digest 数组
+func OnDeviceCommitBatchLROWithPrecompute(
+	polys [][]fr.Element,
+	precomputedBases icicle_core.DeviceSlice,
+	cfg *icicle_core.MSMConfig,
+) ([]kzg.Digest, icicle_runtime.EIcicleError) {
+	batchSize := len(polys)
+	if batchSize == 0 {
+		return nil, icicle_runtime.Success
+	}
+
+	// 确认所有多项式长度一致
+	N := len(polys[0])
+	for i := 1; i < batchSize; i++ {
+		if len(polys[i]) != N {
+			log.Printf("[OnDeviceCommitBatchLROWithPrecompute] polys have different lengths: N=%d, len(polys[%d])=%d",
+				N, i, len(polys[i]))
+			return nil, icicle_runtime.InvalidArgument
+		}
+	}
+
+	// 1) 把 [L, R, O] flatten 成一个大标量数组：L || R || O
+	flatten := make([]fr.Element, 0, batchSize*N)
+	for i := 0; i < batchSize; i++ {
+		flatten = append(flatten, polys[i]...)
+	}
+
+	// 2) HostSlice → DeviceSlice
+	host := icicle_core.HostSliceFromElements(flatten)
+	var scalarsDev icicle_core.DeviceSlice
+	host.CopyToDevice(&scalarsDev, true)
+	defer scalarsDev.Free()
+
+	// 3) 准备结果 HostSlice，长度 = batchSize
+	out := make(icicle_core.HostSlice[icicle_bls12_381.Projective], batchSize)
+
+	// 4) 调用 MSM：使用预计算的基点
+	start_time := time.Now()
+	st := icicle_msm.Msm(scalarsDev, precomputedBases, cfg, out)
+	elapsed := time.Since(start_time)
+	fmt.Printf("	OnDeviceCommitBatchLROWithPrecompute() || icicle_msm.Msm() 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
+
+	if st != icicle_runtime.Success {
+		return nil, st
+	}
+
+	// 5) Projective → gnark Affine（= kzg.Digest）
+	res := make([]kzg.Digest, batchSize)
+	for i := 0; i < batchSize; i++ {
+		aff := blsProjectiveToGnarkAffine(out[i])
+		res[i] = kzg.Digest(aff)
+	}
 
 	return res, icicle_runtime.Success
 }

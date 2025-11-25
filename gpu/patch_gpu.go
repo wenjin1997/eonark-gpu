@@ -235,6 +235,17 @@ func (pk *ProvingKey) setupDevicePointers(spr *cs.SparseR1CS) error {
 		return copyErr
 	}
 
+	/***********************  MSM 预计算初始化  **************************/
+	// 对 Lagrange bases 做预计算（用于 L/R/O 等多项式的 commit）
+	if err := pk.deviceInfo.initMsmPrecomputeLag(n); err != nil {
+		return fmt.Errorf("initMsmPrecomputeLag: %w", err)
+	}
+
+	// 对 Monomial bases 做预计算（用于普通 KZG commit）
+	if err := pk.deviceInfo.initMsmPrecomputeG1(n); err != nil {
+		return fmt.Errorf("initMsmPrecomputeG1: %w", err)
+	}
+
 	return nil
 
 }
@@ -630,25 +641,78 @@ func (s *instance) commitToLRO() error {
 	case <-s.chbp:
 	}
 
-	// g := new(errgroup.Group)
+	// 优先走 GPU batch 路径（使用预计算的 bases）
+	if HasIcicle && s.pk != nil && s.pk.deviceInfo != nil && s.pk.deviceInfo.hasLagPrecomp {
+		coeffL := s.x[id_L].Coefficients()
+		coeffR := s.x[id_R].Coefficients()
+		coeffO := s.x[id_O].Coefficients()
 
-	// g.Go(func() (err error) {
-	// 	s.proof.LRO[0], err = s.commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl])
-	// 	return
-	// })
+		// 检查长度是否匹配
+		n := int(s.domain0.Cardinality)
+		if len(coeffL) == n && len(coeffR) == n && len(coeffO) == n && n == s.pk.deviceInfo.N {
+			var (
+				digs []kzg.Digest
+				st   icicle_runtime.EIcicleError
+			)
+			done := make(chan struct{})
 
-	// g.Go(func() (err error) {
-	// 	s.proof.LRO[1], err = s.commitToPolyAndBlinding(s.x[id_R], s.bp[id_Br])
-	// 	return
-	// })
+			start := time.Now()
+			t0 := time.Now()
+			icicle_runtime.RunOnDevice(&s.pk.deviceInfo.Device, func(args ...any) {
+				defer close(done)
+				// 使用预计算的 Lagrange bases 和配置
+				cfg := s.pk.deviceInfo.MsmCfgLag
+				cfg.BatchSize = 3 // L, R, O 三个多项式
+				cfg.ArePointsSharedInBatch = true
+				digs, st = kzg_bls12_381.OnDeviceCommitBatchLROWithPrecompute(
+					[][]fr.Element{coeffL, coeffR, coeffO},
+					s.pk.deviceInfo.G1LagPrecomp,
+					&cfg,
+				)
+			})
+			<-done
+			t1 := time.Since(t0)
 
-	// g.Go(func() (err error) {
-	// 	s.proof.LRO[2], err = s.commitToPolyAndBlinding(s.x[id_O], s.bp[id_Bo])
-	// 	return
-	// })
+			if st == icicle_runtime.Success {
+				// 把 batch 出来的三个 digest 先当作"无 blinding 的 commit"
+				cL := curve.G1Affine(digs[0])
+				cR := curve.G1Affine(digs[1])
+				cO := curve.G1Affine(digs[2])
 
-	// return g.Wait()
+				t2Start := time.Now()
+				// 然后给每个加上 blinding contribution
+				cbL, err := commitBlindingFactorGPUOrCPU(n, s.bp[id_Bl], s.pk)
+				if err != nil {
+					return err
+				}
+				cbR, err := commitBlindingFactorGPUOrCPU(n, s.bp[id_Br], s.pk)
+				if err != nil {
+					return err
+				}
+				cbO, err := commitBlindingFactorGPUOrCPU(n, s.bp[id_Bo], s.pk)
+				if err != nil {
+					return err
+				}
+				t2 := time.Since(t2Start)
+				total := time.Since(start)
+				log.Printf("[TIMING] commitToLRO: total=%v, bigMSM=%v, blinding=%v", total, t1, t2)
 
+				cL.Add(&cL, &cbL)
+				cR.Add(&cR, &cbR)
+				cO.Add(&cO, &cbO)
+
+				s.proof.LRO[0] = cL
+				s.proof.LRO[1] = cR
+				s.proof.LRO[2] = cO
+				return nil
+			}
+
+			// GPU 失败就退回 CPU 串行老逻辑
+			log.Printf("[GPU failed -> CPU] commitToLRO batch: %s", st.AsString())
+		}
+	}
+
+	// CPU 回退路径：分别提交 L, R, O
 	var err error
 	start_time := time.Now()
 	if s.proof.LRO[0], err = s.commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl]); err != nil {
@@ -1734,29 +1798,73 @@ func coefficients(p []*iop.Polynomial) [][]fr.Element {
 
 // func commitToQuotient(h1, h2, h3 []fr.Element, proof *plonkbls12381.Proof, kzgPk kzg.ProvingKey) error {
 func commitToQuotient(h1, h2, h3 []fr.Element, proof *plonkbls12381.Proof, pk *ProvingKey) error {
-	// g := new(errgroup.Group)
+	// 优先走 GPU batch 路径（使用预计算的 Monomial bases）
+	if HasIcicle && pk != nil && pk.deviceInfo != nil && pk.deviceInfo.hasG1Precomp {
+		// 检查 h1, h2, h3 的长度是否一致（batch MSM 要求长度一致）
+		lenH1 := len(h1)
+		lenH2 := len(h2)
+		lenH3 := len(h3)
+		maxLen := lenH1
+		if lenH2 > maxLen {
+			maxLen = lenH2
+		}
+		if lenH3 > maxLen {
+			maxLen = lenH3
+		}
 
-	// g.Go(func() (err error) {
-	// 	// proof.H[0], err = kzg.Commit(h1, kzgPk)
-	// 	proof.H[0], err = commitOnGPUOrCPU(h1, pk, false /* monomial */)
-	// 	return
-	// })
+		// 如果长度一致，且长度 <= 预计算的 bases 长度（N+3），使用 batch MSM
+		// 注意：预计算时使用了 N+3 个 bases，所以可以处理长度 <= N+3 的多项式
+		maxPrecomputedLen := pk.deviceInfo.N + 3
+		if lenH1 == lenH2 && lenH2 == lenH3 && maxLen <= maxPrecomputedLen {
+			var (
+				digs []kzg.Digest
+				st   icicle_runtime.EIcicleError
+			)
+			done := make(chan struct{})
 
-	// g.Go(func() (err error) {
-	// 	// proof.H[1], err = kzg.Commit(h2, kzgPk)
-	// 	proof.H[1], err = commitOnGPUOrCPU(h2, pk, false /* monomial */)
-	// 	return
-	// })
+			start := time.Now()
+			t0 := time.Now()
+			icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
+				defer close(done)
+				// 使用预计算的 Monomial bases 和配置
+				cfg := pk.deviceInfo.MsmCfgG1
+				cfg.BatchSize = 3 // h1, h2, h3 三个多项式
+				cfg.ArePointsSharedInBatch = true
+				// 根据实际多项式长度截取预计算的 bases
+				// 预计算的 bases 长度是 (N+3) * PrecomputeFactor
+				// 实际需要的长度是 len(h1) * PrecomputeFactor
+				actualLen := lenH1
+				neededPrecompLen := actualLen * int(cfg.PrecomputeFactor)
+				precompBases := pk.deviceInfo.G1Precomp.RangeTo(neededPrecompLen, false)
+				digs, st = kzg_bls12_381.OnDeviceCommitBatchLROWithPrecompute(
+					[][]fr.Element{h1, h2, h3},
+					precompBases,
+					&cfg,
+				)
+			})
+			<-done
+			t1 := time.Since(t0)
 
-	// g.Go(func() (err error) {
-	// 	// proof.H[2], err = kzg.Commit(h3, kzgPk)
-	// 	proof.H[2], err = commitOnGPUOrCPU(h3, pk, false /* monomial */)
-	// 	return
-	// })
+			if st == icicle_runtime.Success {
+				proof.H[0] = curve.G1Affine(digs[0])
+				proof.H[1] = curve.G1Affine(digs[1])
+				proof.H[2] = curve.G1Affine(digs[2])
+				total := time.Since(start)
+				log.Printf("[TIMING] commitToQuotient: total=%v, batchMSM=%v", total, t1)
+				return nil
+			}
 
-	// return g.Wait()
+			// GPU batch 失败就退回单独提交
+			log.Printf("[GPU batch failed -> sequential] commitToQuotient: %s", st.AsString())
+		} else {
+			// 长度不一致，无法使用 batch，回退到单独提交
+			log.Printf("[Length mismatch -> sequential] commitToQuotient: len(h1)=%d, len(h2)=%d, len(h3)=%d, expected=%d",
+				lenH1, lenH2, lenH3, pk.deviceInfo.N)
+		}
+	}
+
+	// CPU 回退路径：分别提交 h1, h2, h3
 	var err error
-
 	start_time := time.Now()
 	fmt.Printf("		commitToQuotient() || commit h1 开始\n")
 	proof.H[0], err = commitOnGPUOrCPU(h1, pk, false /* monomial */)
@@ -2429,14 +2537,34 @@ func commitOnGPUOrCPU(coeffs []fr.Element, pk *ProvingKey, useLagrange bool) (cu
 		done := make(chan struct{})
 		icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
 			defer close(done)
-			if useLagrange {
-				// dig, st = kzg_bls12_381.OnDeviceCommit(coeffs, pk.deviceInfo.G1Device.G1Lagrange)
-				base := pk.deviceInfo.G1Device.G1Lagrange.RangeTo(len(coeffs), false)
-				dig, st = kzg_bls12_381.OnDeviceCommit(coeffs, base)
+			N := len(coeffs)
+
+			// 优先使用预计算结果
+			if useLagrange && pk.deviceInfo.hasLagPrecomp && N == pk.deviceInfo.N {
+				// 使用预计算的 Lagrange bases（长度完全匹配）
+				dig, st = kzg_bls12_381.OnDeviceCommitWithPrecompute(coeffs, pk.deviceInfo.G1LagPrecomp, &pk.deviceInfo.MsmCfgLag)
+			} else if !useLagrange && pk.deviceInfo.hasG1Precomp {
+				// Monomial bases 预计算了 N+3 个点，可以处理长度 <= N+3 的多项式
+				maxPrecomputedLen := pk.deviceInfo.N + 3
+				if N <= maxPrecomputedLen {
+					// 根据实际长度截取预计算的 bases
+					neededPrecompLen := N * int(pk.deviceInfo.MsmCfgG1.PrecomputeFactor)
+					precompBases := pk.deviceInfo.G1Precomp.RangeTo(neededPrecompLen, false)
+					dig, st = kzg_bls12_381.OnDeviceCommitWithPrecompute(coeffs, precompBases, &pk.deviceInfo.MsmCfgG1)
+				} else {
+					// 长度超出预计算范围，回退到不使用预计算的版本
+					base := pk.deviceInfo.G1Device.G1.RangeTo(N, false)
+					dig, st = kzg_bls12_381.OnDeviceCommit(coeffs, base)
+				}
 			} else {
-				// dig, st = kzg_bls12_381.OnDeviceCommit(coeffs, pk.deviceInfo.G1Device.G1)
-				base := pk.deviceInfo.G1Device.G1.RangeTo(len(coeffs), false)
-				dig, st = kzg_bls12_381.OnDeviceCommit(coeffs, base)
+				// 回退到不使用预计算的版本
+				if useLagrange {
+					base := pk.deviceInfo.G1Device.G1Lagrange.RangeTo(N, false)
+					dig, st = kzg_bls12_381.OnDeviceCommit(coeffs, base)
+				} else {
+					base := pk.deviceInfo.G1Device.G1.RangeTo(N, false)
+					dig, st = kzg_bls12_381.OnDeviceCommit(coeffs, base)
+				}
 			}
 		})
 		<-done
