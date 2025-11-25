@@ -30,12 +30,23 @@ type deviceInfo struct {
 	BigTwiddlesN    icicle_core.DeviceSlice // [1, w_N, w_N^2, ...]
 	BigTwiddlesNRev icicle_core.DeviceSlice // 位反序版
 
-	// —— 仅用于 CPU 回退时的“按需”Host 表（懒加载）
+	// —— 仅用于 CPU 回退时的"按需"Host 表（懒加载）
 	onceCoset, onceBig         sync.Once
 	hostCosetReg, hostCosetRev []fr.Element
 	hostBigReg, hostBigRev     []fr.Element
 	// 供构建 big 表使用的生成元（setup 时记下）
 	bigW fr.Element
+
+	// MSM 预计算相关字段
+	// Lagrange bases 的预计算结果（用于 L/R/O 等多项式的 commit）
+	// 注意：这些字段在 setupDevicePointers 中通过 initMsmPrecomputeLag 初始化
+	G1LagPrecomp  icicle_core.DeviceSlice
+	hasLagPrecomp bool // 标记是否已初始化预计算
+
+	// Monomial bases 的预计算结果（用于普通 KZG commit）
+	// 注意：这些字段在 setupDevicePointers 中通过 initMsmPrecomputeG1 初始化
+	G1Precomp    icicle_core.DeviceSlice
+	hasG1Precomp bool // 标记是否已初始化预计算
 
 	mu sync.Mutex
 }

@@ -47,6 +47,7 @@ func OnDeviceCommit(p []fr.Element, G1Device icicle_core.DeviceSlice) (kzg.Diges
 
 	var scalarsDev icicle_core.DeviceSlice
 	host.CopyToDevice(&scalarsDev, true)
+	defer scalarsDev.Free()
 
 	// 2) 配置 MSM
 	cfg := icicle_msm.GetDefaultMSMConfig()
@@ -54,19 +55,53 @@ func OnDeviceCommit(p []fr.Element, G1Device icicle_core.DeviceSlice) (kzg.Diges
 	cfg.AreScalarsMontgomeryForm = true
 	cfg.AreBasesMontgomeryForm = false
 
-	// 3) 运行 MSM（输出 1 个 projective 点）
+	// 根据多项式长度设置 PrecomputeFactor（与 OnDeviceCommitBatchLRO 保持一致）
+	N := len(p)
+	if N == 8388608 {
+		cfg.PrecomputeFactor = 8
+		cfg.C = 16
+	}
+
+	// 3) 预计算基点（如果 PrecomputeFactor > 1）
+	var basesToUse icicle_core.DeviceSlice
+	var precomputeOut icicle_core.DeviceSlice
+	needPrecompute := cfg.PrecomputeFactor > 1
+
+	if needPrecompute {
+		// 获取单个 Affine 点的大小（用于计算预计算输出的内存大小）
+		var samplePoint icicle_bls12_381.Affine
+		precomputeSize := N * int(cfg.PrecomputeFactor)
+
+		_, err := precomputeOut.Malloc(samplePoint.Size(), precomputeSize)
+		if err != icicle_runtime.Success {
+			log.Printf("[OnDeviceCommit] Failed to allocate memory for PrecomputeBases: %v", err)
+			return kzg.Digest{}, err
+		}
+		defer precomputeOut.Free()
+
+		// 调用 PrecomputeBases 进行预计算
+		err = icicle_msm.PrecomputeBases(G1Device, &cfg, precomputeOut)
+		if err != icicle_runtime.Success {
+			log.Printf("[OnDeviceCommit] PrecomputeBases failed: %v", err)
+			return kzg.Digest{}, err
+		}
+
+		basesToUse = precomputeOut
+	} else {
+		// 不使用预计算，直接使用原始基点
+		basesToUse = G1Device
+	}
+
+	// 4) 运行 MSM（输出 1 个 projective 点）
 	out := make(icicle_core.HostSlice[icicle_bls12_381.Projective], 1)
-	st := icicle_msm.Msm(scalarsDev, G1Device, &cfg, out)
+	st := icicle_msm.Msm(scalarsDev, basesToUse, &cfg, out)
 
-	_ = scalarsDev.Free()
-
-	// 4) 转成 gnark 的 Affine（= kzg.Digest）
-	res := blsProjectiveToGnarkAffine(out[0])
-
-	// 5) 清理设备内存
 	if st != icicle_runtime.Success {
 		return kzg.Digest{}, st
 	}
+
+	// 5) 转成 gnark 的 Affine（= kzg.Digest）
+	res := blsProjectiveToGnarkAffine(out[0])
 
 	return kzg.Digest(res), icicle_runtime.Success
 }
