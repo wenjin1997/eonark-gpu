@@ -2538,7 +2538,7 @@ func (s *instance) toCosetLagrangeOnGPUorCPU_DEV(
 		defer s.pk.deviceInfo.mu.Unlock()
 
 		done := make(chan struct{})
-		startTotal := time.Now()
+		// startTotal := time.Now()
 		icicle_runtime.RunOnDevice(&s.pk.deviceInfo.Device, func(args ...any) {
 			defer close(done)
 			dev := *xdev
@@ -2576,9 +2576,9 @@ func (s *instance) toCosetLagrangeOnGPUorCPU_DEV(
 			}
 		})
 		<-done
-		totalElapsed := time.Since(startTotal)
-		fmt.Printf("		[Timing] toCosetLagrange 总耗时: %.6f ms (%.2f s)\n",
-			float64(totalElapsed.Nanoseconds())/1e6, float64(totalElapsed.Nanoseconds())/1e9)
+		// totalElapsed := time.Since(startTotal)
+		// fmt.Printf("		[Timing] toCosetLagrange 总耗时: %.6f ms (%.2f s)\n",
+		// 	float64(totalElapsed.Nanoseconds())/1e6, float64(totalElapsed.Nanoseconds())/1e9)
 
 		if gpuErr == nil {
 			// 和原 CPU 逻辑保持一致：本轮后 p 处于 Lagrange Regular

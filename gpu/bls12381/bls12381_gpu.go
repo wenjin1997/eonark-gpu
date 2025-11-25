@@ -1,7 +1,10 @@
 package bls12_381_gpu
 
 import (
+	"fmt"
 	"log"
+	"runtime"
+	"time"
 
 	curve "github.com/consensys/gnark-crypto/ecc/bls12-381"
 	"github.com/consensys/gnark-crypto/ecc/bls12-381/fp"
@@ -79,6 +82,9 @@ func OnDeviceCommitBatchLRO(
 	G1Lagrange icicle_core.DeviceSlice,
 ) ([]kzg.Digest, icicle_runtime.EIcicleError) {
 
+	// 追踪：函数开始时的内存状态
+	printMemoryInfo("Function Start")
+
 	batchSize := len(polys)
 	if batchSize == 0 {
 		return nil, icicle_runtime.Success
@@ -102,11 +108,34 @@ func OnDeviceCommitBatchLRO(
 		flatten = append(flatten, polys[i]...)
 	}
 
+	// 追踪：flatten 数组创建后的内存状态
+	printMemoryInfo("After Flatten Array Created")
+
 	// 2) HostSlice → DeviceSlice
+	// 计算 flatten 的内存大小（Byte），host 和 device 存储同样数量的数据
+	// fr.Element(=Fp) 大小为 fp.Bytes
+	flattenMemBytes := len(flatten) * fp.Bytes
+	fmt.Printf("	OnDeviceCommitBatchLRO() || flatten total elements: %d, per fr.Element: %d bytes, total: %.2f MB\n",
+		len(flatten), fp.Bytes, float64(flattenMemBytes)/(1024*1024))
+
+	start_time := time.Now()
 	host := icicle_core.HostSliceFromElements(flatten)
 	var scalarsDev icicle_core.DeviceSlice
+
+	// 追踪：HostSlice 创建后的内存状态
+	printMemoryInfo("After HostSlice Created")
+
+	// 追踪：CopyToDevice 前的内存信息
+	printMemoryInfo("Before CopyToDevice")
+
 	host.CopyToDevice(&scalarsDev, true)
 	defer scalarsDev.Free()
+
+	// 打印 CopyToDevice 后的内存信息
+	printMemoryInfo("After CopyToDevice")
+
+	elapsed := time.Since(start_time)
+	fmt.Printf("	OnDeviceCommitBatchLRO() || icicle_core.HostSliceFromElements() 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	// 3) MSMConfig：开启 batch + 共享 bases
 	cfg := icicle_msm.GetDefaultMSMConfig()
@@ -114,25 +143,119 @@ func OnDeviceCommitBatchLRO(
 	cfg.ArePointsSharedInBatch = true
 	cfg.AreScalarsMontgomeryForm = true // 跟你现有 OnDeviceCommit 保持一致
 	cfg.AreBasesMontgomeryForm = false  // G1Lagrange 是非 Montgomery
+	// cfg.IsAsync = true
+	// cfg.PrecomputeFactor = 4
+	// cfg.C = 16
+	if N == 8388608 {
+		cfg.PrecomputeFactor = 8
+		cfg.C = 16
+		// cfg.Bitsize = 255
+		// cfg.IsAsync = true
+	}
+
+	fmt.Println("")
+	fmt.Println("========= cfg config info ==========")
+	fmt.Printf("StreamHandle: %v\n", cfg.StreamHandle)
+	fmt.Printf("PrecomputeFactor: %v\n", cfg.PrecomputeFactor)
+	fmt.Printf("C: %v\n", cfg.C)
+	fmt.Printf("Bitsize: %v\n", cfg.Bitsize)
+	fmt.Printf("BatchSize: %v\n", cfg.BatchSize)
+	fmt.Printf("ArePointsSharedInBatch: %v\n", cfg.ArePointsSharedInBatch)
+	fmt.Printf("AreScalarsMontgomeryForm: %v\n", cfg.AreScalarsMontgomeryForm)
+	fmt.Printf("AreBasesMontgomeryForm: %v\n", cfg.AreBasesMontgomeryForm)
+	fmt.Printf("IsAsync: %v\n", cfg.IsAsync)
+	fmt.Printf("Ext: %v\n", cfg.Ext)
+	fmt.Println("========= cfg config info ==========")
+	fmt.Println("")
 
 	log.Printf("[MSM batch] size=%d, BatchSize=%d, PrecomputeFactor=%d, C=%d, Bitsize=%d",
 		N, cfg.BatchSize, cfg.PrecomputeFactor, cfg.C, cfg.Bitsize)
 
-	// 4) 准备结果 HostSlice，长度 = batchSize
+	// 追踪：MSM 配置完成后的内存状态
+	printMemoryInfo("After MSM Config")
+
+	// 4) 预计算基点（PrecomputeBases）
+	// 获取单个 Affine 点的大小（用于计算预计算输出的内存大小）
+	var samplePoint icicle_bls12_381.Affine
+	precomputeSize := N * int(cfg.PrecomputeFactor)
+
+	var precomputeOut icicle_core.DeviceSlice
+	_, err := precomputeOut.Malloc(samplePoint.Size(), precomputeSize)
+	if err != icicle_runtime.Success {
+		log.Printf("[OnDeviceCommitBatchLRO] Failed to allocate memory for PrecomputeBases: %v", err)
+		return nil, err
+	}
+	defer precomputeOut.Free()
+
+	// 追踪：预计算内存分配后的内存状态
+	printMemoryInfo("After Precompute Memory Allocated")
+
+	// 调用 PrecomputeBases 进行预计算
+	start_time = time.Now()
+	err = icicle_msm.PrecomputeBases(G1Lagrange, &cfg, precomputeOut)
+	elapsed = time.Since(start_time)
+	if err != icicle_runtime.Success {
+		log.Printf("[OnDeviceCommitBatchLRO] PrecomputeBases failed: %v", err)
+		return nil, err
+	}
+	fmt.Printf("	OnDeviceCommitBatchLRO() || icicle_msm.PrecomputeBases() 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
+
+	// 追踪：预计算完成后的内存状态
+	printMemoryInfo("After PrecomputeBases")
+
+	// 5) 准备结果 HostSlice，长度 = batchSize
 	out := make(icicle_core.HostSlice[icicle_bls12_381.Projective], batchSize)
 
-	// 5) 调用 MSM：一次性算出 batchSize 个结果
-	st := icicle_msm.Msm(scalarsDev, G1Lagrange, &cfg, out)
+	// 追踪：结果数组创建后的内存状态
+	printMemoryInfo("After Result Array Created")
+
+	// 6) 调用 MSM：使用预计算的基点，一次性算出 batchSize 个结果
+	// 打印 MSM 调用前的内存信息
+	printMemoryInfo("Before MSM")
+
+	start_time = time.Now()
+	st := icicle_msm.Msm(scalarsDev, precomputeOut, &cfg, out)
+	elapsed = time.Since(start_time)
+	fmt.Printf("	OnDeviceCommitBatchLRO() || icicle_msm.Msm() 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
+
+	fmt.Println("")
+	fmt.Println("========= cfg config info (after MSM) ==========")
+	fmt.Printf("StreamHandle: %v\n", cfg.StreamHandle)
+	fmt.Printf("PrecomputeFactor: %v\n", cfg.PrecomputeFactor)
+	fmt.Printf("C: %v\n", cfg.C)
+	fmt.Printf("Bitsize: %v\n", cfg.Bitsize)
+	fmt.Printf("BatchSize: %v\n", cfg.BatchSize)
+	fmt.Printf("ArePointsSharedInBatch: %v\n", cfg.ArePointsSharedInBatch)
+	fmt.Printf("AreScalarsMontgomeryForm: %v\n", cfg.AreScalarsMontgomeryForm)
+	fmt.Printf("AreBasesMontgomeryForm: %v\n", cfg.AreBasesMontgomeryForm)
+	fmt.Printf("IsAsync: %v\n", cfg.IsAsync)
+	fmt.Printf("Ext: %v\n", cfg.Ext)
+	fmt.Println("========= cfg config info (after MSM) ==========")
+	fmt.Println("")
+
+	// 打印 MSM 调用后的内存信息
+	printMemoryInfo("After MSM")
 	if st != icicle_runtime.Success {
 		return nil, st
 	}
 
-	// 6) Projective → gnark Affine（= kzg.Digest）
+	// 7) Projective → gnark Affine（= kzg.Digest）
+	start_time = time.Now()
 	res := make([]kzg.Digest, batchSize)
 	for i := 0; i < batchSize; i++ {
 		aff := blsProjectiveToGnarkAffine(out[i])
 		res[i] = kzg.Digest(aff)
 	}
+	elapsed = time.Since(start_time)
+	fmt.Printf("	OnDeviceCommitBatchLRO() || blsProjectiveToGnarkAffine() 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
+
+	// 追踪：转换完成后的内存状态
+	printMemoryInfo("After Conversion")
+
+	fmt.Println("")
+	// 追踪：函数返回前的内存状态
+	printMemoryInfo("Function End")
+
 	return res, icicle_runtime.Success
 }
 
@@ -226,4 +349,42 @@ func MontConvOnDevice(s icicle_core.DeviceSlice, into bool) icicle_runtime.EIcic
 		return icicle_bls12_381.ToMontgomery(s)
 	}
 	return icicle_bls12_381.FromMontgomery(s)
+}
+
+// getCPUMemoryInfo 获取当前 CPU 内存使用情况（MiB）
+func getCPUMemoryInfo() (allocated, total, sys uint64) {
+	var m runtime.MemStats
+	runtime.ReadMemStats(&m)
+
+	// allocated: 当前分配的堆内存
+	allocated = m.Alloc / 1024 / 1024 // 转换为 MiB
+
+	// total: 从系统分配的总内存
+	total = m.TotalAlloc / 1024 / 1024 // 转换为 MiB
+
+	// sys: 从系统获取的内存
+	sys = m.Sys / 1024 / 1024 // 转换为 MiB
+
+	return allocated, total, sys
+}
+
+// printMemoryInfo 打印 GPU 和 CPU 内存信息
+func printMemoryInfo(label string) {
+	// GPU 内存
+	if mem, err := icicle_runtime.GetAvailableMemory(); err == icicle_runtime.Success && mem != nil {
+		used := mem.Total - mem.Free
+		pct := 0.0
+		if mem.Total > 0 {
+			pct = (float64(used) / float64(mem.Total)) * 100.0
+		}
+		fmt.Printf("		[%s] GPU memory: used=%.0f MiB / total=%.0f MiB (%.1f%%)\n",
+			label, float64(used)/1024.0/1024.0, float64(mem.Total)/1024.0/1024.0, pct)
+	} else {
+		fmt.Printf("		[%s] GPU memory: <unavailable> (err=%v)\n", label, err)
+	}
+
+	// CPU 内存
+	allocated, total, sys := getCPUMemoryInfo()
+	fmt.Printf("		[%s] CPU memory: allocated=%d MiB, total_allocated=%d MiB, sys=%d MiB\n",
+		label, allocated, total, sys)
 }

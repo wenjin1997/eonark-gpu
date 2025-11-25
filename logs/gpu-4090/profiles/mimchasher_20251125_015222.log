@@ -1,0 +1,226 @@
+compile inner 耗时: 951.915793 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/home/jade/.local/icicle/lib/backend
+prove() -> icicle device setup 耗时: 161.138086ms
+prove() -> initBlindingPolynomials 耗时: 0.014358ms
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 7.658632 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.004740 ms
+		[Function Start] GPU memory: used=559 MiB / total=24081 MiB (2.3%)
+		[Function Start] CPU memory: allocated=1538 MiB, total_allocated=3076 MiB, sys=3096 MiB
+		[After Flatten Array Created] GPU memory: used=559 MiB / total=24081 MiB (2.3%)
+		[After Flatten Array Created] CPU memory: allocated=1538 MiB, total_allocated=3076 MiB, sys=3096 MiB
+	OnDeviceCommitBatchLRO() || flatten total elements: 1536, per fr.Element: 48 bytes, total: 0.07 MB
+		[After HostSlice Created] GPU memory: used=559 MiB / total=24081 MiB (2.3%)
+		[After HostSlice Created] CPU memory: allocated=1538 MiB, total_allocated=3076 MiB, sys=3096 MiB
+		[Before CopyToDevice] GPU memory: used=559 MiB / total=24081 MiB (2.3%)
+		[Before CopyToDevice] CPU memory: allocated=1538 MiB, total_allocated=3076 MiB, sys=3096 MiB
+		[After CopyToDevice] GPU memory: used=559 MiB / total=24081 MiB (2.3%)
+		[After CopyToDevice] CPU memory: allocated=1538 MiB, total_allocated=3076 MiB, sys=3096 MiB
+	OnDeviceCommitBatchLRO() || icicle_core.HostSliceFromElements() 耗时: 0.219572 ms
+
+========= cfg config info ==========
+StreamHandle: <nil>
+PrecomputeFactor: 1
+C: 0
+Bitsize: 0
+BatchSize: 3
+ArePointsSharedInBatch: true
+AreScalarsMontgomeryForm: true
+AreBasesMontgomeryForm: false
+IsAsync: false
+Ext: <nil>
+========= cfg config info ==========
+
+2025/11/25 01:52:25 [MSM batch] size=512, BatchSize=3, PrecomputeFactor=1, C=0, Bitsize=0
+		[After MSM Config] GPU memory: used=559 MiB / total=24081 MiB (2.3%)
+		[After MSM Config] CPU memory: allocated=1538 MiB, total_allocated=3076 MiB, sys=3096 MiB
+		[After Precompute Memory Allocated] GPU memory: used=559 MiB / total=24081 MiB (2.3%)
+		[After Precompute Memory Allocated] CPU memory: allocated=1538 MiB, total_allocated=3076 MiB, sys=3096 MiB
+	OnDeviceCommitBatchLRO() || icicle_msm.PrecomputeBases() 耗时: 0.088290 ms
+		[After PrecomputeBases] GPU memory: used=559 MiB / total=24081 MiB (2.3%)
+		[After PrecomputeBases] CPU memory: allocated=1538 MiB, total_allocated=3076 MiB, sys=3096 MiB
+		[After Result Array Created] GPU memory: used=559 MiB / total=24081 MiB (2.3%)
+		[After Result Array Created] CPU memory: allocated=1538 MiB, total_allocated=3076 MiB, sys=3096 MiB
+		[Before MSM] GPU memory: used=559 MiB / total=24081 MiB (2.3%)
+		[Before MSM] CPU memory: allocated=1538 MiB, total_allocated=3076 MiB, sys=3096 MiB
+	OnDeviceCommitBatchLRO() || icicle_msm.Msm() 耗时: 5.783934 ms
+
+========= cfg config info (after MSM) ==========
+StreamHandle: <nil>
+PrecomputeFactor: 1
+C: 0
+Bitsize: 0
+BatchSize: 3
+ArePointsSharedInBatch: true
+AreScalarsMontgomeryForm: true
+AreBasesMontgomeryForm: false
+IsAsync: false
+Ext: <nil>
+========= cfg config info (after MSM) ==========
+
+		[After MSM] GPU memory: used=559 MiB / total=24081 MiB (2.3%)
+		[After MSM] CPU memory: allocated=1538 MiB, total_allocated=3076 MiB, sys=3096 MiB
+	OnDeviceCommitBatchLRO() || blsProjectiveToGnarkAffine() 耗时: 0.010858 ms
+		[After Conversion] GPU memory: used=559 MiB / total=24081 MiB (2.3%)
+		[After Conversion] CPU memory: allocated=1538 MiB, total_allocated=3076 MiB, sys=3096 MiB
+
+		[Function End] GPU memory: used=559 MiB / total=24081 MiB (2.3%)
+		[Function End] CPU memory: allocated=1538 MiB, total_allocated=3076 MiB, sys=3096 MiB
+2025/11/25 01:52:25 [TIMING] commitToLRO: total=33.109161ms, bigMSM=6.480522ms, blinding=26.628513ms
+	solveConstraints() || commitToLRO() 耗时: 33.127208 ms
+prove() -> solveConstraints 耗时: 40.796402ms
+		computeQuotient() || wait for solver to be done 耗时: 40.807519ms
+		deriveGammaAndBeta() || wait for LRO to be committed 耗时: 40.542417ms
+		completeQk() || wait for solver to be done 耗时: 40.826293ms
+prove() -> completeQk 耗时: 40.890492ms
+prove() -> deriveGammaAndBeta 耗时: 41.016046ms
+		buildRatioCopyConstraint() || wait for gamma and beta to be derived 耗时: 41.017800ms
+		buildRatioCopyConstraint() || iop.BuildRatioCopyConstraint 耗时: 0.199784ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 4.995096ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.887040ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003404ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 13.895597ms
+prove() -> buildRatioCopyConstraint 耗时: 55.115973ms
+		computeQuotient() || wait for Z to be committed 耗时: 14.292761ms
+	computeQuotient() || prepare to compute & derive alpha): 55.162055 ms
+	computeQuotient() || computeNumerator() 耗时: 7.736812 ms
+		divideByZH() || parallelize divide 耗时: 0.053382 ms
+		divideByZH() || ToCanonical 耗时: 0.274051 ms
+	computeQuotient() || divideByZH() 耗时: 0.342853 ms
+		commitToQuotient() || commit h1 开始
+		commitToQuotient() || commit h1 耗时: 5.967362 ms
+		commitToQuotient() || commit h2 耗时: 5.556374 ms
+		commitToQuotient() || commit h3 耗时: 5.429766 ms
+	computeQuotient() || commitToQuotient() 耗时: 16.963109 ms
+	computeQuotient() || deriveZeta() & clean up 耗时: 0.084640 ms
+prove() -> computeQuotient 耗时: 80.300291ms
+		openZ() || wait for H to be committed and zeta to be derived 耗时: 80.292233ms
+		openZ() || getBlindedCoefficients 耗时: 0.002808ms
+		computeLinearizedPolynomial() || wait for H to be committed and zeta to be derived 耗时: 80.380746ms
+		openZ() || Open 耗时: 5.355266ms
+prove() -> openZ 耗时: 85.654025ms
+		computeLinearizedPolynomial() || innerComputeLinearizedPoly 耗时: 5.450696ms
+		computeLinearizedPolynomial() || kzg.Commit 耗时: 5.487457 ms
+prove() -> computeLinearizedPolynomial 耗时: 91.342967ms
+		batchOpening() || wait for linearizedPolynomial 耗时: 91.370698ms
+		batchOpening() || prepare polysToOpen and digestsToOpen 耗时: 0.002003ms
+		batchOpening() || BatchOpenSinglePoint 耗时: 5.606976ms
+prove() -> batchOpening 耗时: 96.988240ms
+prove() -> prove() 总耗时: 97.122492ms
+prove inner 耗时: 1228.977515 ms
+verify inner 耗时: 2.967100 ms
+assemble Poseidon2-FS inputs 耗时: 1.200320 ms
+compile outer(frontend.Compile) 耗时: 2656.185179 ms
+[outer] nbConstraints=6312221 nbPublic=4 nbSecret=168
+solve outer 耗时: 1562.022999ms
+outer circuit solved
+compile outer(pkOuter.Compile) 耗时: 14725.129581 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/home/jade/.local/icicle/lib/backend
+prove() -> icicle device setup 耗时: 882.089519ms
+prove() -> initBlindingPolynomials 耗时: 0.014885ms
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 1716.579168 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.007085 ms
+		[Function Start] GPU memory: used=3377 MiB / total=24081 MiB (14.0%)
+		[Function Start] CPU memory: allocated=7743 MiB, total_allocated=41223 MiB, sys=10918 MiB
+		[After Flatten Array Created] GPU memory: used=3377 MiB / total=24081 MiB (14.0%)
+		[After Flatten Array Created] CPU memory: allocated=8511 MiB, total_allocated=41991 MiB, sys=10918 MiB
+	OnDeviceCommitBatchLRO() || flatten total elements: 25165824, per fr.Element: 48 bytes, total: 1152.00 MB
+		[After HostSlice Created] GPU memory: used=3377 MiB / total=24081 MiB (14.0%)
+		[After HostSlice Created] CPU memory: allocated=8511 MiB, total_allocated=41991 MiB, sys=10918 MiB
+		[Before CopyToDevice] GPU memory: used=3377 MiB / total=24081 MiB (14.0%)
+		[Before CopyToDevice] CPU memory: allocated=8511 MiB, total_allocated=41991 MiB, sys=10918 MiB
+		[After CopyToDevice] GPU memory: used=4145 MiB / total=24081 MiB (17.2%)
+		[After CopyToDevice] CPU memory: allocated=8511 MiB, total_allocated=41991 MiB, sys=10918 MiB
+	OnDeviceCommitBatchLRO() || icicle_core.HostSliceFromElements() 耗时: 123.856161 ms
+
+========= cfg config info ==========
+StreamHandle: <nil>
+PrecomputeFactor: 1
+C: 0
+Bitsize: 0
+BatchSize: 3
+ArePointsSharedInBatch: true
+AreScalarsMontgomeryForm: true
+AreBasesMontgomeryForm: false
+IsAsync: false
+Ext: <nil>
+========= cfg config info ==========
+
+2025/11/25 01:52:51 [MSM batch] size=8388608, BatchSize=3, PrecomputeFactor=1, C=0, Bitsize=0
+		[After MSM Config] GPU memory: used=4145 MiB / total=24081 MiB (17.2%)
+		[After MSM Config] CPU memory: allocated=8511 MiB, total_allocated=41991 MiB, sys=10918 MiB
+		[After Precompute Memory Allocated] GPU memory: used=4913 MiB / total=24081 MiB (20.4%)
+		[After Precompute Memory Allocated] CPU memory: allocated=8511 MiB, total_allocated=41991 MiB, sys=10918 MiB
+	OnDeviceCommitBatchLRO() || icicle_msm.PrecomputeBases() 耗时: 0.056800 ms
+		[After PrecomputeBases] GPU memory: used=4913 MiB / total=24081 MiB (20.4%)
+		[After PrecomputeBases] CPU memory: allocated=8511 MiB, total_allocated=41991 MiB, sys=10918 MiB
+		[After Result Array Created] GPU memory: used=4913 MiB / total=24081 MiB (20.4%)
+		[After Result Array Created] CPU memory: allocated=8511 MiB, total_allocated=41991 MiB, sys=10918 MiB
+		[Before MSM] GPU memory: used=4913 MiB / total=24081 MiB (20.4%)
+		[Before MSM] CPU memory: allocated=8511 MiB, total_allocated=41991 MiB, sys=10918 MiB
+	OnDeviceCommitBatchLRO() || icicle_msm.Msm() 耗时: 366.920726 ms
+
+========= cfg config info (after MSM) ==========
+StreamHandle: <nil>
+PrecomputeFactor: 1
+C: 0
+Bitsize: 0
+BatchSize: 3
+ArePointsSharedInBatch: true
+AreScalarsMontgomeryForm: true
+AreBasesMontgomeryForm: false
+IsAsync: false
+Ext: <nil>
+========= cfg config info (after MSM) ==========
+
+		[After MSM] GPU memory: used=4913 MiB / total=24081 MiB (20.4%)
+		[After MSM] CPU memory: allocated=8511 MiB, total_allocated=41991 MiB, sys=10918 MiB
+	OnDeviceCommitBatchLRO() || blsProjectiveToGnarkAffine() 耗时: 0.013117 ms
+		[After Conversion] GPU memory: used=4913 MiB / total=24081 MiB (20.4%)
+		[After Conversion] CPU memory: allocated=8511 MiB, total_allocated=41991 MiB, sys=10918 MiB
+
+		[Function End] GPU memory: used=4913 MiB / total=24081 MiB (20.4%)
+		[Function End] CPU memory: allocated=8511 MiB, total_allocated=41991 MiB, sys=10918 MiB
+2025/11/25 01:52:51 [TIMING] commitToLRO: total=683.531674ms, bigMSM=658.583491ms, blinding=24.947727ms
+	solveConstraints() || commitToLRO() 耗时: 683.548672 ms
+prove() -> solveConstraints 耗时: 2400.163724ms
+		deriveGammaAndBeta() || wait for LRO to be committed 耗时: 2398.878929ms
+		completeQk() || wait for solver to be done 耗时: 2311.898665ms
+prove() -> completeQk 耗时: 2400.164552ms
+		computeQuotient() || wait for solver to be done 耗时: 2334.808784ms
+prove() -> deriveGammaAndBeta 耗时: 2400.161085ms
+		buildRatioCopyConstraint() || wait for gamma and beta to be derived 耗时: 2400.271981ms
+		buildRatioCopyConstraint() || iop.BuildRatioCopyConstraint 耗时: 648.405661ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 191.589597ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.345421ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003171ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 199.987568ms
+prove() -> buildRatioCopyConstraint 耗时: 3248.688930ms
+		computeQuotient() || wait for Z to be committed 耗时: 848.514852ms
+	computeQuotient() || prepare to compute & derive alpha): 3304.832836 ms
+	computeQuotient() || computeNumerator() 耗时: 7097.963897 ms
+		divideByZH() || parallelize divide 耗时: 46.757890 ms
+		divideByZH() || ToCanonical 耗时: 713.191317 ms
+	computeQuotient() || divideByZH() 耗时: 760.030400 ms
+		commitToQuotient() || commit h1 开始
+		commitToQuotient() || commit h1 耗时: 495.421727 ms
+		commitToQuotient() || commit h2 耗时: 588.492882 ms
+		commitToQuotient() || commit h3 耗时: 585.712208 ms
+	computeQuotient() || commitToQuotient() 耗时: 1669.670454 ms
+	computeQuotient() || deriveZeta() & clean up 耗时: 45.690283 ms
+prove() -> computeQuotient 耗时: 12878.213826ms
+		openZ() || wait for H to be committed and zeta to be derived 耗时: 12878.221954ms
+		computeLinearizedPolynomial() || wait for H to be committed and zeta to be derived 耗时: 12878.205283ms
+		openZ() || getBlindedCoefficients 耗时: 20.622792ms
+		openZ() || Open 耗时: 550.968874ms
+prove() -> openZ 耗时: 13449.824400ms
+		computeLinearizedPolynomial() || innerComputeLinearizedPoly 耗时: 1043.561568ms
+		computeLinearizedPolynomial() || kzg.Commit 耗时: 268.100040 ms
+prove() -> computeLinearizedPolynomial 耗时: 14189.916622ms
+		batchOpening() || wait for linearizedPolynomial 耗时: 14190.169681ms
+		batchOpening() || prepare polysToOpen and digestsToOpen 耗时: 0.005289ms
+		batchOpening() || BatchOpenSinglePoint 耗时: 667.126450ms
+prove() -> batchOpening 耗时: 14857.320909ms
+prove() -> prove() 总耗时: 16065.890201ms
+prove outer 耗时: 19329.740433 ms
+verify outer 耗时: 2.765199 ms
+outer circuit verified

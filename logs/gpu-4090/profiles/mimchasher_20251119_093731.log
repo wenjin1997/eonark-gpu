@@ -1,0 +1,236 @@
+compile inner 耗时: 938.513958 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/home/jade/.local/icicle/lib/backend
+prove() -> icicle device setup 耗时: 159.285640ms
+prove() -> initBlindingPolynomials 耗时: 0.004086ms
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 7.830945 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.003125 ms
+========= cfg config info ==========
+cfg := icicle_msm.GetDefaultMSMConfig()
+cfg.BatchSize = int32(batchSize)
+cfg.ArePointsSharedInBatch = true
+cfg.AreScalarsMontgomeryForm = true 
+cfg.AreBasesMontgomeryForm = false
+cfg.IsAsync = true
+========= cfg config info ==========
+2025/11/19 09:37:35 [MSM batch] size=512, BatchSize=3, PrecomputeFactor=1, C=0, Bitsize=0
+	OnDeviceCommitBatchLRO() || icicle_msm.Msm() 耗时: 5.785597 ms
+2025/11/19 09:37:35 [TIMING] commitToLRO: total=32.546685ms, bigMSM=5.86711ms, blinding=26.679432ms
+	solveConstraints() || commitToLRO() 耗时: 32.566135 ms
+prove() -> solveConstraints 耗时: 40.407415ms
+		completeQk() || wait for solver to be done 耗时: 40.323305ms
+prove() -> completeQk 耗时: 40.333287ms
+		deriveGammaAndBeta() || wait for LRO to be committed 耗时: 40.158575ms
+		computeQuotient() || wait for solver to be done 耗时: 40.333447ms
+prove() -> deriveGammaAndBeta 耗时: 40.473509ms
+		buildRatioCopyConstraint() || wait for gamma and beta to be derived 耗时: 40.467508ms
+		buildRatioCopyConstraint() || iop.BuildRatioCopyConstraint 耗时: 0.176296ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 4.984540ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.873949ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003193ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 13.869847ms
+prove() -> buildRatioCopyConstraint 耗时: 54.521526ms
+		computeQuotient() || wait for Z to be committed 耗时: 14.163276ms
+	computeQuotient() || prepare to compute & derive alpha): 54.571905 ms
+		[Timing] toCosetLagrange 总耗时: 0.295943 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.103355 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.113737 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.110299 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.095060 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.099585 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.099800 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.109463 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.092684 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.101909 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.116121 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.091274 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.092442 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.091121 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.124641 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.091970 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.090765 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.091585 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.092785 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.090001 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.089961 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.091688 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.091941 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.090038 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.089831 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.090770 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.091181 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.093393 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.116032 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.092949 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.091306 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.091881 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.091549 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.091956 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.091996 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.091163 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.094329 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.092169 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.092097 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.097145 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.091210 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.092230 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.143050 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.116555 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.119496 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.108131 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.108567 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.108138 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.111393 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.113718 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.107165 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.108165 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.107158 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.107183 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.118503 ms (0.00 s)
+		[Timing] toCosetLagrange 总耗时: 0.128112 ms (0.00 s)
+	computeQuotient() || computeNumerator() 耗时: 7.637714 ms
+		divideByZH() || parallelize divide 耗时: 0.051235 ms
+		divideByZH() || ToCanonical 耗时: 0.262440 ms
+	computeQuotient() || divideByZH() 耗时: 0.328631 ms
+		commitToQuotient() || commit h1 开始
+		commitToQuotient() || commit h1 耗时: 5.744209 ms
+		commitToQuotient() || commit h2 耗时: 5.572090 ms
+		commitToQuotient() || commit h3 耗时: 5.735959 ms
+	computeQuotient() || commitToQuotient() 耗时: 17.062848 ms
+	computeQuotient() || deriveZeta() & clean up 耗时: 0.066040 ms
+prove() -> computeQuotient 耗时: 79.675985ms
+		openZ() || wait for H to be committed and zeta to be derived 耗时: 79.687752ms
+		openZ() || getBlindedCoefficients 耗时: 0.002438ms
+		computeLinearizedPolynomial() || wait for H to be committed and zeta to be derived 耗时: 79.661803ms
+		openZ() || Open 耗时: 5.310327ms
+prove() -> openZ 耗时: 85.004707ms
+		computeLinearizedPolynomial() || innerComputeLinearizedPoly 耗时: 5.436080ms
+		computeLinearizedPolynomial() || kzg.Commit 耗时: 5.491916 ms
+prove() -> computeLinearizedPolynomial 耗时: 90.610997ms
+		batchOpening() || wait for linearizedPolynomial 耗时: 90.742593ms
+		batchOpening() || prepare polysToOpen and digestsToOpen 耗时: 0.002206ms
+		batchOpening() || BatchOpenSinglePoint 耗时: 5.999141ms
+prove() -> batchOpening 耗时: 96.757742ms
+prove() -> prove() 总耗时: 96.986765ms
+prove inner 耗时: 1189.878519 ms
+verify inner 耗时: 4.704902 ms
+assemble Poseidon2-FS inputs 耗时: 1.506824 ms
+compile outer(frontend.Compile) 耗时: 2598.000688 ms
+[outer] nbConstraints=6312222 nbPublic=4 nbSecret=168
+solve outer 耗时: 1620.036186ms
+outer circuit solved
+compile outer(pkOuter.Compile) 耗时: 14491.362889 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/home/jade/.local/icicle/lib/backend
+prove() -> icicle device setup 耗时: 878.910088ms
+prove() -> initBlindingPolynomials 耗时: 0.012433ms
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 1653.873125 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.007204 ms
+========= cfg config info ==========
+cfg := icicle_msm.GetDefaultMSMConfig()
+cfg.BatchSize = int32(batchSize)
+cfg.ArePointsSharedInBatch = true
+cfg.AreScalarsMontgomeryForm = true 
+cfg.AreBasesMontgomeryForm = false
+cfg.IsAsync = true
+========= cfg config info ==========
+2025/11/19 09:38:00 [MSM batch] size=8388608, BatchSize=3, PrecomputeFactor=1, C=0, Bitsize=0
+	OnDeviceCommitBatchLRO() || icicle_msm.Msm() 耗时: 357.745418 ms
+2025/11/19 09:38:01 [TIMING] commitToLRO: total=627.944328ms, bigMSM=590.901667ms, blinding=37.042224ms
+	solveConstraints() || commitToLRO() 耗时: 627.969120 ms
+prove() -> solveConstraints 耗时: 2281.901317ms
+		deriveGammaAndBeta() || wait for LRO to be committed 耗时: 2280.469650ms
+		completeQk() || wait for solver to be done 耗时: 2187.109802ms
+prove() -> completeQk 耗时: 2281.859256ms
+		computeQuotient() || wait for solver to be done 耗时: 2217.867715ms
+prove() -> deriveGammaAndBeta 耗时: 2281.794111ms
+		buildRatioCopyConstraint() || wait for gamma and beta to be derived 耗时: 2281.974612ms
+		buildRatioCopyConstraint() || iop.BuildRatioCopyConstraint 耗时: 698.764571ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 192.522743ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.324198ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003213ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 200.895780ms
+prove() -> buildRatioCopyConstraint 耗时: 3181.669389ms
+		computeQuotient() || wait for Z to be committed 耗时: 899.799431ms
+	computeQuotient() || prepare to compute & derive alpha): 3236.697284 ms
+		[Timing] toCosetLagrange 总耗时: 55.966707 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.363589 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.407718 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.329726 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.395857 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.376901 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.379561 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.401445 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.444188 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.300211 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.329393 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.336566 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.365474 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.258002 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.532130 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.366001 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.371557 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.364369 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.362983 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.348764 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.452246 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.372164 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.364299 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.487007 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.356774 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.372483 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.385839 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.385264 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.513777 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.396556 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.375198 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.331839 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.361119 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.355600 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.418917 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.343182 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.408559 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.359184 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.327581 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.345407 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.321106 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.360978 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.402953 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.379911 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.470907 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.369074 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.343623 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.327025 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.410083 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.477693 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.359574 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.336618 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.392571 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.402312 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.473289 ms (0.06 s)
+		[Timing] toCosetLagrange 总耗时: 55.328282 ms (0.06 s)
+	computeQuotient() || computeNumerator() 耗时: 7316.218143 ms
+		divideByZH() || parallelize divide 耗时: 40.687272 ms
+		divideByZH() || ToCanonical 耗时: 751.188313 ms
+	computeQuotient() || divideByZH() 耗时: 791.950501 ms
+		commitToQuotient() || commit h1 开始
+		commitToQuotient() || commit h1 耗时: 555.960675 ms
+		commitToQuotient() || commit h2 耗时: 594.205294 ms
+		commitToQuotient() || commit h3 耗时: 435.868750 ms
+	computeQuotient() || commitToQuotient() 耗时: 1586.057892 ms
+	computeQuotient() || deriveZeta() & clean up 耗时: 0.107405 ms
+prove() -> computeQuotient 耗时: 12931.056619ms
+		openZ() || wait for H to be committed and zeta to be derived 耗时: 12931.064787ms
+		computeLinearizedPolynomial() || wait for H to be committed and zeta to be derived 耗时: 12931.007364ms
+		openZ() || getBlindedCoefficients 耗时: 20.691847ms
+		openZ() || Open 耗时: 547.348312ms
+prove() -> openZ 耗时: 13499.120348ms
+		computeLinearizedPolynomial() || innerComputeLinearizedPoly 耗时: 1036.448271ms
+		computeLinearizedPolynomial() || kzg.Commit 耗时: 269.715388 ms
+prove() -> computeLinearizedPolynomial 耗时: 14237.213488ms
+		batchOpening() || wait for linearizedPolynomial 耗时: 14237.410619ms
+		batchOpening() || prepare polysToOpen and digestsToOpen 耗时: 0.009503ms
+		batchOpening() || BatchOpenSinglePoint 耗时: 690.651848ms
+prove() -> batchOpening 耗时: 14928.117581ms
+prove() -> prove() 总耗时: 16119.636022ms
+prove outer 耗时: 19336.902059 ms
+verify outer 耗时: 2.646821 ms
+outer circuit verified

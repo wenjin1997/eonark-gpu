@@ -1,0 +1,70 @@
+compile inner 耗时: 960.461457 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/home/jade/.local/icicle/lib/backend
+prove() -> icicle device setup 耗时: 158.636213ms
+prove() -> initBlindingPolynomials 耗时: 0.010789ms
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 5.237734 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.003386 ms
+	OnDeviceCommitBatchLRO() || flatten total elements: 1536, per fr.Element: 48 bytes, total: 0.07 MB
+	OnDeviceCommitBatchLRO() || icicle_core.HostSliceFromElements() 耗时: 0.008731 ms
+
+========= cfg config info ==========
+StreamHandle: <nil>
+PrecomputeFactor: 4
+C: 18
+Bitsize: 0
+BatchSize: 3
+ArePointsSharedInBatch: true
+AreScalarsMontgomeryForm: true
+AreBasesMontgomeryForm: false
+IsAsync: true
+Ext: <nil>
+========= cfg config info ==========
+
+2025/11/19 13:37:57 [MSM batch] size=512, BatchSize=3, PrecomputeFactor=4, C=18, Bitsize=0
+	OnDeviceCommitBatchLRO() || icicle_msm.Msm() 耗时: 14.037961 ms
+	OnDeviceCommitBatchLRO() || blsProjectiveToGnarkAffine() 耗时: 0.011209 ms
+
+2025/11/19 13:37:57 [TIMING] commitToLRO: total=66.650928ms, bigMSM=14.116069ms, blinding=52.534695ms
+	solveConstraints() || commitToLRO() 耗时: 66.673642 ms
+prove() -> solveConstraints 耗时: 71.920788ms
+		completeQk() || wait for solver to be done 耗时: 71.845289ms
+prove() -> completeQk 耗时: 71.861042ms
+		deriveGammaAndBeta() || wait for LRO to be committed 耗时: 71.690921ms
+		computeQuotient() || wait for solver to be done 耗时: 71.837236ms
+prove() -> deriveGammaAndBeta 耗时: 71.990710ms
+		buildRatioCopyConstraint() || wait for gamma and beta to be derived 耗时: 72.010289ms
+		buildRatioCopyConstraint() || iop.BuildRatioCopyConstraint 耗时: 0.189186ms
+			commitToPolyAndBlinding() -> commit to p 耗时: 4.947671ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.908313ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003098ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 13.867218ms
+prove() -> buildRatioCopyConstraint 耗时: 86.071832ms
+		computeQuotient() || wait for Z to be committed 耗时: 14.196735ms
+	computeQuotient() || prepare to compute & derive alpha): 86.099349 ms
+	computeQuotient() || computeNumerator() 耗时: 7.477695 ms
+		divideByZH() || parallelize divide 耗时: 0.037069 ms
+		divideByZH() || ToCanonical 耗时: 0.164907 ms
+	computeQuotient() || divideByZH() 耗时: 0.212508 ms
+		commitToQuotient() || commit h1 开始
+		commitToQuotient() || commit h1 耗时: 5.525272 ms
+		commitToQuotient() || commit h2 耗时: 5.413244 ms
+		commitToQuotient() || commit h3 耗时: 5.459517 ms
+	computeQuotient() || commitToQuotient() 耗时: 16.405212 ms
+		openZ() || wait for H to be committed and zeta to be derived 耗时: 110.405242ms
+		openZ() || getBlindedCoefficients 耗时: 0.002875ms
+	computeQuotient() || deriveZeta() & clean up 耗时: 0.210252 ms
+prove() -> computeQuotient 耗时: 110.483324ms
+		computeLinearizedPolynomial() || wait for H to be committed and zeta to be derived 耗时: 110.467200ms
+		openZ() || Open 耗时: 5.614212ms
+prove() -> openZ 耗时: 116.031710ms
+		computeLinearizedPolynomial() || innerComputeLinearizedPoly 耗时: 5.666957ms
+		computeLinearizedPolynomial() || kzg.Commit 耗时: 5.369163 ms
+prove() -> computeLinearizedPolynomial 耗时: 121.520999ms
+		batchOpening() || wait for linearizedPolynomial 耗时: 121.632876ms
+		batchOpening() || prepare polysToOpen and digestsToOpen 耗时: 0.002025ms
+		batchOpening() || BatchOpenSinglePoint 耗时: 5.651467ms
+prove() -> batchOpening 耗时: 127.296162ms
+prove() -> prove() 总耗时: 127.500399ms
+prove inner 耗时: 1249.950447 ms
+2025/11/19 13:37:57 verify inner: G1 not in sub group
+exit status 1

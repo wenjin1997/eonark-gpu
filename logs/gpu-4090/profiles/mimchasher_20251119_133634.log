@@ -1,0 +1,39 @@
+compile inner 耗时: 995.285386 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/home/jade/.local/icicle/lib/backend
+prove() -> icicle device setup 耗时: 158.878585ms
+prove() -> initBlindingPolynomials 耗时: 0.018778ms
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 7.594502 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.003440 ms
+	OnDeviceCommitBatchLRO() || flatten total elements: 1536, per fr.Element: 48 bytes, total: 0.07 MB
+	OnDeviceCommitBatchLRO() || icicle_core.HostSliceFromElements() 耗时: 0.011791 ms
+
+========= cfg config info ==========
+StreamHandle: <nil>
+PrecomputeFactor: 7
+C: 21
+Bitsize: 0
+BatchSize: 3
+ArePointsSharedInBatch: true
+AreScalarsMontgomeryForm: true
+AreBasesMontgomeryForm: false
+IsAsync: true
+Ext: <nil>
+========= cfg config info ==========
+
+2025/11/19 13:36:37 [MSM batch] size=512, BatchSize=3, PrecomputeFactor=7, C=21, Bitsize=0
+panic: Precompute factor 7 does not divide the number of bases 512
+
+goroutine 777 [running]:
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/core.MsmCheck({0xf03748, 0xc00039a4b0}, {0xf03748, 0xc00039a4c8}, 0xc000049c30, {0xf039d0, 0xc00039a4e0})
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/core/msm.go:80 +0x594
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/msm.Msm({0xf03748?, 0xc00039a4b0?}, {0xf03748?, 0xc00039a4c8?}, 0xc000049c30, {0xf039d0?, 0xc00039a4e0?})
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/curves/bls12381/msm/msm.go:19 +0x4f
+github.com/eon-protocol/eonark/gpu/bls12381.OnDeviceCommitBatchLRO({0xc000049ef8, 0x3, 0x3?}, {0x717a06c0c200, 0xc000, 0x200})
+	/home/jade/jade/eonark-gpu/gpu/bls12381/bls12381_gpu.go:155 +0xcf6
+github.com/eon-protocol/eonark/gpu.(*instance).commitToLRO.func1({0xc000390300?, 0x38?, 0xd680c0?})
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:690 +0x13a
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/runtime.RunOnDevice.func1(0xc000390300)
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/runtime/runtime.go:99 +0x90
+created by github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/runtime.RunOnDevice in goroutine 413
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/runtime/runtime.go:94 +0xd9
+exit status 2

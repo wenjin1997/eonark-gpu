@@ -102,6 +102,56 @@ verify outer 耗时: 2.862477 ms
 outer circuit verified
 Collecting data...
 Generating '/tmp/nsys-report-8451.qdstrm'
-[1/1] [0%                          ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [0%                          ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [11%                         ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [===23%                      ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [===24%                      ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [====25%                     ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [====26%                     ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [====27%                     ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [====28%                     ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=====29%                    ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=====30%                    ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=====31%                    ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=====32%                    ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [======33%                   ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [======34%                   ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [======35%                   ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=======36%                  ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=======37%                  ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=======38%                  ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=======39%                  ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [========40%                 ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [========41%                 ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [========42%                 ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=========43%                ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=========44%                ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=========45%                ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=========46%                ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [==========47%               ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [==========48%               ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [==========49%               ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [===========50%              ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [===========51%              ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [===========52%              ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [===========53%              ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [============54%             ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [============55%             ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [============56%             ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [============57%             ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=============58%            ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=============59%            ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [=============60%            ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [==============61%           ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [==============62%           ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [==============63%           ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [==============64%           ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [===============65%          ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [====================83%     ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [====================85%     ] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [========================100%] mimchasher_icicle_20251107_033652.nsys-rep[1/1] [========================100%] mimchasher_icicle_20251107_033652.nsys-rep
+
+[1/1] [0%                          ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [0%                          ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [11%                         ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [===23%                      ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [===24%                      ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [====25%                     ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [====26%                     ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [====27%                     ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [====28%                     ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [=====29%                    ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [=====30%                    ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [=====31%                    ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [=====32%                    ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [======33%                   ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [======34%                   ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [======35%                   ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [=======36%                  ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [=======37%                  ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [=======38%                  ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [=======39%                  ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [========40%                 ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [========41%                 ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [========42%                 ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [=========43%                ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [=========44%                ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [=========45%                ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [=========46%                ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [==========47%               ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [==========48%               ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [==========49%               ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [===========50%              ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [===========51%              ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [===========52%              ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [===========53%              ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [============54%             ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [============55%             ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [============56%             ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [============57%             ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [=============58%            ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [=============59%            ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [=============60%            ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [==============61%           ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [==============62%           ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [==============63%           ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [==============64%           ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [===============65%          ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [====================83%     ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [====================85%     ] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [========================100%] mimchasher_icicle_20251107_033652.nsys-rep
+[1/1] [========================100%] mimchasher_icicle_20251107_033652.nsys-rep
 Generated:
 	/home/jade/jade/eonark-gpu/logs/msm-fft-gpu/mimchasher_icicle_20251107_033652.nsys-rep
