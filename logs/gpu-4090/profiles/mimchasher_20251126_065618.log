@@ -1,0 +1,77 @@
+compile inner 耗时: 984.566681 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/home/jade/.local/icicle/lib/backend
+prove() -> icicle device setup 耗时: 165.647087ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 不使用预计算
+prove() -> initBlindingPolynomials 耗时: 0.009504ms
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 5.184606 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.005249 ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 不使用预计算
+			commitToPolyAndBlinding() -> commit to p 耗时: 5.310003ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.916841ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003229ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl]) LRO[0] 耗时: 14.234437ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 不使用预计算
+			commitToPolyAndBlinding() -> commit to p 耗时: 5.281583ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.897099ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003137ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_R], s.bp[id_Br]) LRO[1] 耗时: 14.189038ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 不使用预计算
+			commitToPolyAndBlinding() -> commit to p 耗时: 5.280832ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.843942ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003212ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_O], s.bp[id_Bo]) LRO[2] 耗时: 14.131238ms
+		commitToLRO() || 总耗时: 42.556696ms
+	solveConstraints() || commitToLRO() 耗时: 42.558012 ms
+prove() -> solveConstraints 耗时: 47.752822ms
+		completeQk() || wait for solver to be done 耗时: 47.691061ms
+prove() -> completeQk 耗时: 47.720827ms
+		deriveGammaAndBeta() || wait for LRO to be committed 耗时: 47.344411ms
+		computeQuotient() || wait for solver to be done 耗时: 47.654663ms
+prove() -> deriveGammaAndBeta 耗时: 47.832090ms
+		buildRatioCopyConstraint() || wait for gamma and beta to be derived 耗时: 47.783829ms
+		buildRatioCopyConstraint() || iop.BuildRatioCopyConstraint 耗时: 0.181339ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 不使用预计算
+			commitToPolyAndBlinding() -> commit to p 耗时: 4.970604ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.922579ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003410ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 13.906931ms
+prove() -> buildRatioCopyConstraint 耗时: 61.881042ms
+		computeQuotient() || wait for Z to be committed 耗时: 14.224198ms
+	computeQuotient() || prepare to compute & derive alpha): 61.968271 ms
+	computeQuotient() || computeNumerator() 耗时: 7.714204 ms
+		divideByZH() || parallelize divide 耗时: 0.029082 ms
+		divideByZH() || ToCanonical 耗时: 0.246883 ms
+	computeQuotient() || divideByZH() 耗时: 0.288388 ms
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 不使用预计算
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 不使用预计算
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 不使用预计算
+		commitToQuotient() || commit h2 耗时: 11.391480 ms
+		commitToQuotient() || commit h3 耗时: 15.713948 ms
+		commitToQuotient() || commit h1 耗时: 15.698980 ms
+		commitToQuotient() || 总耗时: 15.721400 ms
+	computeQuotient() || commitToQuotient() 耗时: 15.722653 ms
+		openZ() || wait for H to be committed and zeta to be derived 耗时: 86.336417ms
+	computeQuotient() || deriveZeta() & clean up 耗时: 0.646056 ms
+prove() -> computeQuotient 耗时: 86.355588ms
+		openZ() || getBlindedCoefficients 耗时: 0.004120ms
+		computeLinearizedPolynomial() || wait for H to be committed and zeta to be derived 耗时: 86.325967ms
+		openZ() || Open 耗时: 5.288090ms
+prove() -> openZ 耗时: 91.632949ms
+		computeLinearizedPolynomial() || innerComputeLinearizedPoly 耗时: 5.422335ms
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 不使用预计算
+		computeLinearizedPolynomial() || kzg.Commit 耗时: 5.310002 ms
+prove() -> computeLinearizedPolynomial 耗时: 97.070783ms
+		batchOpening() || wait for linearizedPolynomial 耗时: 97.236676ms
+		batchOpening() || prepare polysToOpen and digestsToOpen 耗时: 0.001981ms
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 不使用预计算
+		BatchOpenSinglePoint  ||  commitOnGPUOrCPU() 耗时: 5.493574 ms
+		batchOpening() || BatchOpenSinglePoint 耗时: 5.838309ms
+prove() -> batchOpening 耗时: 103.083919ms
+prove() -> prove() 总耗时: 103.255504ms
+prove inner 耗时: 1206.597265 ms
+verify inner 耗时: 3.703239 ms
+assemble Poseidon2-FS inputs 耗时: 1.322955 ms
+compile outer(frontend.Compile) 耗时: 2664.189789 ms
+[outer] nbConstraints=6312223 nbPublic=4 nbSecret=168
+solve outer 耗时: 1565.943790ms
+outer circuit solved

@@ -1,0 +1,381 @@
+compile inner 耗时: 955.019349 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/home/jade/.local/icicle/lib/backend
+prove() -> icicle device setup 耗时: 157.507037ms
+prove() -> initBlindingPolynomials 耗时: 0.007534ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 不使用预计算
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 5.445977 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.007029 ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 不使用预计算
+			commitToPolyAndBlinding() -> commit to p 耗时: 5.370721ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 9.139712ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.005201ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl]) LRO[0] 耗时: 14.524272ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 不使用预计算
+			commitToPolyAndBlinding() -> commit to p 耗时: 5.439260ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.947745ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003444ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_R], s.bp[id_Br]) LRO[1] 耗时: 14.398838ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 不使用预计算
+			commitToPolyAndBlinding() -> commit to p 耗时: 5.291349ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.837070ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003158ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_O], s.bp[id_Bo]) LRO[2] 耗时: 14.136161ms
+	solveConstraints() || commitToLRO() 耗时: 43.062188 ms
+prove() -> solveConstraints 耗时: 48.522350ms
+		completeQk() || wait for solver to be done 耗时: 48.460018ms
+prove() -> completeQk 耗时: 48.468167ms
+		deriveGammaAndBeta() || wait for LRO to be committed 耗时: 48.283505ms
+		computeQuotient() || wait for solver to be done 耗时: 48.481318ms
+prove() -> deriveGammaAndBeta 耗时: 48.604763ms
+		buildRatioCopyConstraint() || wait for gamma and beta to be derived 耗时: 48.597080ms
+		buildRatioCopyConstraint() || iop.BuildRatioCopyConstraint 耗时: 0.178079ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 不使用预计算
+			commitToPolyAndBlinding() -> commit to p 耗时: 4.981313ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.933823ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.005083ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 13.934761ms
+prove() -> buildRatioCopyConstraint 耗时: 62.719505ms
+		computeQuotient() || wait for Z to be committed 耗时: 14.226082ms
+	computeQuotient() || prepare to compute & derive alpha): 62.797327 ms
+	computeQuotient() || computeNumerator() 耗时: 10.880977 ms
+		divideByZH() || parallelize divide 耗时: 0.083821 ms
+		divideByZH() || ToCanonical 耗时: 0.492273 ms
+	computeQuotient() || divideByZH() 耗时: 0.636498 ms
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 不使用预计算
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 不使用预计算
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 不使用预计算
+		commitToQuotient() || commit h1 耗时: 16.610601 ms
+		commitToQuotient() || commit h3 耗时: 16.695524 ms
+		commitToQuotient() || commit h2 耗时: 16.783954 ms
+		commitToQuotient() || 总耗时: 16.867256 ms
+	computeQuotient() || commitToQuotient() 耗时: 16.870816 ms
+	computeQuotient() || deriveZeta() & clean up 耗时: 0.847800 ms
+prove() -> computeQuotient 耗时: 92.071394ms
+		openZ() || wait for H to be committed and zeta to be derived 耗时: 92.083904ms
+		openZ() || getBlindedCoefficients 耗时: 0.012593ms
+		computeLinearizedPolynomial() || wait for H to be committed and zeta to be derived 耗时: 92.120402ms
+		openZ() || Open 耗时: 5.704352ms
+prove() -> openZ 耗时: 97.825130ms
+		computeLinearizedPolynomial() || innerComputeLinearizedPoly 耗时: 6.159377ms
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 不使用预计算
+		computeLinearizedPolynomial() || kzg.Commit 耗时: 6.023352 ms
+prove() -> computeLinearizedPolynomial 耗时: 104.385179ms
+		batchOpening() || wait for linearizedPolynomial 耗时: 104.495513ms
+		batchOpening() || prepare polysToOpen and digestsToOpen 耗时: 0.006770ms
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 不使用预计算
+		BatchOpenSinglePoint  ||  commitOnGPUOrCPU() 耗时: 5.966625 ms
+		batchOpening() || BatchOpenSinglePoint 耗时: 7.410112ms
+prove() -> batchOpening 耗时: 111.944501ms
+prove() -> prove() 总耗时: 112.142596ms
+prove inner 耗时: 1208.720125 ms
+verify inner 耗时: 7.921549 ms
+assemble Poseidon2-FS inputs 耗时: 2.800109 ms
+compile outer(frontend.Compile) 耗时: 2663.670309 ms
+[outer] nbConstraints=6312230 nbPublic=4 nbSecret=168
+solve outer 耗时: 1575.020579ms
+outer circuit solved
+compile outer(pkOuter.Compile) 耗时: 14516.274347 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/home/jade/.local/icicle/lib/backend
+prove() -> icicle device setup 耗时: 868.473469ms
+prove() -> initBlindingPolynomials 耗时: 0.638144ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 预计算
+
+=============================================== OnDeviceCommitWithPrecompute() start ================================================
+
+========= cfg config info ==========
+N: 8388608
+StreamHandle: <nil>
+PrecomputeFactor: 4
+C: 0
+Bitsize: 0
+BatchSize: 0
+ArePointsSharedInBatch: true
+AreScalarsMontgomeryForm: true
+AreBasesMontgomeryForm: false
+IsAsync: false
+Ext: <nil>
+========= cfg config info ==========
+
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] GPU memory: used=7221 MiB / total=24081 MiB (30.0%)
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] CPU memory: allocated=6958 MiB, total_allocated=40439 MiB, sys=10877 MiB
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] GPU memory: used=7221 MiB / total=24081 MiB (30.0%)
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] CPU memory: allocated=6958 MiB, total_allocated=40439 MiB, sys=10877 MiB
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] GPU memory: used=7221 MiB / total=24081 MiB (30.0%)
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] CPU memory: allocated=6958 MiB, total_allocated=40439 MiB, sys=10877 MiB
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] GPU memory: used=7477 MiB / total=24081 MiB (31.1%)
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] CPU memory: allocated=6958 MiB, total_allocated=40439 MiB, sys=10877 MiB
+	OnDeviceCommitWithPrecompute() || CopyToDevice 耗时: 40.960421 ms
+	OnDeviceCommitWithPrecompute() || icicle_msm.Msm() 耗时: 58.188049 ms
+=============================================== OnDeviceCommitWithPrecompute() end ================================================
+
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 1446.797606 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.010610 ms
+
+=============================================== OnDeviceCommitBatchLROWithPrecompute() start ================================================
+		[OnDeviceCommitBatchLROWithPrecompute: Function Start] GPU memory: used=7221 MiB / total=24081 MiB (30.0%)
+		[OnDeviceCommitBatchLROWithPrecompute: Function Start] CPU memory: allocated=7742 MiB, total_allocated=41223 MiB, sys=10877 MiB
+
+========= cfg config info ==========
+N: 8388608
+StreamHandle: <nil>
+PrecomputeFactor: 4
+C: 0
+Bitsize: 0
+BatchSize: 3
+ArePointsSharedInBatch: true
+AreScalarsMontgomeryForm: true
+AreBasesMontgomeryForm: false
+IsAsync: false
+Ext: <nil>
+========= cfg config info ==========
+
+		[OnDeviceCommitBatchLROWithPrecompute: After Flatten Array Created] GPU memory: used=7221 MiB / total=24081 MiB (30.0%)
+		[OnDeviceCommitBatchLROWithPrecompute: After Flatten Array Created] CPU memory: allocated=8510 MiB, total_allocated=41991 MiB, sys=10877 MiB
+	OnDeviceCommitBatchLROWithPrecompute() || flatten total elements: 25165824, per fr.Element: 48 bytes, total: 1152.00 MB
+		[OnDeviceCommitBatchLROWithPrecompute: After HostSlice Created] GPU memory: used=7221 MiB / total=24081 MiB (30.0%)
+		[OnDeviceCommitBatchLROWithPrecompute: After HostSlice Created] CPU memory: allocated=8510 MiB, total_allocated=41991 MiB, sys=10877 MiB
+		[OnDeviceCommitBatchLROWithPrecompute: Before CopyToDevice] GPU memory: used=7221 MiB / total=24081 MiB (30.0%)
+		[OnDeviceCommitBatchLROWithPrecompute: Before CopyToDevice] CPU memory: allocated=8510 MiB, total_allocated=41991 MiB, sys=10877 MiB
+		[OnDeviceCommitBatchLROWithPrecompute: After CopyToDevice] GPU memory: used=7989 MiB / total=24081 MiB (33.2%)
+		[OnDeviceCommitBatchLROWithPrecompute: After CopyToDevice] CPU memory: allocated=8510 MiB, total_allocated=41991 MiB, sys=10877 MiB
+	OnDeviceCommitBatchLROWithPrecompute() || CopyToDevice 耗时: 123.115706 ms
+		[OnDeviceCommitBatchLROWithPrecompute: After Result Array Created] GPU memory: used=7989 MiB / total=24081 MiB (33.2%)
+		[OnDeviceCommitBatchLROWithPrecompute: After Result Array Created] CPU memory: allocated=8510 MiB, total_allocated=41991 MiB, sys=10877 MiB
+		[OnDeviceCommitBatchLROWithPrecompute: Before MSM] GPU memory: used=7989 MiB / total=24081 MiB (33.2%)
+		[OnDeviceCommitBatchLROWithPrecompute: Before MSM] CPU memory: allocated=8510 MiB, total_allocated=41991 MiB, sys=10877 MiB
+[WARNING] msm: msm size (including precomputation) is too large for batching, running sequential msms instead
+	OnDeviceCommitBatchLROWithPrecompute() || icicle_msm.Msm() 耗时: 218.785995 ms
+		[OnDeviceCommitBatchLROWithPrecompute: After MSM] GPU memory: used=7989 MiB / total=24081 MiB (33.2%)
+		[OnDeviceCommitBatchLROWithPrecompute: After MSM] CPU memory: allocated=8510 MiB, total_allocated=41991 MiB, sys=10877 MiB
+	OnDeviceCommitBatchLROWithPrecompute() || blsProjectiveToGnarkAffine() 耗时: 0.017351 ms
+		[OnDeviceCommitBatchLROWithPrecompute: After Conversion] GPU memory: used=7989 MiB / total=24081 MiB (33.2%)
+		[OnDeviceCommitBatchLROWithPrecompute: After Conversion] CPU memory: allocated=8510 MiB, total_allocated=41991 MiB, sys=10877 MiB
+		[OnDeviceCommitBatchLROWithPrecompute: Function End] GPU memory: used=7989 MiB / total=24081 MiB (33.2%)
+		[OnDeviceCommitBatchLROWithPrecompute: Function End] CPU memory: allocated=8510 MiB, total_allocated=41991 MiB, sys=10877 MiB
+=============================================== OnDeviceCommitBatchLROWithPrecompute() end ================================================
+
+2025/11/26 04:58:00 [TIMING] commitToLRO: total=531.88498ms, bigMSM=506.881279ms, blinding=25.003576ms
+	solveConstraints() || commitToLRO() 耗时: 531.928536 ms
+prove() -> solveConstraints 耗时: 1978.754596ms
+		deriveGammaAndBeta() || wait for LRO to be committed 耗时: 1977.090581ms
+		completeQk() || wait for solver to be done 耗时: 1894.633150ms
+prove() -> completeQk 耗时: 1978.782954ms
+		computeQuotient() || wait for solver to be done 耗时: 1915.187902ms
+prove() -> deriveGammaAndBeta 耗时: 1978.702642ms
+		buildRatioCopyConstraint() || wait for gamma and beta to be derived 耗时: 1978.830085ms
+		buildRatioCopyConstraint() || iop.BuildRatioCopyConstraint 耗时: 652.801893ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 预计算
+
+=============================================== OnDeviceCommitWithPrecompute() start ================================================
+
+========= cfg config info ==========
+N: 8388608
+StreamHandle: <nil>
+PrecomputeFactor: 4
+C: 0
+Bitsize: 0
+BatchSize: 1
+ArePointsSharedInBatch: false
+AreScalarsMontgomeryForm: true
+AreBasesMontgomeryForm: false
+IsAsync: false
+Ext: <nil>
+========= cfg config info ==========
+
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] GPU memory: used=7221 MiB / total=24081 MiB (30.0%)
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] CPU memory: allocated=10048 MiB, total_allocated=43528 MiB, sys=10877 MiB
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] GPU memory: used=7221 MiB / total=24081 MiB (30.0%)
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] CPU memory: allocated=10048 MiB, total_allocated=43528 MiB, sys=10877 MiB
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] GPU memory: used=7221 MiB / total=24081 MiB (30.0%)
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] CPU memory: allocated=10048 MiB, total_allocated=43528 MiB, sys=10877 MiB
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] GPU memory: used=7477 MiB / total=24081 MiB (31.1%)
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] CPU memory: allocated=10048 MiB, total_allocated=43528 MiB, sys=10877 MiB
+	OnDeviceCommitWithPrecompute() || CopyToDevice 耗时: 41.565054 ms
+	OnDeviceCommitWithPrecompute() || icicle_msm.Msm() 耗时: 95.039492 ms
+=============================================== OnDeviceCommitWithPrecompute() end ================================================
+
+			commitToPolyAndBlinding() -> commit to p 耗时: 137.540290ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.635145ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003185ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 146.199642ms
+prove() -> buildRatioCopyConstraint 耗时: 2777.850878ms
+		computeQuotient() || wait for Z to be committed 耗时: 799.056242ms
+	computeQuotient() || prepare to compute & derive alpha): 2833.683018 ms
+	computeQuotient() || computeNumerator() 耗时: 7283.307911 ms
+		divideByZH() || parallelize divide 耗时: 47.238963 ms
+		divideByZH() || ToCanonical 耗时: 726.147742 ms
+	computeQuotient() || divideByZH() 耗时: 773.458375 ms
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 预计算, neededPrecompLen: 8388610
+
+=============================================== OnDeviceCommitWithPrecompute() start ================================================
+
+========= cfg config info ==========
+N: 8388610
+StreamHandle: <nil>
+PrecomputeFactor: 1
+C: 0
+Bitsize: 0
+BatchSize: 0
+ArePointsSharedInBatch: true
+AreScalarsMontgomeryForm: true
+AreBasesMontgomeryForm: false
+IsAsync: true
+Ext: <nil>
+========= cfg config info ==========
+
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 预计算, neededPrecompLen: 8388610
+
+=============================================== OnDeviceCommitWithPrecompute() start ================================================
+
+========= cfg config info ==========
+N: 8388610
+StreamHandle: <nil>
+PrecomputeFactor: 1
+C: 0
+Bitsize: 0
+BatchSize: 0
+ArePointsSharedInBatch: true
+AreScalarsMontgomeryForm: true
+AreBasesMontgomeryForm: false
+IsAsync: true
+Ext: <nil>
+========= cfg config info ==========
+
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] GPU memory: used=11317 MiB / total=24081 MiB (47.0%)
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] CPU memory: allocated=8925 MiB, total_allocated=46216 MiB, sys=12927 MiB
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] GPU memory: used=11317 MiB / total=24081 MiB (47.0%)
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] CPU memory: allocated=8925 MiB, total_allocated=46216 MiB, sys=12927 MiB
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] GPU memory: used=11317 MiB / total=24081 MiB (47.0%)
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] CPU memory: allocated=8925 MiB, total_allocated=46216 MiB, sys=12927 MiB
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] GPU memory: used=11317 MiB / total=24081 MiB (47.0%)
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 预计算, neededPrecompLen: 8388610
+
+=============================================== OnDeviceCommitWithPrecompute() start ================================================
+
+========= cfg config info ==========
+N: 8388610
+StreamHandle: <nil>
+PrecomputeFactor: 1
+C: 0
+Bitsize: 0
+BatchSize: 0
+ArePointsSharedInBatch: true
+AreScalarsMontgomeryForm: true
+AreBasesMontgomeryForm: false
+IsAsync: true
+Ext: <nil>
+========= cfg config info ==========
+
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] GPU memory: used=11317 MiB / total=24081 MiB (47.0%)
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] CPU memory: allocated=8925 MiB, total_allocated=46216 MiB, sys=12927 MiB
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] GPU memory: used=11317 MiB / total=24081 MiB (47.0%)
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] CPU memory: allocated=8925 MiB, total_allocated=46216 MiB, sys=12927 MiB
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] GPU memory: used=11317 MiB / total=24081 MiB (47.0%)
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] CPU memory: allocated=8925 MiB, total_allocated=46216 MiB, sys=12927 MiB
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] GPU memory: used=11317 MiB / total=24081 MiB (47.0%)
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] CPU memory: allocated=8925 MiB, total_allocated=46216 MiB, sys=12927 MiB
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] CPU memory: allocated=8925 MiB, total_allocated=46216 MiB, sys=12927 MiB
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] GPU memory: used=11317 MiB / total=24081 MiB (47.0%)
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] CPU memory: allocated=8925 MiB, total_allocated=46216 MiB, sys=12927 MiB
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] GPU memory: used=11575 MiB / total=24081 MiB (48.1%)
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] CPU memory: allocated=8925 MiB, total_allocated=46216 MiB, sys=12927 MiB
+	OnDeviceCommitWithPrecompute() || CopyToDevice 耗时: 61.365817 ms
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] GPU memory: used=12603 MiB / total=24081 MiB (52.3%)
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] CPU memory: allocated=8925 MiB, total_allocated=46216 MiB, sys=12927 MiB
+	OnDeviceCommitWithPrecompute() || CopyToDevice 耗时: 103.868435 ms
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] GPU memory: used=12795 MiB / total=24081 MiB (53.1%)
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] CPU memory: allocated=8925 MiB, total_allocated=46216 MiB, sys=12927 MiB
+	OnDeviceCommitWithPrecompute() || CopyToDevice 耗时: 145.583408 ms
+	OnDeviceCommitWithPrecompute() || icicle_msm.Msm() 耗时: 802.548445 ms
+=============================================== OnDeviceCommitWithPrecompute() end ================================================
+
+		commitToQuotient() || commit h3 耗时: 887.708387 ms
+	OnDeviceCommitWithPrecompute() || icicle_msm.Msm() 耗时: 1096.373647 ms
+=============================================== OnDeviceCommitWithPrecompute() end ================================================
+
+		commitToQuotient() || commit h2 耗时: 1260.412623 ms
+	OnDeviceCommitWithPrecompute() || icicle_msm.Msm() 耗时: 1270.565297 ms
+=============================================== OnDeviceCommitWithPrecompute() end ================================================
+
+		commitToQuotient() || commit h1 耗时: 1497.626942 ms
+		commitToQuotient() || 总耗时: 1497.684761 ms
+	computeQuotient() || commitToQuotient() 耗时: 1497.687563 ms
+	computeQuotient() || deriveZeta() & clean up 耗时: 234.639710 ms
+prove() -> computeQuotient 耗时: 12622.801298ms
+		openZ() || wait for H to be committed and zeta to be derived 耗时: 12622.808687ms
+		computeLinearizedPolynomial() || wait for H to be committed and zeta to be derived 耗时: 12622.790467ms
+		openZ() || getBlindedCoefficients 耗时: 20.536527ms
+		openZ() || Open 耗时: 566.428561ms
+prove() -> openZ 耗时: 13209.786022ms
+		computeLinearizedPolynomial() || innerComputeLinearizedPoly 耗时: 1049.200654ms
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 预计算, neededPrecompLen: 8388611
+
+=============================================== OnDeviceCommitWithPrecompute() start ================================================
+
+========= cfg config info ==========
+N: 8388611
+StreamHandle: <nil>
+PrecomputeFactor: 1
+C: 0
+Bitsize: 0
+BatchSize: 1
+ArePointsSharedInBatch: false
+AreScalarsMontgomeryForm: true
+AreBasesMontgomeryForm: false
+IsAsync: true
+Ext: <nil>
+========= cfg config info ==========
+
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] GPU memory: used=10807 MiB / total=24081 MiB (44.9%)
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] CPU memory: allocated=9509 MiB, total_allocated=46800 MiB, sys=12927 MiB
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] GPU memory: used=10807 MiB / total=24081 MiB (44.9%)
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] CPU memory: allocated=9509 MiB, total_allocated=46800 MiB, sys=12927 MiB
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] GPU memory: used=10807 MiB / total=24081 MiB (44.9%)
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] CPU memory: allocated=9509 MiB, total_allocated=46800 MiB, sys=12927 MiB
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] GPU memory: used=11065 MiB / total=24081 MiB (45.9%)
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] CPU memory: allocated=9509 MiB, total_allocated=46800 MiB, sys=12927 MiB
+	OnDeviceCommitWithPrecompute() || CopyToDevice 耗时: 41.507751 ms
+	OnDeviceCommitWithPrecompute() || icicle_msm.Msm() 耗时: 242.638921 ms
+=============================================== OnDeviceCommitWithPrecompute() end ================================================
+
+		computeLinearizedPolynomial() || kzg.Commit 耗时: 290.910932 ms
+prove() -> computeLinearizedPolynomial 耗时: 13962.957361ms
+		batchOpening() || wait for linearizedPolynomial 耗时: 13963.140580ms
+		batchOpening() || prepare polysToOpen and digestsToOpen 耗时: 0.005261ms
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 预计算, neededPrecompLen: 8388610
+
+=============================================== OnDeviceCommitWithPrecompute() start ================================================
+
+========= cfg config info ==========
+N: 8388610
+StreamHandle: <nil>
+PrecomputeFactor: 1
+C: 0
+Bitsize: 0
+BatchSize: 1
+ArePointsSharedInBatch: false
+AreScalarsMontgomeryForm: true
+AreBasesMontgomeryForm: false
+IsAsync: true
+Ext: <nil>
+========= cfg config info ==========
+
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] GPU memory: used=10807 MiB / total=24081 MiB (44.9%)
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] CPU memory: allocated=9765 MiB, total_allocated=47056 MiB, sys=12927 MiB
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] GPU memory: used=10807 MiB / total=24081 MiB (44.9%)
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] CPU memory: allocated=9765 MiB, total_allocated=47056 MiB, sys=12927 MiB
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] GPU memory: used=10807 MiB / total=24081 MiB (44.9%)
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] CPU memory: allocated=9765 MiB, total_allocated=47056 MiB, sys=12927 MiB
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] GPU memory: used=11065 MiB / total=24081 MiB (45.9%)
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] CPU memory: allocated=9765 MiB, total_allocated=47056 MiB, sys=12927 MiB
+	OnDeviceCommitWithPrecompute() || CopyToDevice 耗时: 41.469413 ms
+	OnDeviceCommitWithPrecompute() || icicle_msm.Msm() 耗时: 245.566877 ms
+=============================================== OnDeviceCommitWithPrecompute() end ================================================
+
+		BatchOpenSinglePoint  ||  commitOnGPUOrCPU() 耗时: 296.082304 ms
+		batchOpening() || BatchOpenSinglePoint 耗时: 738.620504ms
+prove() -> batchOpening 耗时: 14701.776058ms
+prove() -> prove() 总耗时: 15877.940828ms
+prove outer 耗时: 19060.893000 ms
+verify outer 耗时: 3.654169 ms
+outer circuit verified

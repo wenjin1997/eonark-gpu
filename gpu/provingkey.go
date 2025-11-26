@@ -111,30 +111,33 @@ func (di *deviceInfo) initMsmPrecomputeLag(N int) error {
 	cfg := icicle_msm.GetDefaultMSMConfig()
 	cfg.AreScalarsMontgomeryForm = true
 	cfg.AreBasesMontgomeryForm = false
-	cfg.BatchSize = 0 // 单次 MSM
 	cfg.ArePointsSharedInBatch = true
+	cfg.IsAsync = false
 
 	// 根据 N 选择 precompute_factor 和 c
 	// 只对大 MSM 开启预计算（N >= 2^21）
-	if N >= 2097152 { // 2^21
-		if N >= 8388608 { // 2^23 或更大（包括 8388610 等）
-			// 对于 2^23 规模及以上的 MSM，使用较大的预计算参数
-			cfg.PrecomputeFactor = 4
-			// cfg.C = 16
-		} else if N >= 4194304 { // 2^22
-			cfg.PrecomputeFactor = 4
-			// cfg.C = 16
-		} else {
-			// N >= 2^21 但 < 2^22，使用较小的预计算
-			cfg.PrecomputeFactor = 4
-			// cfg.C = 8
+	if N >= 2097152 { // N >= 2^21
+		if N >= 8388608 { // N >= 2^23，包括 8388610 等
+			cfg.PrecomputeFactor = 3
+			// cfg.C = 22
+		} else if N >= 4194304 { // 2^22 <= N < 2^23
+			cfg.PrecomputeFactor = 2 // 不要用 4，否则会 OOM + fallback
+			// cfg.C = 14
+		} else { // 2^21 <= N < 2^22
+			cfg.PrecomputeFactor = 2
+			// cfg.C = 12
 		}
 	} else {
 		// 小规模 MSM，不使用预计算
+		// 直接使用原始 bases，避免重复存储
 		cfg.PrecomputeFactor = 1
 		cfg.C = 0
+		di.MsmCfgLag = cfg
+		di.hasLagPrecomp = false // 标记为未预计算，使用原始 bases
+		return nil
 	}
 
+	// 只有大规模 MSM 才进行预计算
 	var sample icicle_bls12_381.Affine
 	precomputeSize := N * int(cfg.PrecomputeFactor)
 
@@ -171,30 +174,35 @@ func (di *deviceInfo) initMsmPrecomputeG1(N int) error {
 	cfg := icicle_msm.GetDefaultMSMConfig()
 	cfg.AreScalarsMontgomeryForm = true
 	cfg.AreBasesMontgomeryForm = false
-	cfg.BatchSize = 0 // 单次 MSM
 	cfg.ArePointsSharedInBatch = true
+	cfg.IsAsync = false
 
 	// 根据 N 选择 precompute_factor 和 c
 	// 只对大 MSM 开启预计算（N >= 2^21）
-	if N >= 2097152 { // 2^21
-		if N >= 8388608 { // 2^23 或更大（包括 8388610 等）
-			// 对于 2^23 规模及以上的 MSM，使用较大的预计算参数
-			cfg.PrecomputeFactor = 4
-			// cfg.C = 22
-		} else if N >= 4194304 { // 2^22
-			cfg.PrecomputeFactor = 4
-			// cfg.C = 22
-		} else {
-			// N >= 2^21 但 < 2^22，使用较小的预计算
-			cfg.PrecomputeFactor = 4
-			// cfg.C = 20
+	if N >= 2097152 { // N >= 2^21
+		if N >= 8388608 { // N >= 2^23 （含 8388610）
+			// quotient 阶段 GPU 已经很满了，这里不要再用预计算，避免 fallback 到 sequential
+			cfg.PrecomputeFactor = 3
+			// cfg.C = 16 // 可以给个固定 c 让窗口稍大一点
+			// cfg.BatchSize = 3
+		} else if N >= 4194304 { // 2^22 <= N < 2^23
+			cfg.PrecomputeFactor = 2
+			cfg.C = 14
+		} else { // 2^21 <= N < 2^22
+			cfg.PrecomputeFactor = 2
+			cfg.C = 12
 		}
 	} else {
 		// 小规模 MSM，不使用预计算
+		// 直接使用原始 bases，避免重复存储
 		cfg.PrecomputeFactor = 1
 		cfg.C = 0
+		di.MsmCfgG1 = cfg
+		di.hasG1Precomp = false // 标记为未预计算，使用原始 bases
+		return nil
 	}
 
+	// 只有大规模 MSM 才进行预计算
 	// 预计算 N+3 个点，以覆盖 h1/h2/h3 的最大可能长度（N+2 或 N+3）
 	// 注意：实际预计算大小仍然是 (N+3) * PrecomputeFactor
 	maxPolyLen := N + 3

@@ -76,16 +76,46 @@ func OnDeviceCommit(p []fr.Element, G1Device icicle_core.DeviceSlice) (kzg.Diges
 // cfg: MSM 配置（必须与预计算时使用的配置一致）
 // 返回：kzg.Digest
 func OnDeviceCommitWithPrecompute(p []fr.Element, precomputedBases icicle_core.DeviceSlice, cfg *icicle_core.MSMConfig) (kzg.Digest, icicle_runtime.EIcicleError) {
-	// 1) 把标量拷到设备
-	host := icicle_core.HostSliceFromElements(p)
+	fmt.Println("")
+	fmt.Println("=============================================== OnDeviceCommitWithPrecompute() start ================================================")
 
+	N := len(p)
+	fmt.Println("")
+	fmt.Println("========= cfg config info ==========")
+	fmt.Printf("N: %d\n", N)
+	fmt.Printf("StreamHandle: %v\n", cfg.StreamHandle)
+	fmt.Printf("PrecomputeFactor: %v\n", cfg.PrecomputeFactor)
+	fmt.Printf("C: %v\n", cfg.C)
+	fmt.Printf("Bitsize: %v\n", cfg.Bitsize)
+	fmt.Printf("BatchSize: %v\n", cfg.BatchSize)
+	fmt.Printf("ArePointsSharedInBatch: %v\n", cfg.ArePointsSharedInBatch)
+	fmt.Printf("AreScalarsMontgomeryForm: %v\n", cfg.AreScalarsMontgomeryForm)
+	fmt.Printf("AreBasesMontgomeryForm: %v\n", cfg.AreBasesMontgomeryForm)
+	fmt.Printf("IsAsync: %v\n", cfg.IsAsync)
+	fmt.Printf("Ext: %v\n", cfg.Ext)
+	fmt.Println("========= cfg config info ==========")
+	fmt.Println("")
+
+	// 1) 把标量拷到设备
+	printMemoryInfo("OnDeviceCommitWithPrecompute: Before HostSliceFromElements")
+	start_time := time.Now()
+	host := icicle_core.HostSliceFromElements(p)
+	printMemoryInfo("OnDeviceCommitWithPrecompute: After HostSliceFromElements")
+
+	printMemoryInfo("OnDeviceCommitWithPrecompute: Before CopyToDevice")
 	var scalarsDev icicle_core.DeviceSlice
 	host.CopyToDevice(&scalarsDev, true)
 	defer scalarsDev.Free()
+	elapsed := time.Since(start_time)
+	printMemoryInfo("OnDeviceCommitWithPrecompute: After CopyToDevice")
+	fmt.Printf("	OnDeviceCommitWithPrecompute() || CopyToDevice 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	// 2) 运行 MSM（输出 1 个 projective 点）
 	out := make(icicle_core.HostSlice[icicle_bls12_381.Projective], 1)
+	start_time = time.Now()
 	st := icicle_msm.Msm(scalarsDev, precomputedBases, cfg, out)
+	elapsed = time.Since(start_time)
+	fmt.Printf("	OnDeviceCommitWithPrecompute() || icicle_msm.Msm() 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	if st != icicle_runtime.Success {
 		return kzg.Digest{}, st
@@ -93,6 +123,9 @@ func OnDeviceCommitWithPrecompute(p []fr.Element, precomputedBases icicle_core.D
 
 	// 3) 转成 gnark 的 Affine（= kzg.Digest）
 	res := blsProjectiveToGnarkAffine(out[0])
+
+	fmt.Println("=============================================== OnDeviceCommitWithPrecompute() end ================================================")
+	fmt.Println("")
 
 	return kzg.Digest(res), icicle_runtime.Success
 }
@@ -209,6 +242,11 @@ func OnDeviceCommitBatchLROWithPrecompute(
 	precomputedBases icicle_core.DeviceSlice,
 	cfg *icicle_core.MSMConfig,
 ) ([]kzg.Digest, icicle_runtime.EIcicleError) {
+	fmt.Println("")
+	fmt.Println("=============================================== OnDeviceCommitBatchLROWithPrecompute() start ================================================")
+	// 追踪：函数开始时的内存状态
+	printMemoryInfo("OnDeviceCommitBatchLROWithPrecompute: Function Start")
+
 	batchSize := len(polys)
 	if batchSize == 0 {
 		return nil, icicle_runtime.Success
@@ -224,42 +262,116 @@ func OnDeviceCommitBatchLROWithPrecompute(
 		}
 	}
 
+	// 打印配置信息
+	fmt.Println("")
+	fmt.Println("========= cfg config info ==========")
+	fmt.Printf("N: %d\n", N)
+	fmt.Printf("StreamHandle: %v\n", cfg.StreamHandle)
+	fmt.Printf("PrecomputeFactor: %v\n", cfg.PrecomputeFactor)
+	fmt.Printf("C: %v\n", cfg.C)
+	fmt.Printf("Bitsize: %v\n", cfg.Bitsize)
+	fmt.Printf("BatchSize: %v\n", cfg.BatchSize)
+	fmt.Printf("ArePointsSharedInBatch: %v\n", cfg.ArePointsSharedInBatch)
+	fmt.Printf("AreScalarsMontgomeryForm: %v\n", cfg.AreScalarsMontgomeryForm)
+	fmt.Printf("AreBasesMontgomeryForm: %v\n", cfg.AreBasesMontgomeryForm)
+	fmt.Printf("IsAsync: %v\n", cfg.IsAsync)
+	fmt.Printf("Ext: %v\n", cfg.Ext)
+	fmt.Println("========= cfg config info ==========")
+	fmt.Println("")
+	// fmt.Printf("	OnDeviceCommitBatchLROWithPrecompute() || N=%d, BatchSize=%d, PrecomputeFactor=%d, C=%d\n",
+	// 	N, cfg.BatchSize, cfg.PrecomputeFactor, cfg.C)
+
 	// 1) 把 [L, R, O] flatten 成一个大标量数组：L || R || O
 	flatten := make([]fr.Element, 0, batchSize*N)
 	for i := 0; i < batchSize; i++ {
 		flatten = append(flatten, polys[i]...)
 	}
 
+	// 追踪：flatten 数组创建后的内存状态
+	printMemoryInfo("OnDeviceCommitBatchLROWithPrecompute: After Flatten Array Created")
+
+	// 计算 flatten 的内存大小
+	flattenMemBytes := len(flatten) * fp.Bytes
+	fmt.Printf("	OnDeviceCommitBatchLROWithPrecompute() || flatten total elements: %d, per fr.Element: %d bytes, total: %.2f MB\n",
+		len(flatten), fp.Bytes, float64(flattenMemBytes)/(1024*1024))
+
 	// 2) HostSlice → DeviceSlice
+	start_time := time.Now()
 	host := icicle_core.HostSliceFromElements(flatten)
 	var scalarsDev icicle_core.DeviceSlice
+
+	// 追踪：HostSlice 创建后的内存状态
+	printMemoryInfo("OnDeviceCommitBatchLROWithPrecompute: After HostSlice Created")
+
+	// 追踪：CopyToDevice 前的内存信息
+	printMemoryInfo("OnDeviceCommitBatchLROWithPrecompute: Before CopyToDevice")
+
 	host.CopyToDevice(&scalarsDev, true)
 	defer scalarsDev.Free()
+
+	// 打印 CopyToDevice 后的内存信息
+	printMemoryInfo("OnDeviceCommitBatchLROWithPrecompute: After CopyToDevice")
+
+	elapsed := time.Since(start_time)
+	fmt.Printf("	OnDeviceCommitBatchLROWithPrecompute() || CopyToDevice 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
 
 	// 3) 准备结果 HostSlice，长度 = batchSize
 	out := make(icicle_core.HostSlice[icicle_bls12_381.Projective], batchSize)
 
+	// 追踪：结果数组创建后的内存状态
+	printMemoryInfo("OnDeviceCommitBatchLROWithPrecompute: After Result Array Created")
+
 	// 4) 调用 MSM：使用预计算的基点
-	start_time := time.Now()
+	// 打印 MSM 调用前的内存信息
+	printMemoryInfo("OnDeviceCommitBatchLROWithPrecompute: Before MSM")
+
+	start_time = time.Now()
 	st := icicle_msm.Msm(scalarsDev, precomputedBases, cfg, out)
-	elapsed := time.Since(start_time)
+	elapsed = time.Since(start_time)
 	fmt.Printf("	OnDeviceCommitBatchLROWithPrecompute() || icicle_msm.Msm() 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
+
+	// 打印 MSM 调用后的内存信息
+	printMemoryInfo("OnDeviceCommitBatchLROWithPrecompute: After MSM")
 
 	if st != icicle_runtime.Success {
 		return nil, st
 	}
 
 	// 5) Projective → gnark Affine（= kzg.Digest）
+	start_time = time.Now()
 	res := make([]kzg.Digest, batchSize)
 	for i := 0; i < batchSize; i++ {
 		aff := blsProjectiveToGnarkAffine(out[i])
 		res[i] = kzg.Digest(aff)
 	}
+	elapsed = time.Since(start_time)
+	fmt.Printf("	OnDeviceCommitBatchLROWithPrecompute() || blsProjectiveToGnarkAffine() 耗时: %.6f ms\n", float64(elapsed.Nanoseconds())/1e6)
+
+	// 追踪：转换完成后的内存状态
+	printMemoryInfo("OnDeviceCommitBatchLROWithPrecompute: After Conversion")
+
+	// 追踪：函数返回前的内存状态
+	printMemoryInfo("OnDeviceCommitBatchLROWithPrecompute: Function End")
+	fmt.Println("=============================================== OnDeviceCommitBatchLROWithPrecompute() end ================================================")
+	fmt.Println("")
 
 	return res, icicle_runtime.Success
 }
 
 func OnDeviceOpen(p []fr.Element, point fr.Element, base icicle_core.DeviceSlice) (kzg.OpeningProof, icicle_runtime.EIcicleError) {
+	return OnDeviceOpenWithPrecompute(p, point, base, nil, nil)
+}
+
+// OnDeviceOpenWithPrecompute 支持使用预计算的 bases 进行 opening proof
+// precomputedBases: 可选的预计算 bases（如果为 nil，则使用 base）
+// cfg: 可选的 MSM 配置（如果为 nil，则使用默认配置）
+func OnDeviceOpenWithPrecompute(
+	p []fr.Element,
+	point fr.Element,
+	base icicle_core.DeviceSlice,
+	precomputedBases *icicle_core.DeviceSlice,
+	cfg *icicle_core.MSMConfig,
+) (kzg.OpeningProof, icicle_runtime.EIcicleError) {
 	var proof kzg.OpeningProof
 
 	// 1) 声明值（CPU 做即可，代价可忽略）
@@ -272,8 +384,24 @@ func OnDeviceOpen(p []fr.Element, point fr.Element, base icicle_core.DeviceSlice
 
 	// 3) 对 H 做一次设备端承诺：commit(H)
 	//    注意 bases 需要与标量长度一致，这里对子片到 len(h)
-	subBase := base.RangeTo(len(h), false)
-	dig, st := OnDeviceCommit(h, subBase)
+	hLen := len(h)
+	var dig kzg.Digest
+	var st icicle_runtime.EIcicleError
+
+	// 判断是否可以使用预计算
+	// 条件：提供了预计算 bases 和配置，且 hLen >= 2^21（大规模 MSM）
+	if precomputedBases != nil && cfg != nil && hLen >= 2097152 {
+		// 使用预计算的 bases
+		precomputeFactor := int(cfg.PrecomputeFactor)
+		neededLen := hLen * precomputeFactor
+		precompSubBase := precomputedBases.RangeTo(neededLen, false)
+		dig, st = OnDeviceCommitWithPrecompute(h, precompSubBase, cfg)
+	} else {
+		// 使用原始 bases（不使用预计算）
+		subBase := base.RangeTo(hLen, false)
+		dig, st = OnDeviceCommit(h, subBase)
+	}
+
 	if st != icicle_runtime.Success {
 		return kzg.OpeningProof{}, st
 	}

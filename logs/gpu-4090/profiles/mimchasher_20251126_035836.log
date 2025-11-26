@@ -1,0 +1,1044 @@
+compile inner 耗时: 944.385624 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/home/jade/.local/icicle/lib/backend
+prove() -> icicle device setup 耗时: 159.701677ms
+prove() -> initBlindingPolynomials 耗时: 0.013707ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 不使用预计算
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 7.482581 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.002460 ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 不使用预计算
+			commitToPolyAndBlinding() -> commit to p 耗时: 5.324709ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.917695ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003138ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_L], s.bp[id_Bl]) LRO[0] 耗时: 14.249383ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 不使用预计算
+			commitToPolyAndBlinding() -> commit to p 耗时: 5.284726ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.917459ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003318ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_R], s.bp[id_Br]) LRO[1] 耗时: 14.211882ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 不使用预计算
+			commitToPolyAndBlinding() -> commit to p 耗时: 5.297648ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.857692ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003280ms
+		commitToLRO() || commitToPolyAndBlinding(s.x[id_O], s.bp[id_Bo]) LRO[2] 耗时: 14.161484ms
+	solveConstraints() || commitToLRO() 耗时: 42.625290 ms
+prove() -> solveConstraints 耗时: 50.115123ms
+		computeQuotient() || wait for solver to be done 耗时: 50.062769ms
+		deriveGammaAndBeta() || wait for LRO to be committed 耗时: 49.891854ms
+		completeQk() || wait for solver to be done 耗时: 50.096273ms
+prove() -> completeQk 耗时: 50.119436ms
+prove() -> deriveGammaAndBeta 耗时: 50.209802ms
+		buildRatioCopyConstraint() || wait for gamma and beta to be derived 耗时: 50.235890ms
+		buildRatioCopyConstraint() || iop.BuildRatioCopyConstraint 耗时: 0.194632ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 不使用预计算
+			commitToPolyAndBlinding() -> commit to p 耗时: 4.913517ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.877057ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003343ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 13.800505ms
+prove() -> buildRatioCopyConstraint 耗时: 64.234252ms
+		computeQuotient() || wait for Z to be committed 耗时: 14.157674ms
+	computeQuotient() || prepare to compute & derive alpha): 64.279503 ms
+	computeQuotient() || computeNumerator() 耗时: 7.457984 ms
+		divideByZH() || parallelize divide 耗时: 0.045579 ms
+		divideByZH() || ToCanonical 耗时: 0.174904 ms
+	computeQuotient() || divideByZH() 耗时: 0.233126 ms
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 不使用预计算
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 不使用预计算
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 不使用预计算
+		commitToQuotient() || commit h2 耗时: 9.943012 ms
+		commitToQuotient() || commit h1 耗时: 9.969864 ms
+		commitToQuotient() || commit h3 耗时: 15.277840 ms
+		commitToQuotient() || 总耗时: 15.281730 ms
+	computeQuotient() || commitToQuotient() 耗时: 15.283053 ms
+	computeQuotient() || deriveZeta() & clean up 耗时: 0.511778 ms
+		openZ() || wait for H to be committed and zeta to be derived 耗时: 87.784882ms
+		computeLinearizedPolynomial() || wait for H to be committed and zeta to be derived 耗时: 87.765704ms
+		openZ() || getBlindedCoefficients 耗时: 0.002561ms
+prove() -> computeQuotient 耗时: 87.778371ms
+		openZ() || Open 耗时: 5.352209ms
+prove() -> openZ 耗时: 93.145052ms
+		computeLinearizedPolynomial() || innerComputeLinearizedPoly 耗时: 5.505676ms
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 不使用预计算
+		computeLinearizedPolynomial() || kzg.Commit 耗时: 5.281764 ms
+prove() -> computeLinearizedPolynomial 耗时: 98.564051ms
+		batchOpening() || wait for linearizedPolynomial 耗时: 98.630913ms
+		batchOpening() || prepare polysToOpen and digestsToOpen 耗时: 0.001661ms
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 不使用预计算
+		BatchOpenSinglePoint  ||  commitOnGPUOrCPU() 耗时: 5.325704 ms
+		batchOpening() || BatchOpenSinglePoint 耗时: 5.697610ms
+prove() -> batchOpening 耗时: 104.336790ms
+prove() -> prove() 总耗时: 104.547913ms
+prove inner 耗时: 1198.970574 ms
+verify inner 耗时: 3.622873 ms
+assemble Poseidon2-FS inputs 耗时: 1.210155 ms
+compile outer(frontend.Compile) 耗时: 2585.732990 ms
+[outer] nbConstraints=6312224 nbPublic=4 nbSecret=168
+solve outer 耗时: 1584.220622ms
+outer circuit solved
+compile outer(pkOuter.Compile) 耗时: 14582.255792 ms
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/home/jade/.local/icicle/lib/backend
+prove() -> icicle device setup 耗时: 886.410789ms
+prove() -> initBlindingPolynomials 耗时: 0.023446ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 预计算
+
+=============================================== OnDeviceCommitWithPrecompute() start ================================================
+
+========= cfg config info ==========
+N: 8388608
+StreamHandle: <nil>
+PrecomputeFactor: 2
+C: 14
+Bitsize: 0
+BatchSize: 0
+ArePointsSharedInBatch: true
+AreScalarsMontgomeryForm: true
+AreBasesMontgomeryForm: false
+IsAsync: false
+Ext: <nil>
+========= cfg config info ==========
+
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] GPU memory: used=5683 MiB / total=24081 MiB (23.6%)
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] CPU memory: allocated=6959 MiB, total_allocated=40438 MiB, sys=10863 MiB
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] GPU memory: used=5683 MiB / total=24081 MiB (23.6%)
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] CPU memory: allocated=6959 MiB, total_allocated=40438 MiB, sys=10863 MiB
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] GPU memory: used=5683 MiB / total=24081 MiB (23.6%)
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] CPU memory: allocated=6959 MiB, total_allocated=40438 MiB, sys=10863 MiB
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] GPU memory: used=5939 MiB / total=24081 MiB (24.7%)
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] CPU memory: allocated=6959 MiB, total_allocated=40438 MiB, sys=10863 MiB
+	OnDeviceCommitWithPrecompute() || CopyToDevice 耗时: 41.246322 ms
+	OnDeviceCommitWithPrecompute() || icicle_msm.Msm() 耗时: 174.156858 ms
+=============================================== OnDeviceCommitWithPrecompute() end ================================================
+
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 1760.673624 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.009660 ms
+
+=============================================== OnDeviceCommitBatchLROWithPrecompute() start ================================================
+		[OnDeviceCommitBatchLROWithPrecompute: Function Start] GPU memory: used=5683 MiB / total=24081 MiB (23.6%)
+		[OnDeviceCommitBatchLROWithPrecompute: Function Start] CPU memory: allocated=7759 MiB, total_allocated=41238 MiB, sys=10863 MiB
+
+========= cfg config info ==========
+N: 8388608
+StreamHandle: <nil>
+PrecomputeFactor: 2
+C: 14
+Bitsize: 0
+BatchSize: 3
+ArePointsSharedInBatch: true
+AreScalarsMontgomeryForm: true
+AreBasesMontgomeryForm: false
+IsAsync: false
+Ext: <nil>
+========= cfg config info ==========
+
+		[OnDeviceCommitBatchLROWithPrecompute: After Flatten Array Created] GPU memory: used=5683 MiB / total=24081 MiB (23.6%)
+		[OnDeviceCommitBatchLROWithPrecompute: After Flatten Array Created] CPU memory: allocated=8527 MiB, total_allocated=42006 MiB, sys=10863 MiB
+	OnDeviceCommitBatchLROWithPrecompute() || flatten total elements: 25165824, per fr.Element: 48 bytes, total: 1152.00 MB
+		[OnDeviceCommitBatchLROWithPrecompute: After HostSlice Created] GPU memory: used=5683 MiB / total=24081 MiB (23.6%)
+		[OnDeviceCommitBatchLROWithPrecompute: After HostSlice Created] CPU memory: allocated=8527 MiB, total_allocated=42006 MiB, sys=10863 MiB
+		[OnDeviceCommitBatchLROWithPrecompute: Before CopyToDevice] GPU memory: used=5683 MiB / total=24081 MiB (23.6%)
+		[OnDeviceCommitBatchLROWithPrecompute: Before CopyToDevice] CPU memory: allocated=8527 MiB, total_allocated=42006 MiB, sys=10863 MiB
+		[OnDeviceCommitBatchLROWithPrecompute: After CopyToDevice] GPU memory: used=6451 MiB / total=24081 MiB (26.8%)
+		[OnDeviceCommitBatchLROWithPrecompute: After CopyToDevice] CPU memory: allocated=8527 MiB, total_allocated=42006 MiB, sys=10863 MiB
+	OnDeviceCommitBatchLROWithPrecompute() || CopyToDevice 耗时: 123.467697 ms
+		[OnDeviceCommitBatchLROWithPrecompute: After Result Array Created] GPU memory: used=6451 MiB / total=24081 MiB (26.8%)
+		[OnDeviceCommitBatchLROWithPrecompute: After Result Array Created] CPU memory: allocated=8527 MiB, total_allocated=42006 MiB, sys=10863 MiB
+		[OnDeviceCommitBatchLROWithPrecompute: Before MSM] GPU memory: used=6451 MiB / total=24081 MiB (26.8%)
+		[OnDeviceCommitBatchLROWithPrecompute: Before MSM] CPU memory: allocated=8527 MiB, total_allocated=42006 MiB, sys=10863 MiB
+	OnDeviceCommitBatchLROWithPrecompute() || icicle_msm.Msm() 耗时: 505.394342 ms
+		[OnDeviceCommitBatchLROWithPrecompute: After MSM] GPU memory: used=6451 MiB / total=24081 MiB (26.8%)
+		[OnDeviceCommitBatchLROWithPrecompute: After MSM] CPU memory: allocated=8527 MiB, total_allocated=42006 MiB, sys=10863 MiB
+	OnDeviceCommitBatchLROWithPrecompute() || blsProjectiveToGnarkAffine() 耗时: 0.012194 ms
+		[OnDeviceCommitBatchLROWithPrecompute: After Conversion] GPU memory: used=6451 MiB / total=24081 MiB (26.8%)
+		[OnDeviceCommitBatchLROWithPrecompute: After Conversion] CPU memory: allocated=8527 MiB, total_allocated=42006 MiB, sys=10863 MiB
+		[OnDeviceCommitBatchLROWithPrecompute: Function End] GPU memory: used=6451 MiB / total=24081 MiB (26.8%)
+		[OnDeviceCommitBatchLROWithPrecompute: Function End] CPU memory: allocated=8527 MiB, total_allocated=42006 MiB, sys=10863 MiB
+=============================================== OnDeviceCommitBatchLROWithPrecompute() end ================================================
+
+2025/11/26 03:59:04 [TIMING] commitToLRO: total=780.741197ms, bigMSM=755.76662ms, blinding=24.974406ms
+	solveConstraints() || commitToLRO() 耗时: 780.803792 ms
+prove() -> solveConstraints 耗时: 2541.504880ms
+		deriveGammaAndBeta() || wait for LRO to be committed 耗时: 2540.570638ms
+		completeQk() || wait for solver to be done 耗时: 2456.829880ms
+prove() -> completeQk 耗时: 2541.527870ms
+		computeQuotient() || wait for solver to be done 耗时: 2477.983842ms
+prove() -> deriveGammaAndBeta 耗时: 2540.948325ms
+		buildRatioCopyConstraint() || wait for gamma and beta to be derived 耗时: 2541.610697ms
+		buildRatioCopyConstraint() || iop.BuildRatioCopyConstraint 耗时: 690.724338ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 预计算
+
+=============================================== OnDeviceCommitWithPrecompute() start ================================================
+
+========= cfg config info ==========
+N: 8388608
+StreamHandle: <nil>
+PrecomputeFactor: 2
+C: 14
+Bitsize: 0
+BatchSize: 1
+ArePointsSharedInBatch: false
+AreScalarsMontgomeryForm: true
+AreBasesMontgomeryForm: false
+IsAsync: false
+Ext: <nil>
+========= cfg config info ==========
+
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] GPU memory: used=5683 MiB / total=24081 MiB (23.6%)
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] CPU memory: allocated=10064 MiB, total_allocated=43543 MiB, sys=10863 MiB
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] GPU memory: used=5683 MiB / total=24081 MiB (23.6%)
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] CPU memory: allocated=10064 MiB, total_allocated=43543 MiB, sys=10863 MiB
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] GPU memory: used=5683 MiB / total=24081 MiB (23.6%)
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] CPU memory: allocated=10064 MiB, total_allocated=43543 MiB, sys=10863 MiB
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] GPU memory: used=5939 MiB / total=24081 MiB (24.7%)
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] CPU memory: allocated=10064 MiB, total_allocated=43543 MiB, sys=10863 MiB
+	OnDeviceCommitWithPrecompute() || CopyToDevice 耗时: 41.415126 ms
+	OnDeviceCommitWithPrecompute() || icicle_msm.Msm() 耗时: 153.182908 ms
+=============================================== OnDeviceCommitWithPrecompute() end ================================================
+
+			commitToPolyAndBlinding() -> commit to p 耗时: 195.636833ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.521938ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003185ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 204.176239ms
+prove() -> buildRatioCopyConstraint 耗时: 3436.533202ms
+		computeQuotient() || wait for Z to be committed 耗时: 894.997246ms
+	computeQuotient() || prepare to compute & derive alpha): 3492.522932 ms
+	computeQuotient() || computeNumerator() 耗时: 7362.308494 ms
+		divideByZH() || parallelize divide 耗时: 38.922765 ms
+		divideByZH() || ToCanonical 耗时: 735.688096 ms
+	computeQuotient() || divideByZH() 耗时: 774.660526 ms
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 预计算, neededPrecompLen: 8388610
+
+=============================================== OnDeviceCommitWithPrecompute() start ================================================
+
+========= cfg config info ==========
+N: 8388610
+StreamHandle: <nil>
+PrecomputeFactor: 1
+C: 0
+Bitsize: 0
+BatchSize: 3
+ArePointsSharedInBatch: true
+AreScalarsMontgomeryForm: true
+AreBasesMontgomeryForm: false
+IsAsync: true
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 预计算, neededPrecompLen: 8388610
+
+=============================================== OnDeviceCommitWithPrecompute() start ================================================
+
+========= cfg config info ==========
+N: 8388610
+StreamHandle: <nil>
+PrecomputeFactor: 1
+C: 0
+Bitsize: 0
+BatchSize: 3
+ArePointsSharedInBatch: true
+AreScalarsMontgomeryForm: true
+AreBasesMontgomeryForm: false
+IsAsync: true
+Ext: <nil>
+========= cfg config info ==========
+
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 预计算, neededPrecompLen: 8388610
+
+=============================================== OnDeviceCommitWithPrecompute() start ================================================
+
+========= cfg config info ==========
+N: 8388610
+StreamHandle: <nil>
+PrecomputeFactor: 1
+C: 0
+Bitsize: 0
+BatchSize: 3
+ArePointsSharedInBatch: true
+AreScalarsMontgomeryForm: true
+AreBasesMontgomeryForm: false
+IsAsync: true
+Ext: <nil>
+========= cfg config info ==========
+
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] GPU memory: used=9779 MiB / total=24081 MiB (40.6%)
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] GPU memory: used=9779 MiB / total=24081 MiB (40.6%)
+Ext: <nil>
+========= cfg config info ==========
+
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] GPU memory: used=9779 MiB / total=24081 MiB (40.6%)
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] CPU memory: allocated=8941 MiB, total_allocated=46231 MiB, sys=13170 MiB
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] GPU memory: used=9779 MiB / total=24081 MiB (40.6%)
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] CPU memory: allocated=8941 MiB, total_allocated=46231 MiB, sys=13170 MiB
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] GPU memory: used=9779 MiB / total=24081 MiB (40.6%)
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] CPU memory: allocated=8941 MiB, total_allocated=46231 MiB, sys=13170 MiB
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] CPU memory: allocated=8941 MiB, total_allocated=46231 MiB, sys=13170 MiB
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] GPU memory: used=9779 MiB / total=24081 MiB (40.6%)
+		[OnDeviceCommitWithPrecompute: Before HostSliceFromElements] CPU memory: allocated=8941 MiB, total_allocated=46231 MiB, sys=13170 MiB
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] GPU memory: used=9779 MiB / total=24081 MiB (40.6%)
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] CPU memory: allocated=8941 MiB, total_allocated=46231 MiB, sys=13170 MiB
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] GPU memory: used=9779 MiB / total=24081 MiB (40.6%)
+		[OnDeviceCommitWithPrecompute: After HostSliceFromElements] CPU memory: allocated=8941 MiB, total_allocated=46231 MiB, sys=13170 MiB
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] GPU memory: used=9779 MiB / total=24081 MiB (40.6%)
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] CPU memory: allocated=8941 MiB, total_allocated=46231 MiB, sys=13170 MiB
+		[OnDeviceCommitWithPrecompute: Before CopyToDevice] CPU memory: allocated=8941 MiB, total_allocated=46231 MiB, sys=13170 MiB
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] GPU memory: used=10037 MiB / total=24081 MiB (41.7%)
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] CPU memory: allocated=8941 MiB, total_allocated=46231 MiB, sys=13170 MiB
+	OnDeviceCommitWithPrecompute() || CopyToDevice 耗时: 54.244052 ms
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] GPU memory: used=10295 MiB / total=24081 MiB (42.8%)
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] CPU memory: allocated=8941 MiB, total_allocated=46231 MiB, sys=13170 MiB
+	OnDeviceCommitWithPrecompute() || CopyToDevice 耗时: 96.174898 ms
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] GPU memory: used=11321 MiB / total=24081 MiB (47.0%)
+		[OnDeviceCommitWithPrecompute: After CopyToDevice] CPU memory: allocated=8941 MiB, total_allocated=46231 MiB, sys=13170 MiB
+	OnDeviceCommitWithPrecompute() || CopyToDevice 耗时: 137.923728 ms
+!!!Unrecoverable!!! : an illegal memory access was encountered : detected by: cudaMemcpyAsync( &smallest_bucket_index, d_single_bucket_indices, sizeof(unsigned), cudaMemcpyDeviceToHost, stream) at: /home/jade/yola/build-icicle/icicle/backend/cuda/src/msm/cuda_msm.cuh:591
+The error is reported there and may be caused by prior calls.
+
+terminate called after throwing an instance of 'IcicleError'
+  what():  CUDA Error: an illegal memory access was encountered !!!Unrecoverable!!! : an illegal memory access was encountered : detected by: cudaMemcpyAsync( &smallest_bucket_index, d_single_bucket_indices, sizeof(unsigned), cudaMemcpyDeviceToHost, stream) at: /home/jade/yola/build-icicle/icicle/backend/cuda/src/msm/cuda_msm.cuh:591
+The error is reported there and may be caused by prior calls.
+
+!!!Unrecoverable!!! : an illegal memory access was encountered : detected by: cudaEventCreateWithFlags(&event_finished_reduction, 0x02) at: /home/jade/yola/build-icicle/icicle/backend/cuda/src/msm/cuda_msm.cuh:850
+The error is reported there and may be caused by prior calls.
+
+terminate called recursively
+!!!Unrecoverable!!! : an illegal memory access was encountered : detected by: cudaEventCreateWithFlags(&event_finished_reduction, 0x02) at: /home/jade/yola/build-icicle/icicle/backend/cuda/src/msm/cuda_msm.cuh:850
+The error is reported there and may be caused by prior calls.
+
+!!!Unrecoverable!!! : an illegal memory access was encountered : detected by: cudaStreamSynchronize(cuda_stream) at: /home/jade/yola/build-icicle/icicle/backend/cuda/src/field/cuda_vec_ops.cu:50
+The error is reported there and may be caused by prior calls.
+
+terminate called recursively
+terminate called recursively
+SIGABRT: abort
+PC=0x79ec93a9eb2c m=26 sigcode=18446744073709551610
+signal arrived during cgo execution
+
+goroutine 4445 gp=0xc0024a4000 m=26 mp=0xc06080e008 [syscall, locked to thread]:
+runtime.cgocall(0xc5f610, 0xc000049940)
+	/home/jade/.local/go/src/runtime/cgocall.go:167 +0x4b fp=0xc000049918 sp=0xc0000498e0 pc=0x470e8b
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/msm._Cfunc_bls12_381_msm(0x79e8f2000000, 0x79ea2e000000, 0x800002, 0xc00018e428, 0xc0088c4000)
+	_cgo_gotypes.go:66 +0x46 fp=0xc000049940 sp=0xc000049918 pc=0xb8d8c6
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/msm.Msm.func1(...)
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/curves/bls12381/msm/msm.go:27
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/msm.Msm({0xf09528?, 0xc002080000?}, {0xf09528?, 0xc002080018?}, 0xc00018e428, {0xf097b0?, 0xc002080030?})
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/curves/bls12381/msm/msm.go:27 +0x116 fp=0xc0000499c8 sp=0xc000049940 pc=0xb8dc56
+github.com/eon-protocol/eonark/gpu/bls12381.OnDeviceCommitWithPrecompute({0xc2c3516040, 0x800002, 0x17ffffe}, {0x79ea2e000000, 0x300000c0, 0x800002}, 0xc00018e428)
+	/home/jade/jade/eonark-gpu/gpu/bls12381/bls12381_gpu.go:116 +0x89c fp=0xc000049d88 sp=0xc0000499c8 pc=0xb8fcbc
+github.com/eon-protocol/eonark/gpu.commitOnGPUOrCPU.func1({0xc00018e248?, 0x73de201b602a6786?, 0x1?})
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:2578 +0x2f0 fp=0xc000049f68 sp=0xc000049d88 pc=0xbabe50
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/runtime.RunOnDevice.func1(0xc00018e248)
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/runtime/runtime.go:99 +0x90 fp=0xc000049fc8 sp=0xc000049f68 pc=0xa6eb70
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/runtime.RunOnDevice.gowrap1()
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/runtime/runtime.go:101 +0x24 fp=0xc000049fe0 sp=0xc000049fc8 pc=0xa6eaa4
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc000049fe8 sp=0xc000049fe0 pc=0x47b241
+created by github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/runtime.RunOnDevice in goroutine 4764
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/runtime/runtime.go:94 +0xd9
+
+goroutine 1 gp=0xc000002380 m=nil [sync.WaitGroup.Wait]:
+runtime.gopark(0xc001112cc8?, 0x418cd4?, 0xa0?, 0x14?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0007f6c68 sp=0xc0007f6c48 pc=0x473d0e
+runtime.goparkunlock(...)
+	/home/jade/.local/go/src/runtime/proc.go:441
+runtime.semacquire1(0xc0001be190, 0x0, 0x1, 0x0, 0x18)
+	/home/jade/.local/go/src/runtime/sema.go:188 +0x21d fp=0xc0007f6cd0 sp=0xc0007f6c68 pc=0x454efd
+sync.runtime_SemacquireWaitGroup(0xc0004121c8?)
+	/home/jade/.local/go/src/runtime/sema.go:110 +0x25 fp=0xc0007f6d08 sp=0xc0007f6cd0 pc=0x475105
+sync.(*WaitGroup).Wait(0xd0b500?)
+	/home/jade/.local/go/src/sync/waitgroup.go:118 +0x48 fp=0xc0007f6d30 sp=0xc0007f6d08 pc=0x4904e8
+golang.org/x/sync/errgroup.(*Group).Wait(0xc0001be180)
+	/home/jade/go/pkg/mod/golang.org/x/sync@v0.15.0/errgroup/errgroup.go:65 +0x1e fp=0xc0007f6d50 sp=0xc0007f6d30 pc=0x58313e
+github.com/eon-protocol/eonark/gpu.prove(0xc00018a970, 0xc0000d4340, {0xf0ada0, 0xc000cb2048}, {0xc001691220, 0x2, 0x2})
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:388 +0xbb9 fp=0xc0007f7088 sp=0xc0007f6d50 pc=0xb97259
+github.com/eon-protocol/eonark/gpu.Prove(...)
+	/home/jade/jade/eonark-gpu/gpu/gpu_entry.go:15
+github.com/eon-protocol/eonark.Prove(0xc00018a970, 0xc0000d4000, {0xf0ada0, 0xc000cb2048}, {0xc001759220, 0x2, 0x2})
+	/home/jade/jade/eonark-gpu/gpu_router.go:24 +0x1cb fp=0xc0007f71d0 sp=0xc0007f7088 pc=0xbb4e8b
+github.com/eon-protocol/eonark.(*Pk).Prove(0xc00018a608, {0xf015a0?, 0xc000199308?})
+	/home/jade/jade/eonark-gpu/pk.go:83 +0xea fp=0xc0007f7248 sp=0xc0007f71d0 pc=0xbc930a
+main.main()
+	/home/jade/jade/eonark-gpu/examples/mimchasher/main.go:287 +0x2b6c fp=0xc0007f9f50 sp=0xc0007f7248 pc=0xbd0b8c
+runtime.main()
+	/home/jade/.local/go/src/runtime/proc.go:283 +0x28b fp=0xc0007f9fe0 sp=0xc0007f9f50 pc=0x441a4b
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0007f9fe8 sp=0xc0007f9fe0 pc=0x47b241
+
+goroutine 2 gp=0xc000002e00 m=nil [force gc (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0000a8fa8 sp=0xc0000a8f88 pc=0x473d0e
+runtime.goparkunlock(...)
+	/home/jade/.local/go/src/runtime/proc.go:441
+runtime.forcegchelper()
+	/home/jade/.local/go/src/runtime/proc.go:348 +0xb3 fp=0xc0000a8fe0 sp=0xc0000a8fa8 pc=0x441d93
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000a8fe8 sp=0xc0000a8fe0 pc=0x47b241
+created by runtime.init.7 in goroutine 1
+	/home/jade/.local/go/src/runtime/proc.go:336 +0x1a
+
+goroutine 3 gp=0xc000003340 m=nil [GC sweep wait]:
+runtime.gopark(0x1?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0000a9780 sp=0xc0000a9760 pc=0x473d0e
+runtime.goparkunlock(...)
+	/home/jade/.local/go/src/runtime/proc.go:441
+runtime.bgsweep(0xc000036080)
+	/home/jade/.local/go/src/runtime/mgcsweep.go:316 +0xdf fp=0xc0000a97c8 sp=0xc0000a9780 pc=0x42bb7f
+runtime.gcenable.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:204 +0x25 fp=0xc0000a97e0 sp=0xc0000a97c8 pc=0x420205
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000a97e8 sp=0xc0000a97e0 pc=0x47b241
+created by runtime.gcenable in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:204 +0x66
+
+goroutine 4 gp=0xc000003500 m=nil [GC scavenge wait]:
+runtime.gopark(0x10000?, 0x1e02d3?, 0x0?, 0x0?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0000a9f78 sp=0xc0000a9f58 pc=0x473d0e
+runtime.goparkunlock(...)
+	/home/jade/.local/go/src/runtime/proc.go:441
+runtime.(*scavengerState).park(0x1406d00)
+	/home/jade/.local/go/src/runtime/mgcscavenge.go:425 +0x49 fp=0xc0000a9fa8 sp=0xc0000a9f78 pc=0x4295e9
+runtime.bgscavenge(0xc000036080)
+	/home/jade/.local/go/src/runtime/mgcscavenge.go:658 +0x59 fp=0xc0000a9fc8 sp=0xc0000a9fa8 pc=0x429b79
+runtime.gcenable.gowrap2()
+	/home/jade/.local/go/src/runtime/mgc.go:205 +0x25 fp=0xc0000a9fe0 sp=0xc0000a9fc8 pc=0x4201a5
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000a9fe8 sp=0xc0000a9fe0 pc=0x47b241
+created by runtime.gcenable in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:205 +0xa5
+
+goroutine 5 gp=0xc000003dc0 m=nil [finalizer wait]:
+runtime.gopark(0x1b8?, 0xc000002380?, 0x1?, 0x23?, 0xc0000a8688?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0000a8630 sp=0xc0000a8610 pc=0x473d0e
+runtime.runfinq()
+	/home/jade/.local/go/src/runtime/mfinal.go:196 +0x107 fp=0xc0000a87e0 sp=0xc0000a8630 pc=0x41f1c7
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000a87e8 sp=0xc0000a87e0 pc=0x47b241
+created by runtime.createfing in goroutine 1
+	/home/jade/.local/go/src/runtime/mfinal.go:166 +0x3d
+
+goroutine 6 gp=0xc0001b8380 m=nil [chan receive]:
+runtime.gopark(0xc0001e2be0?, 0xc0014579c8?, 0x60?, 0xa7?, 0x5b7588?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0000aa718 sp=0xc0000aa6f8 pc=0x473d0e
+runtime.chanrecv(0xc00002fab0, 0x0, 0x1)
+	/home/jade/.local/go/src/runtime/chan.go:664 +0x445 fp=0xc0000aa790 sp=0xc0000aa718 pc=0x411985
+runtime.chanrecv1(0x0?, 0x0?)
+	/home/jade/.local/go/src/runtime/chan.go:506 +0x12 fp=0xc0000aa7b8 sp=0xc0000aa790 pc=0x411512
+runtime.unique_runtime_registerUniqueMapCleanup.func2(...)
+	/home/jade/.local/go/src/runtime/mgc.go:1797
+runtime.unique_runtime_registerUniqueMapCleanup.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1800 +0x2f fp=0xc0000aa7e0 sp=0xc0000aa7b8 pc=0x42314f
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000aa7e8 sp=0xc0000aa7e0 pc=0x47b241
+created by unique.runtime_registerUniqueMapCleanup in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1795 +0x79
+
+goroutine 18 gp=0xc0004cc000 m=nil [GC worker (idle)]:
+runtime.gopark(0x142dce0?, 0x3?, 0x1?, 0x67?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0000a4738 sp=0xc0000a4718 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0000a47c8 sp=0xc0000a4738 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0000a47e0 sp=0xc0000a47c8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000a47e8 sp=0xc0000a47e0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 19 gp=0xc0004cc1c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceb8dcf?, 0x3?, 0x9e?, 0x77?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0000a4f38 sp=0xc0000a4f18 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0000a4fc8 sp=0xc0000a4f38 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0000a4fe0 sp=0xc0000a4fc8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000a4fe8 sp=0xc0000a4fe0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 20 gp=0xc0004cc380 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba07c?, 0x3?, 0xd7?, 0x19?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0000a5738 sp=0xc0000a5718 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0000a57c8 sp=0xc0000a5738 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0000a57e0 sp=0xc0000a57c8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000a57e8 sp=0xc0000a57e0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 21 gp=0xc0004cc540 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba0ec?, 0x3?, 0x20?, 0xf7?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0000a5f38 sp=0xc0000a5f18 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0000a5fc8 sp=0xc0000a5f38 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0000a5fe0 sp=0xc0000a5fc8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000a5fe8 sp=0xc0000a5fe0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 22 gp=0xc0004cc700 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba972?, 0x1?, 0x70?, 0x97?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0000a6738 sp=0xc0000a6718 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0000a67c8 sp=0xc0000a6738 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0000a67e0 sp=0xc0000a67c8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000a67e8 sp=0xc0000a67e0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 23 gp=0xc0004cc8c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba70f?, 0x3?, 0xac?, 0x9b?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0000a6f38 sp=0xc0000a6f18 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0000a6fc8 sp=0xc0000a6f38 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0000a6fe0 sp=0xc0000a6fc8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000a6fe8 sp=0xc0000a6fe0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 24 gp=0xc0004cca80 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba6f1?, 0x3?, 0xce?, 0x82?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0000a7738 sp=0xc0000a7718 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0000a77c8 sp=0xc0000a7738 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0000a77e0 sp=0xc0000a77c8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000a77e8 sp=0xc0000a77e0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 25 gp=0xc0004ccc40 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba2b7?, 0x1?, 0x6b?, 0x51?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0000a7f38 sp=0xc0000a7f18 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0000a7fc8 sp=0xc0000a7f38 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0000a7fe0 sp=0xc0000a7fc8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000a7fe8 sp=0xc0000a7fe0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 26 gp=0xc0004cce00 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba0bb?, 0x3?, 0x66?, 0x26?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004d2738 sp=0xc0004d2718 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004d27c8 sp=0xc0004d2738 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004d27e0 sp=0xc0004d27c8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004d27e8 sp=0xc0004d27e0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 27 gp=0xc0004ccfc0 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba005?, 0x3?, 0xc2?, 0x3f?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004d2f38 sp=0xc0004d2f18 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004d2fc8 sp=0xc0004d2f38 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004d2fe0 sp=0xc0004d2fc8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004d2fe8 sp=0xc0004d2fe0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 28 gp=0xc0004cd180 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba3cb?, 0x1?, 0xd0?, 0x5a?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004d3738 sp=0xc0004d3718 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004d37c8 sp=0xc0004d3738 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004d37e0 sp=0xc0004d37c8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004d37e8 sp=0xc0004d37e0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 29 gp=0xc0004cd340 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b17f7613803?, 0x3?, 0xfb?, 0x1?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004d3f38 sp=0xc0004d3f18 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004d3fc8 sp=0xc0004d3f38 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004d3fe0 sp=0xc0004d3fc8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004d3fe8 sp=0xc0004d3fe0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 30 gp=0xc0004cd500 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba15f?, 0x3?, 0x8a?, 0x2e?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004d4738 sp=0xc0004d4718 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004d47c8 sp=0xc0004d4738 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004d47e0 sp=0xc0004d47c8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004d47e8 sp=0xc0004d47e0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 31 gp=0xc0004cd6c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba0e3?, 0x3?, 0xb3?, 0x59?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004d4f38 sp=0xc0004d4f18 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004d4fc8 sp=0xc0004d4f38 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004d4fe0 sp=0xc0004d4fc8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004d4fe8 sp=0xc0004d4fe0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 32 gp=0xc0004cd880 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b17e148068a?, 0x3?, 0xc2?, 0x8?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004d5738 sp=0xc0004d5718 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004d57c8 sp=0xc0004d5738 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004d57e0 sp=0xc0004d57c8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004d57e8 sp=0xc0004d57e0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 33 gp=0xc0004cda40 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba0ef?, 0x3?, 0xfd?, 0xf?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004d5f38 sp=0xc0004d5f18 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004d5fc8 sp=0xc0004d5f38 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004d5fe0 sp=0xc0004d5fc8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004d5fe8 sp=0xc0004d5fe0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 34 gp=0xc0004cdc00 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba392?, 0x3?, 0x3?, 0x73?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004ce738 sp=0xc0004ce718 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004ce7c8 sp=0xc0004ce738 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004ce7e0 sp=0xc0004ce7c8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004ce7e8 sp=0xc0004ce7e0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 35 gp=0xc0004cddc0 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba073?, 0x3?, 0x7e?, 0xe9?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004cef38 sp=0xc0004cef18 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004cefc8 sp=0xc0004cef38 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004cefe0 sp=0xc0004cefc8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004cefe8 sp=0xc0004cefe0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 36 gp=0xc0004d8000 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3cebad19?, 0x1?, 0x37?, 0x49?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004cf738 sp=0xc0004cf718 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004cf7c8 sp=0xc0004cf738 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004cf7e0 sp=0xc0004cf7c8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004cf7e8 sp=0xc0004cf7e0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 37 gp=0xc0004d81c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba5f6?, 0x3?, 0x33?, 0x0?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004cff38 sp=0xc0004cff18 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004cffc8 sp=0xc0004cff38 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004cffe0 sp=0xc0004cffc8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004cffe8 sp=0xc0004cffe0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 38 gp=0xc0004d8380 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceb9f4c?, 0x3?, 0x7d?, 0x93?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004d0738 sp=0xc0004d0718 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004d07c8 sp=0xc0004d0738 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004d07e0 sp=0xc0004d07c8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004d07e8 sp=0xc0004d07e0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 39 gp=0xc0004d8540 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba451?, 0x1?, 0xd2?, 0xc1?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004d0f38 sp=0xc0004d0f18 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004d0fc8 sp=0xc0004d0f38 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004d0fe0 sp=0xc0004d0fc8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004d0fe8 sp=0xc0004d0fe0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 40 gp=0xc0004d8700 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba499?, 0x1?, 0xad?, 0x13?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004d1738 sp=0xc0004d1718 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004d17c8 sp=0xc0004d1738 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004d17e0 sp=0xc0004d17c8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004d17e8 sp=0xc0004d17e0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 41 gp=0xc0004d88c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba0a8?, 0x1?, 0x9d?, 0xbc?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004d1f38 sp=0xc0004d1f18 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004d1fc8 sp=0xc0004d1f38 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004d1fe0 sp=0xc0004d1fc8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004d1fe8 sp=0xc0004d1fe0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 42 gp=0xc0004d8a80 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba1bd?, 0x3?, 0x3c?, 0x23?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004de738 sp=0xc0004de718 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004de7c8 sp=0xc0004de738 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004de7e0 sp=0xc0004de7c8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004de7e8 sp=0xc0004de7e0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 43 gp=0xc0004d8c40 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba4ba?, 0x3?, 0xc1?, 0x21?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004def38 sp=0xc0004def18 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004defc8 sp=0xc0004def38 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004defe0 sp=0xc0004defc8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004defe8 sp=0xc0004defe0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 44 gp=0xc0004d8e00 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba6ea?, 0x3?, 0x37?, 0x29?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004df738 sp=0xc0004df718 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004df7c8 sp=0xc0004df738 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004df7e0 sp=0xc0004df7c8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004df7e8 sp=0xc0004df7e0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 45 gp=0xc0004d8fc0 m=nil [GC worker (idle)]:
+runtime.gopark(0x142dce0?, 0x1?, 0x50?, 0xe6?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004dff38 sp=0xc0004dff18 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004dffc8 sp=0xc0004dff38 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004dffe0 sp=0xc0004dffc8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004dffe8 sp=0xc0004dffe0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 46 gp=0xc0004d9180 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba129?, 0x3?, 0x7a?, 0xfd?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004e0738 sp=0xc0004e0718 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004e07c8 sp=0xc0004e0738 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004e07e0 sp=0xc0004e07c8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004e07e8 sp=0xc0004e07e0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 47 gp=0xc0004d9340 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceba615?, 0x3?, 0x9f?, 0xc7?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004e0f38 sp=0xc0004e0f18 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004e0fc8 sp=0xc0004e0f38 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004e0fe0 sp=0xc0004e0fc8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004e0fe8 sp=0xc0004e0fe0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 48 gp=0xc0004d9500 m=nil [GC worker (idle)]:
+runtime.gopark(0x93b1e3ceb9f15?, 0x3?, 0x97?, 0x40?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004e1738 sp=0xc0004e1718 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004e17c8 sp=0xc0004e1738 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004e17e0 sp=0xc0004e17c8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004e17e8 sp=0xc0004e17e0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 49 gp=0xc0004d96c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x142dce0?, 0x1?, 0xbf?, 0xd8?, 0x0?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0004e1f38 sp=0xc0004e1f18 pc=0x473d0e
+runtime.gcBgMarkWorker(0xc0004241c0)
+	/home/jade/.local/go/src/runtime/mgc.go:1423 +0xe9 fp=0xc0004e1fc8 sp=0xc0004e1f38 pc=0x422469
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x25 fp=0xc0004e1fe0 sp=0xc0004e1fc8 pc=0x422345
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004e1fe8 sp=0xc0004e1fe0 pc=0x47b241
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/jade/.local/go/src/runtime/mgc.go:1339 +0x105
+
+goroutine 4765 gp=0xc000432380 m=nil [chan receive]:
+runtime.gopark(0xc060400008?, 0xc000860048?, 0xd8?, 0xeb?, 0x471999?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc00082eb98 sp=0xc00082eb78 pc=0x473d0e
+runtime.chanrecv(0xc000804000, 0x0, 0x1)
+	/home/jade/.local/go/src/runtime/chan.go:664 +0x445 fp=0xc00082ec10 sp=0xc00082eb98 pc=0x411985
+runtime.chanrecv1(0xc00018e248?, 0xc0008020f0?)
+	/home/jade/.local/go/src/runtime/chan.go:506 +0x12 fp=0xc00082ec38 sp=0xc00082ec10 pc=0x411512
+github.com/eon-protocol/eonark/gpu.commitOnGPUOrCPU({0xc2d3516080, 0x800002, 0xfffffc}, 0x0?, 0x0)
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:2598 +0x1b4 fp=0xc00082eda0 sp=0xc00082ec38 pc=0xbab8b4
+github.com/eon-protocol/eonark/gpu.commitToQuotient.func3()
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:1803 +0x9d fp=0xc00082ef58 sp=0xc00082eda0 pc=0xba439d
+golang.org/x/sync/errgroup.(*Group).add.func1()
+	/home/jade/go/pkg/mod/golang.org/x/sync@v0.15.0/errgroup/errgroup.go:128 +0x7e fp=0xc00082efe0 sp=0xc00082ef58 pc=0x5832be
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc00082efe8 sp=0xc00082efe0 pc=0x47b241
+created by golang.org/x/sync/errgroup.(*Group).add in goroutine 4154
+	/home/jade/go/pkg/mod/golang.org/x/sync@v0.15.0/errgroup/errgroup.go:96 +0x76
+
+goroutine 4766 gp=0xc060a2d500 m=21 mp=0xc060400008 [syscall, locked to thread]:
+runtime.cgocall(0xc5f610, 0xc000c8f940)
+	/home/jade/.local/go/src/runtime/cgocall.go:167 +0x4b fp=0xc000c8f918 sp=0xc000c8f8e0 pc=0x470e8b
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/msm._Cfunc_bls12_381_msm(0x79e904000000, 0x79ea2e000000, 0x800002, 0xc00018e428, 0xc00003c120)
+	_cgo_gotypes.go:66 +0x46 fp=0xc000c8f940 sp=0xc000c8f918 pc=0xb8d8c6
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/msm.Msm.func1(...)
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/curves/bls12381/msm/msm.go:27
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/msm.Msm({0xf09528?, 0xc000ad6000?}, {0xf09528?, 0xc000ad6018?}, 0xc00018e428, {0xf097b0?, 0xc000ad6030?})
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/curves/bls12381/msm/msm.go:27 +0x116 fp=0xc000c8f9c8 sp=0xc000c8f940 pc=0xb8dc56
+github.com/eon-protocol/eonark/gpu/bls12381.OnDeviceCommitWithPrecompute({0xc2d3516080, 0x800002, 0xfffffc}, {0x79ea2e000000, 0x300000c0, 0x800002}, 0xc00018e428)
+	/home/jade/jade/eonark-gpu/gpu/bls12381/bls12381_gpu.go:116 +0x89c fp=0xc000c8fd88 sp=0xc000c8f9c8 pc=0xb8fcbc
+github.com/eon-protocol/eonark/gpu.commitOnGPUOrCPU.func1({0xc00018e248?, 0x1?, 0x800000?})
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:2578 +0x2f0 fp=0xc000c8ff68 sp=0xc000c8fd88 pc=0xbabe50
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/runtime.RunOnDevice.func1(0xc00018e248)
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/runtime/runtime.go:99 +0x90 fp=0xc000c8ffc8 sp=0xc000c8ff68 pc=0xa6eb70
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/runtime.RunOnDevice.gowrap1()
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/runtime/runtime.go:101 +0x24 fp=0xc000c8ffe0 sp=0xc000c8ffc8 pc=0xa6eaa4
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc000c8ffe8 sp=0xc000c8ffe0 pc=0x47b241
+created by github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/runtime.RunOnDevice in goroutine 4765
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/runtime/runtime.go:94 +0xd9
+
+goroutine 4157 gp=0xc0002a9dc0 m=nil [select]:
+runtime.gopark(0xc00044ade8?, 0x2?, 0x0?, 0x0?, 0xc00044acf4?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc00044aac8 sp=0xc00044aaa8 pc=0x473d0e
+runtime.selectgo(0xc00044ade8, 0xc00044acf0, 0x79eba4491d88?, 0x0, 0x4289a5?, 0x1)
+	/home/jade/.local/go/src/runtime/select.go:351 +0x837 fp=0xc00044ac00 sp=0xc00044aac8 pc=0x453e57
+github.com/eon-protocol/eonark/gpu.(*instance).batchOpening(0xc0003f22c8)
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:1219 +0xac fp=0xc00044aeb0 sp=0xc00044ac00 pc=0xb9f5cc
+github.com/eon-protocol/eonark/gpu.prove.func9()
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:382 +0x7e fp=0xc00044af58 sp=0xc00044aeb0 pc=0xb9745e
+golang.org/x/sync/errgroup.(*Group).add.func1()
+	/home/jade/go/pkg/mod/golang.org/x/sync@v0.15.0/errgroup/errgroup.go:128 +0x7e fp=0xc00044afe0 sp=0xc00044af58 pc=0x5832be
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc00044afe8 sp=0xc00044afe0 pc=0x47b241
+created by golang.org/x/sync/errgroup.(*Group).add in goroutine 1
+	/home/jade/go/pkg/mod/golang.org/x/sync@v0.15.0/errgroup/errgroup.go:96 +0x76
+
+goroutine 4154 gp=0xc0c0c83340 m=nil [sync.WaitGroup.Wait]:
+runtime.gopark(0xc0005d9bd8?, 0x418cd4?, 0x80?, 0xa?, 0x142dc06?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0005d9b78 sp=0xc0005d9b58 pc=0x473d0e
+runtime.goparkunlock(...)
+	/home/jade/.local/go/src/runtime/proc.go:441
+runtime.semacquire1(0xc00c7c8010, 0x0, 0x1, 0x0, 0x18)
+	/home/jade/.local/go/src/runtime/sema.go:188 +0x21d fp=0xc0005d9be0 sp=0xc0005d9b78 pc=0x454efd
+sync.runtime_SemacquireWaitGroup(0xc000860030?)
+	/home/jade/.local/go/src/runtime/sema.go:110 +0x25 fp=0xc0005d9c18 sp=0xc0005d9be0 pc=0x475105
+sync.(*WaitGroup).Wait(0xd416e0?)
+	/home/jade/.local/go/src/sync/waitgroup.go:118 +0x48 fp=0xc0005d9c40 sp=0xc0005d9c18 pc=0x4904e8
+golang.org/x/sync/errgroup.(*Group).Wait(0xc00c7c8000)
+	/home/jade/go/pkg/mod/golang.org/x/sync@v0.15.0/errgroup/errgroup.go:65 +0x1e fp=0xc0005d9c60 sp=0xc0005d9c40 pc=0x58313e
+github.com/eon-protocol/eonark/gpu.commitToQuotient({0xc2b3516000, 0x800002, 0x2000000}, {0xc2c3516040, 0x800002, 0x17ffffe}, {0xc2d3516080, 0x800002, 0xfffffc}, 0xc000004408, ...)
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:1810 +0x2bd fp=0xc0005d9ce0 sp=0xc0005d9c60 pc=0xba41fd
+github.com/eon-protocol/eonark/gpu.(*instance).computeQuotient(0xc0003f22c8)
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:998 +0xa1b fp=0xc0005d9eb0 sp=0xc0005d9ce0 pc=0xb9d43b
+github.com/eon-protocol/eonark/gpu.prove.func6()
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:349 +0x7e fp=0xc0005d9f58 sp=0xc0005d9eb0 pc=0xb978de
+golang.org/x/sync/errgroup.(*Group).add.func1()
+	/home/jade/go/pkg/mod/golang.org/x/sync@v0.15.0/errgroup/errgroup.go:128 +0x7e fp=0xc0005d9fe0 sp=0xc0005d9f58 pc=0x5832be
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0005d9fe8 sp=0xc0005d9fe0 pc=0x47b241
+created by golang.org/x/sync/errgroup.(*Group).add in goroutine 1
+	/home/jade/go/pkg/mod/golang.org/x/sync@v0.15.0/errgroup/errgroup.go:96 +0x76
+
+goroutine 3639 gp=0xc0c0d028c0 m=nil [chan receive]:
+runtime.gopark(0xc0c0c80008?, 0xc001456000?, 0x48?, 0x8e?, 0x471999?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc000138e08 sp=0xc000138de8 pc=0x473d0e
+runtime.chanrecv(0xc00d60e000, 0x0, 0x1)
+	/home/jade/.local/go/src/runtime/chan.go:664 +0x445 fp=0xc000138e80 sp=0xc000138e08 pc=0x411985
+runtime.chanrecv1(0xc00018e248?, 0xc0003f46c0?)
+	/home/jade/.local/go/src/runtime/chan.go:506 +0x12 fp=0xc000138ea8 sp=0xc000138e80 pc=0x411512
+github.com/eon-protocol/eonark/gpu.(*instance).scaleEverythingBackGPUorCPU(0xc0003f22c8, {0xc002e6ee80, 0x4, 0xc00dd65fd0?}, 0x44a1f2?, {0x7c0000?, 0x800000?, 0xc005a67490?})
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:2956 +0x371 fp=0xc000138f90 sp=0xc000138ea8 pc=0xbaef91
+github.com/eon-protocol/eonark/gpu.(*instance).computeNumerator.gowrap2()
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:1626 +0x3c fp=0xc000138fe0 sp=0xc000138f90 pc=0xba14bc
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc000138fe8 sp=0xc000138fe0 pc=0x47b241
+created by github.com/eon-protocol/eonark/gpu.(*instance).computeNumerator in goroutine 4154
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:1626 +0x11c5
+
+goroutine 4764 gp=0xc060b03c00 m=nil [chan receive]:
+runtime.gopark(0xc06080e008?, 0xc00121a000?, 0xd8?, 0xbb?, 0x471999?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc00044bb98 sp=0xc00044bb78 pc=0x473d0e
+runtime.chanrecv(0xc00d8f0070, 0x0, 0x1)
+	/home/jade/.local/go/src/runtime/chan.go:664 +0x445 fp=0xc00044bc10 sp=0xc00044bb98 pc=0x411985
+runtime.chanrecv1(0xc00018e248?, 0xc000a8e000?)
+	/home/jade/.local/go/src/runtime/chan.go:506 +0x12 fp=0xc00044bc38 sp=0xc00044bc10 pc=0x411512
+github.com/eon-protocol/eonark/gpu.commitOnGPUOrCPU({0xc2c3516040, 0x800002, 0x17ffffe}, 0x54b7c4?, 0x0)
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:2598 +0x1b4 fp=0xc00044bda0 sp=0xc00044bc38 pc=0xbab8b4
+github.com/eon-protocol/eonark/gpu.commitToQuotient.func2()
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:1794 +0x9d fp=0xc00044bf58 sp=0xc00044bda0 pc=0xba459d
+golang.org/x/sync/errgroup.(*Group).add.func1()
+	/home/jade/go/pkg/mod/golang.org/x/sync@v0.15.0/errgroup/errgroup.go:128 +0x7e fp=0xc00044bfe0 sp=0xc00044bf58 pc=0x5832be
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc00044bfe8 sp=0xc00044bfe0 pc=0x47b241
+created by golang.org/x/sync/errgroup.(*Group).add in goroutine 4154
+	/home/jade/go/pkg/mod/golang.org/x/sync@v0.15.0/errgroup/errgroup.go:96 +0x76
+
+goroutine 4155 gp=0xc060b03dc0 m=nil [select]:
+runtime.gopark(0xc0000bbe80?, 0x2?, 0x0?, 0x0?, 0xc0000bbcfc?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc0000bbb00 sp=0xc0000bbae0 pc=0x473d0e
+runtime.selectgo(0xc0000bbe80, 0xc0000bbcf8, 0x0?, 0x0, 0x2?, 0x1)
+	/home/jade/.local/go/src/runtime/select.go:351 +0x837 fp=0xc0000bbc38 sp=0xc0000bbb00 pc=0x453e57
+github.com/eon-protocol/eonark/gpu.(*instance).openZ(0xc0003f22c8)
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:1070 +0xac fp=0xc0000bbeb0 sp=0xc0000bbc38 pc=0xb9ddac
+github.com/eon-protocol/eonark/gpu.prove.func7()
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:360 +0x7e fp=0xc0000bbf58 sp=0xc0000bbeb0 pc=0xb9775e
+golang.org/x/sync/errgroup.(*Group).add.func1()
+	/home/jade/go/pkg/mod/golang.org/x/sync@v0.15.0/errgroup/errgroup.go:128 +0x7e fp=0xc0000bbfe0 sp=0xc0000bbf58 pc=0x5832be
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000bbfe8 sp=0xc0000bbfe0 pc=0x47b241
+created by golang.org/x/sync/errgroup.(*Group).add in goroutine 1
+	/home/jade/go/pkg/mod/golang.org/x/sync@v0.15.0/errgroup/errgroup.go:96 +0x76
+
+goroutine 4156 gp=0xc000d82c40 m=nil [select]:
+runtime.gopark(0xc060a0fe40?, 0x2?, 0x0?, 0x0?, 0xc060a0fccc?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc060a0fa30 sp=0xc060a0fa10 pc=0x473d0e
+runtime.selectgo(0xc060a0fe40, 0xc060a0fcc8, 0x0?, 0x0, 0x0?, 0x1)
+	/home/jade/.local/go/src/runtime/select.go:351 +0x837 fp=0xc060a0fb68 sp=0xc060a0fa30 pc=0x453e57
+github.com/eon-protocol/eonark/gpu.(*instance).computeLinearizedPolynomial(0xc0003f22c8)
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:1138 +0xac fp=0xc060a0feb0 sp=0xc060a0fb68 pc=0xb9e7cc
+github.com/eon-protocol/eonark/gpu.prove.func8()
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:371 +0x7e fp=0xc060a0ff58 sp=0xc060a0feb0 pc=0xb975de
+golang.org/x/sync/errgroup.(*Group).add.func1()
+	/home/jade/go/pkg/mod/golang.org/x/sync@v0.15.0/errgroup/errgroup.go:128 +0x7e fp=0xc060a0ffe0 sp=0xc060a0ff58 pc=0x5832be
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc060a0ffe8 sp=0xc060a0ffe0 pc=0x47b241
+created by golang.org/x/sync/errgroup.(*Group).add in goroutine 1
+	/home/jade/go/pkg/mod/golang.org/x/sync@v0.15.0/errgroup/errgroup.go:96 +0x76
+
+goroutine 4391 gp=0xc006c0b500 m=32 mp=0xc0c0c80008 [syscall, locked to thread]:
+runtime.cgocall(0xc60720, 0xc0000b9c68)
+	/home/jade/.local/go/src/runtime/cgocall.go:167 +0x4b fp=0xc0000b9c40 sp=0xc0000b9c08 pc=0x470e8b
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/vecOps._Cfunc_bls12_381_vector_mul(0x79e8e2000000, 0x79e938000000, 0x800000, 0xc0000b9d38, 0x79e8e2000000)
+	_cgo_gotypes.go:75 +0x46 fp=0xc0000b9c68 sp=0xc0000b9c40 pc=0xb8e4a6
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/vecOps.VecOp.func3(...)
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/curves/bls12381/vecOps/vec_ops.go:27
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/vecOps.VecOp({0xf09528?, 0xc002004048?}, {0xf09528?, 0xc002004060?}, {0xf09528?, 0xc002004078?}, {0x0, 0x1, 0x1, 0x1, ...}, ...)
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/curves/bls12381/vecOps/vec_ops.go:27 +0x16f fp=0xc0000b9d38 sp=0xc0000b9c68 pc=0xb8e8cf
+github.com/eon-protocol/eonark/gpu/bls12381.VecMulOnDevice({0x79e8e2000000, 0x10000000, 0x800000}, {0x79e938000000, 0x10000000, 0x800000})
+	/home/jade/jade/eonark-gpu/gpu/bls12381/bls12381_gpu.go:469 +0x125 fp=0xc0000b9df0 sp=0xc0000b9d38 pc=0xb91e05
+github.com/eon-protocol/eonark/gpu.(*instance).scaleEverythingBackGPUorCPU.func1({0xc00018e248?, 0x5fffff?, 0xc0003e2000?})
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:2936 +0x45e fp=0xc0000b9f68 sp=0xc0000b9df0 pc=0xbaf73e
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/runtime.RunOnDevice.func1(0xc00018e248)
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/runtime/runtime.go:99 +0x90 fp=0xc0000b9fc8 sp=0xc0000b9f68 pc=0xa6eb70
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/runtime.RunOnDevice.gowrap1()
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/runtime/runtime.go:101 +0x24 fp=0xc0000b9fe0 sp=0xc0000b9fc8 pc=0xa6eaa4
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000b9fe8 sp=0xc0000b9fe0 pc=0x47b241
+created by github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/runtime.RunOnDevice in goroutine 3639
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/runtime/runtime.go:94 +0xd9
+
+goroutine 4811 gp=0xc0024a5340 m=22 mp=0xc06059a008 [syscall, locked to thread]:
+runtime.cgocall(0xc5f610, 0xc000c93940)
+	/home/jade/.local/go/src/runtime/cgocall.go:167 +0x4b fp=0xc000c93918 sp=0xc000c938e0 pc=0x470e8b
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/msm._Cfunc_bls12_381_msm(0x79e916000000, 0x79ea2e000000, 0x800002, 0xc00018e428, 0xc0004221b0)
+	_cgo_gotypes.go:66 +0x46 fp=0xc000c93940 sp=0xc000c93918 pc=0xb8d8c6
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/msm.Msm.func1(...)
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/curves/bls12381/msm/msm.go:27
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/msm.Msm({0xf09528?, 0xc00131c000?}, {0xf09528?, 0xc00131c018?}, 0xc00018e428, {0xf097b0?, 0xc00131c030?})
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/curves/bls12381/msm/msm.go:27 +0x116 fp=0xc000c939c8 sp=0xc000c93940 pc=0xb8dc56
+github.com/eon-protocol/eonark/gpu/bls12381.OnDeviceCommitWithPrecompute({0xc2b3516000, 0x800002, 0x2000000}, {0x79ea2e000000, 0x300000c0, 0x800002}, 0xc00018e428)
+	/home/jade/jade/eonark-gpu/gpu/bls12381/bls12381_gpu.go:116 +0x89c fp=0xc000c93d88 sp=0xc000c939c8 pc=0xb8fcbc
+github.com/eon-protocol/eonark/gpu.commitOnGPUOrCPU.func1({0xc00018e248?, 0xe4ab4533c0f7895?, 0x1?})
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:2578 +0x2f0 fp=0xc000c93f68 sp=0xc000c93d88 pc=0xbabe50
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/runtime.RunOnDevice.func1(0xc00018e248)
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/runtime/runtime.go:99 +0x90 fp=0xc000c93fc8 sp=0xc000c93f68 pc=0xa6eb70
+github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/runtime.RunOnDevice.gowrap1()
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/runtime/runtime.go:101 +0x24 fp=0xc000c93fe0 sp=0xc000c93fc8 pc=0xa6eaa4
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc000c93fe8 sp=0xc000c93fe0 pc=0x47b241
+created by github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/runtime.RunOnDevice in goroutine 4763
+	/home/jade/go/pkg/mod/github.com/ingonyama-zk/icicle-gnark/v3@v3.2.2/wrappers/golang/runtime/runtime.go:94 +0xd9
+
+goroutine 4763 gp=0xc005a02c40 m=nil [chan receive]:
+runtime.gopark(0xc06059a008?, 0xc00ccd00a8?, 0xd8?, 0xcb?, 0x471999?)
+	/home/jade/.local/go/src/runtime/proc.go:435 +0xce fp=0xc00210cb98 sp=0xc00210cb78 pc=0x473d0e
+runtime.chanrecv(0xc000bc2000, 0x0, 0x1)
+	/home/jade/.local/go/src/runtime/chan.go:664 +0x445 fp=0xc00210cc10 sp=0xc00210cb98 pc=0x411985
+runtime.chanrecv1(0xc00018e248?, 0xc000b800a0?)
+	/home/jade/.local/go/src/runtime/chan.go:506 +0x12 fp=0xc00210cc38 sp=0xc00210cc10 pc=0x411512
+github.com/eon-protocol/eonark/gpu.commitOnGPUOrCPU({0xc2b3516000, 0x800002, 0x2000000}, 0xc00018e3e0?, 0x0)
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:2598 +0x1b4 fp=0xc00210cda0 sp=0xc00210cc38 pc=0xbab8b4
+github.com/eon-protocol/eonark/gpu.commitToQuotient.func1()
+	/home/jade/jade/eonark-gpu/gpu/patch_gpu.go:1785 +0x9d fp=0xc00210cf58 sp=0xc00210cda0 pc=0xba479d
+golang.org/x/sync/errgroup.(*Group).add.func1()
+	/home/jade/go/pkg/mod/golang.org/x/sync@v0.15.0/errgroup/errgroup.go:128 +0x7e fp=0xc00210cfe0 sp=0xc00210cf58 pc=0x5832be
+runtime.goexit({})
+	/home/jade/.local/go/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc00210cfe8 sp=0xc00210cfe0 pc=0x47b241
+created by golang.org/x/sync/errgroup.(*Group).add in goroutine 4154
+	/home/jade/go/pkg/mod/golang.org/x/sync@v0.15.0/errgroup/errgroup.go:96 +0x76
+
+rax    0x0
+rbx    0x2b697f
+rcx    0x79ec93a9eb2c
+rdx    0x6
+rdi    0x2b692f
+rsi    0x2b697f
+rbp    0x79eba7ffe150
+rsp    0x79eba7ffe110
+r8     0x0
+r9     0x79eba7ffdcb0
+r10    0x8
+r11    0x246
+r12    0x6
+r13    0x0
+r14    0x16
+r15    0x1fffff
+rip    0x79ec93a9eb2c
+rflags 0x246
+cs     0x33
+fs     0x0
+gs     0x0
+exit status 2
