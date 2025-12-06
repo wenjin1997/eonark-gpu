@@ -44,6 +44,7 @@ import (
 
 	icicle_core "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/core"
 	icicle_bls12_381 "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381"
+	icicle_msm "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/msm"
 	icicle_ntt "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/curves/bls12381/ntt"
 	icicle_runtime "github.com/ingonyama-zk/icicle-gnark/v3/wrappers/golang/runtime"
 )
@@ -125,6 +126,122 @@ func (pk *ProvingKey) setupDevicePointers(spr *cs.SparseR1CS) error {
 	<-done
 	if copyErr != nil {
 		return copyErr
+	}
+
+	/***********************  MSM 预计算初始化  **************************/
+	// 对 Lagrange bases 做预计算（用于 L/R/O 等多项式的 commit）
+	{
+		cfg := icicle_msm.GetDefaultMSMConfig()
+		cfg.AreScalarsMontgomeryForm = true
+		cfg.AreBasesMontgomeryForm = false
+		cfg.ArePointsSharedInBatch = true
+		cfg.IsAsync = false
+
+		// 根据 n 选择 precompute_factor 和 c
+		if n >= 512 {
+			if n >= 8388608 { // n >= 2^23
+				cfg.PrecomputeFactor = 3
+			} else {
+				cfg.PrecomputeFactor = 5
+			}
+		} else {
+			// 小规模 MSM，不使用预计算
+			// 直接使用原始 bases，避免重复存储
+			cfg.PrecomputeFactor = 1
+			cfg.C = 0
+			pk.deviceInfo.MsmCfgLag = cfg
+			pk.deviceInfo.hasLagPrecomp = false // 标记为未预计算，使用原始 bases
+		}
+
+		// 只有大规模 MSM 才进行预计算
+		if n >= 512 {
+			var sample icicle_bls12_381.Affine
+			precomputeSize := n * int(cfg.PrecomputeFactor)
+
+			var precomputeErr icicle_runtime.EIcicleError
+			done = make(chan struct{})
+			icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
+				defer close(done)
+				if _, st := pk.deviceInfo.G1LagPrecomp.Malloc(sample.Size(), precomputeSize); st != icicle_runtime.Success {
+					precomputeErr = st
+					return
+				}
+
+				base := pk.deviceInfo.G1Device.G1Lagrange.RangeTo(n, false)
+				if st := icicle_msm.PrecomputeBases(base, &cfg, pk.deviceInfo.G1LagPrecomp); st != icicle_runtime.Success {
+					precomputeErr = st
+					return
+				}
+			})
+			<-done
+
+			if precomputeErr != icicle_runtime.Success {
+				return fmt.Errorf("MSM precompute Lagrange bases failed: %s", precomputeErr.AsString())
+			}
+
+			pk.deviceInfo.MsmCfgLag = cfg
+			pk.deviceInfo.hasLagPrecomp = true
+		}
+	}
+
+	// 对 Monomial bases 做预计算（用于普通 KZG commit）
+	{
+		cfg := icicle_msm.GetDefaultMSMConfig()
+		cfg.AreScalarsMontgomeryForm = true
+		cfg.AreBasesMontgomeryForm = false
+		cfg.ArePointsSharedInBatch = true
+		cfg.IsAsync = false
+
+		// 根据 n 选择 precompute_factor 和 c
+		if n >= 512 {
+			if n >= 8388608 { // n >= 2^23
+				cfg.PrecomputeFactor = 2
+				cfg.C = 14
+			} else {
+				cfg.PrecomputeFactor = 5
+			}
+		} else {
+			// 小规模 MSM，不使用预计算
+			// 直接使用原始 bases，避免重复存储
+			cfg.PrecomputeFactor = 1
+			cfg.C = 0
+			pk.deviceInfo.MsmCfgG1 = cfg
+			pk.deviceInfo.hasG1Precomp = false // 标记为未预计算，使用原始 bases
+		}
+
+		// 只有大规模 MSM 才进行预计算
+		if n >= 512 {
+			// 预计算 n+3 个点，以覆盖 h1/h2/h3 的最大可能长度（n+2 或 n+3）
+			// 注意：实际预计算大小仍然是 (n+3) * PrecomputeFactor
+			maxPolyLen := n + 3
+			var sample icicle_bls12_381.Affine
+			precomputeSize := maxPolyLen * int(cfg.PrecomputeFactor)
+
+			var precomputeErr icicle_runtime.EIcicleError
+			done = make(chan struct{})
+			icicle_runtime.RunOnDevice(&pk.deviceInfo.Device, func(args ...any) {
+				defer close(done)
+				if _, st := pk.deviceInfo.G1Precomp.Malloc(sample.Size(), precomputeSize); st != icicle_runtime.Success {
+					precomputeErr = st
+					return
+				}
+
+				// 使用前 maxPolyLen 个 bases 进行预计算
+				base := pk.deviceInfo.G1Device.G1.RangeTo(maxPolyLen, false)
+				if st := icicle_msm.PrecomputeBases(base, &cfg, pk.deviceInfo.G1Precomp); st != icicle_runtime.Success {
+					precomputeErr = st
+					return
+				}
+			})
+			<-done
+
+			if precomputeErr != icicle_runtime.Success {
+				return fmt.Errorf("MSM precompute G1 bases failed: %s", precomputeErr.AsString())
+			}
+
+			pk.deviceInfo.MsmCfgG1 = cfg
+			pk.deviceInfo.hasG1Precomp = true
+		}
 	}
 
 	/***********************  Host 侧预计算  **************************/
@@ -233,17 +350,6 @@ func (pk *ProvingKey) setupDevicePointers(spr *cs.SparseR1CS) error {
 	<-done
 	if copyErr != nil {
 		return copyErr
-	}
-
-	/***********************  MSM 预计算初始化  **************************/
-	// 对 Lagrange bases 做预计算（用于 L/R/O 等多项式的 commit）
-	if err := pk.deviceInfo.initMsmPrecomputeLag(n); err != nil {
-		return fmt.Errorf("initMsmPrecomputeLag: %w", err)
-	}
-
-	// 对 Monomial bases 做预计算（用于普通 KZG commit）
-	if err := pk.deviceInfo.initMsmPrecomputeG1(n); err != nil {
-		return fmt.Errorf("initMsmPrecomputeG1: %w", err)
 	}
 
 	return nil
