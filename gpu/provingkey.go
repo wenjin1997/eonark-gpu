@@ -115,15 +115,10 @@ func (di *deviceInfo) initMsmPrecomputeLag(N int) error {
 	cfg.IsAsync = false
 
 	// 根据 N 选择 precompute_factor 和 c
-	// 只对大 MSM 开启预计算（N >= 2^21）
-	if N >= 512 { // N >= 2^21
-		if N >= 8388608 { // N >= 2^23，包括 8388610 等
+	if N >= 512 {
+		if N >= 8388608 { // N >= 2^23
 			cfg.PrecomputeFactor = 3
-			// cfg.C = 20
-		} else if N >= 4194304 { // 2^22 <= N < 2^23
-			cfg.PrecomputeFactor = 2 // 不要用 4，否则会 OOM + fallback
-			// cfg.C = 14
-		} else { // 2^21 <= N < 2^22
+		} else {
 			cfg.PrecomputeFactor = 5
 		}
 	} else {
@@ -177,18 +172,12 @@ func (di *deviceInfo) initMsmPrecomputeG1(N int) error {
 	cfg.IsAsync = false
 
 	// 根据 N 选择 precompute_factor 和 c
-	// 只对大 MSM 开启预计算（N >= 2^21）
-	if N >= 512 { // N >= 2^21
-		if N > 8388608 {
-			cfg.PrecomputeFactor = 1
-		} else if N == 8388608 { // N >= 2^23 （含 8388610）
-			// quotient 阶段 GPU 已经很满了，这里不要再用预计算，避免 fallback 到 sequential
-			cfg.PrecomputeFactor = 1
-			// cfg.C = 16
-		} else if N >= 4194304 { // 2^22 <= N < 2^23
+	if N >= 512 {
+		if N >= 8388608 { // N >= 2^23
 			cfg.PrecomputeFactor = 2
-		} else { // 2^21 <= N < 2^22
-			cfg.PrecomputeFactor = 6
+			cfg.C = 14
+		} else {
+			cfg.PrecomputeFactor = 5
 		}
 	} else {
 		// 小规模 MSM，不使用预计算
