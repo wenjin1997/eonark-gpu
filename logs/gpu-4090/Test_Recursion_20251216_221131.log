@@ -1,0 +1,786 @@
+WARNING: CPU IP/backtrace sampling not supported, disabling.
+Try the 'nsys status --environment' command to learn more.
+
+WARNING: CPU context switch tracing not supported, disabling.
+Try the 'nsys status --environment' command to learn more.
+
+=== RUN   Test_Recursion
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/home/jade/.local/icicle/lib/backend
+	setupDevicePointers() || CopyToDevice(G1) 耗时: 0.104533ms
+	setupDevicePointers() || CopyToDevice(G1Lagrange) 耗时: 0.013346ms
+	setupDevicePointers() || CopyToDevice(CosetTable) 耗时: 0.017034ms
+	setupDevicePointers() || CopyToDevice(CosetTableRev) 耗时: 0.010132ms
+	setupDevicePointers() || CopyToDevice(BigTwiddlesN) 耗时: 0.008391ms
+	setupDevicePointers() || CopyToDevice(BigTwiddlesNRev) 耗时: 0.007914ms
+prove() -> icicle device setup 耗时: 261.925852ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 预计算
+prove() -> initBlindingPolynomials 耗时: 0.005579ms
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 9.687504 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.007598 ms
+			commitToPolyAndBlindingStream() -> commit to p 耗时: 4.024446ms
+			commitToPolyAndBlindingStream() -> commit to p 耗时: 10.008092ms
+			commitToPolyAndBlindingStream() -> commit to p 耗时: 11.229958ms
+			commitToPolyAndBlindingStream() -> commit to b 耗时: 12.005464ms
+			commitToPolyAndBlindingStream() -> commit_p + commit_b 耗时: 0.003430ms
+2025/12/16 22:11:38 [TIMING] commitToLRO O=16.047505ms
+			commitToPolyAndBlindingStream() -> commit to b 耗时: 10.462445ms
+			commitToPolyAndBlindingStream() -> commit_p + commit_b 耗时: 0.003505ms
+			commitToPolyAndBlindingStream() -> commit to b 耗时: 9.257790ms
+2025/12/16 22:11:38 [TIMING] commitToLRO R=20.498695ms
+			commitToPolyAndBlindingStream() -> commit_p + commit_b 耗时: 0.003493ms
+2025/12/16 22:11:38 [TIMING] commitToLRO L=20.509242ms
+2025/12/16 22:11:38 [TIMING] commitToLRO total=20.558312ms
+	solveConstraints() || commitToLRO() 耗时: 20.560657 ms
+prove() -> solveConstraints 耗时: 30.262942ms
+		deriveGammaAndBeta() || wait for LRO to be committed 耗时: 29.880943ms
+		computeQuotient() || wait for solver to be done 耗时: 30.177785ms
+		completeQk() || wait for solver to be done 耗时: 30.180380ms
+prove() -> completeQk 耗时: 30.192284ms
+prove() -> deriveGammaAndBeta 耗时: 30.329750ms
+		buildRatioCopyConstraint() || wait for gamma and beta to be derived 耗时: 30.333688ms
+		buildRatioCopyConstraint() || iop.BuildRatioCopyConstraint 耗时: 0.222440ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 预计算
+			commitToPolyAndBlinding() -> commit to p 耗时: 2.556738ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 9.157001ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.005280ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 11.734714ms
+prove() -> buildRatioCopyConstraint 耗时: 42.298806ms
+		computeQuotient() || wait for Z to be committed 耗时: 12.121617ms
+	computeQuotient() || prepare to compute & derive alpha: 42.401879 ms
+	computeNumerator() || CopyToDevice(poly[0]) 耗时: 0.023057ms
+	computeNumerator() || CopyToDevice(poly[1]) 耗时: 0.017919ms
+	computeNumerator() || CopyToDevice(poly[2]) 耗时: 0.014910ms
+	computeNumerator() || CopyToDevice(poly[3]) 耗时: 0.017885ms
+	computeNumerator() || CopyToDevice(poly[5]) 耗时: 0.014011ms
+	computeNumerator() || CopyToDevice(poly[6]) 耗时: 0.014253ms
+	computeNumerator() || CopyToDevice(poly[7]) 耗时: 0.016843ms
+	computeNumerator() || CopyToDevice(poly[8]) 耗时: 0.024345ms
+	computeNumerator() || CopyToDevice(poly[9]) 耗时: 0.007003ms
+	computeNumerator() || CopyToDevice(poly[10]) 耗时: 0.010500ms
+	computeNumerator() || CopyToDevice(poly[11]) 耗时: 0.007526ms
+	computeNumerator() || CopyToDevice(poly[12]) 耗时: 0.005714ms
+	computeNumerator() || CopyToDevice(poly[13]) 耗时: 0.005354ms
+	computeNumerator() || CopyToDevice(poly[14]) 耗时: 0.006357ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.241738ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.047003ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.044169ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.154292ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.034572ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.171183ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.047303ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.035159ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.032969ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.038092ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.243060ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.992271ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.326901ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.032991ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.092642ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.097367ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.042525ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.210205ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.040559ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.042697ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.260652ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.185250ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.137529ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.160474ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.169602ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.139816ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.482224ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.149370ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.122922ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.035165ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.189270ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.233601ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.182546ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.207795ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.191782ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.205778ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.417585ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.031237ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.160202ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.100964ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.023088ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.071233ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.039614ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.030319ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.035728ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.133325ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.306672ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.183634ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.281899ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.113110ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.045075ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.172586ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.195685ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.247401ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.104089ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 0.113556ms
+	computeQuotient() || computeNumerator() 耗时: 6.756259 ms
+		divideByZH() || parallelize divide 耗时: 0.029090 ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(accList) 耗时: 0.035649ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[0]) 耗时: 0.017997ms
+		divideByZH() || ToCanonical 耗时: 0.170881 ms
+	computeQuotient() || divideByZH() 耗时: 0.211379 ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[0]) 耗时: 0.032204ms
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 预计算, neededPrecompLen: 2570
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 预计算, neededPrecompLen: 2570
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 预计算, neededPrecompLen: 2570
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[1]) 耗时: 0.038812ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[1]) 耗时: 0.029415ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[2]) 耗时: 0.114101ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[2]) 耗时: 1.226357ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[3]) 耗时: 0.085927ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[3]) 耗时: 0.025016ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[5]) 耗时: 0.023800ms
+	computeQuotient() || commitToQuotient() 耗时: 5.407973 ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[5]) 耗时: 0.016901ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[6]) 耗时: 0.009769ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[6]) 耗时: 0.013700ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[7]) 耗时: 0.006907ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[7]) 耗时: 0.014257ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[8]) 耗时: 0.006753ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[8]) 耗时: 0.013283ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[10]) 耗时: 0.007873ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[10]) 耗时: 0.013591ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[11]) 耗时: 0.006825ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[11]) 耗时: 0.013220ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[12]) 耗时: 0.006406ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[12]) 耗时: 0.014222ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[13]) 耗时: 0.006545ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[13]) 耗时: 0.014292ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[14]) 耗时: 0.006318ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[14]) 耗时: 0.013321ms
+	computeQuotient() || deriveZeta() & clean up 耗时: 0.864021 ms
+prove() -> computeQuotient 耗时: 55.666104ms
+		computeLinearizedPolynomial() || wait for H to be committed and zeta to be derived 耗时: 55.645448ms
+		openZ() || wait for H to be committed and zeta to be derived 耗时: 55.656781ms
+		openZ() || getBlindedCoefficients 耗时: 0.011628ms
+		openZ() || Open 耗时: 2.480785ms
+prove() -> openZ 耗时: 58.174257ms
+		computeLinearizedPolynomial() || innerComputeLinearizedPoly 耗时: 2.673706ms
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 预计算, neededPrecompLen: 2575
+		computeLinearizedPolynomial() || kzg.Commit 耗时: 2.526948 ms
+prove() -> computeLinearizedPolynomial 耗时: 60.871234ms
+		batchOpening() || wait for linearizedPolynomial 耗时: 60.976677ms
+		batchOpening() || prepare polysToOpen and digestsToOpen 耗时: 0.003130ms
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 预计算, neededPrecompLen: 2570
+		BatchOpenSinglePoint  ||  commitOnGPUOrCPU() 耗时: 2.742473 ms
+		batchOpening() || BatchOpenSinglePoint 耗时: 3.502480ms
+prove() -> batchOpening 耗时: 64.498109ms
+prove() -> prove() 总耗时: 64.637662ms
+prove() -> CopyToDevice 总耗时: 0.720709ms (累计所有 CopyToDevice 调用)
+prove() -> CopyFromDevice 总耗时: 10.268255ms (累计所有 CopyFromDevice 调用)
+prove() -> CopyToDevice + CopyFromDevice 总耗时: 10.988964ms (累加时间)
+[TIMING] inner Prove took 1.287255407s
+[outer] nbConstraints=6312216 nbPublic=4 nbSecret=168
+outer circuit solved
+[INFO] ICICLE backend loaded from $ICICLE_BACKEND_INSTALL_DIR=/home/jade/.local/icicle/lib/backend
+	setupDevicePointers() || CopyToDevice(G1) 耗时: 138.237461ms
+	setupDevicePointers() || CopyToDevice(G1Lagrange) 耗时: 123.259923ms
+	setupDevicePointers() || CopyToDevice(CosetTable) 耗时: 42.260737ms
+	setupDevicePointers() || CopyToDevice(CosetTableRev) 耗时: 41.537750ms
+	setupDevicePointers() || CopyToDevice(BigTwiddlesN) 耗时: 41.294293ms
+	setupDevicePointers() || CopyToDevice(BigTwiddlesNRev) 耗时: 42.139064ms
+prove() -> icicle device setup 耗时: 887.410342ms
+prove() -> initBlindingPolynomials 耗时: 0.012948ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 预计算
+	solveConstraints() || s.spr.Solve() (L, R, O) 耗时: 1557.707320 ms
+	solveConstraints() || sets x[id_L], x[id_R], x[id_O] 耗时: 0.019025 ms
+			commitToPolyAndBlindingStream() -> commit to p 耗时: 252.455855ms
+			commitToPolyAndBlindingStream() -> commit to p 耗时: 347.428838ms
+			commitToPolyAndBlindingStream() -> commit to b 耗时: 36.324689ms
+			commitToPolyAndBlindingStream() -> commit_p + commit_b 耗时: 0.003214ms
+2025/12/16 22:12:03 [TIMING] commitToLRO L=383.813898ms
+			commitToPolyAndBlindingStream() -> commit to b 耗时: 131.429014ms
+			commitToPolyAndBlindingStream() -> commit_p + commit_b 耗时: 0.003287ms
+2025/12/16 22:12:03 [TIMING] commitToLRO O=383.921246ms
+			commitToPolyAndBlindingStream() -> commit to p 耗时: 383.974840ms
+			commitToPolyAndBlindingStream() -> commit to b 耗时: 14.838172ms
+			commitToPolyAndBlindingStream() -> commit_p + commit_b 耗时: 0.003474ms
+2025/12/16 22:12:03 [TIMING] commitToLRO R=398.849107ms
+2025/12/16 22:12:03 [TIMING] commitToLRO total=398.962455ms
+	solveConstraints() || commitToLRO() 耗时: 398.965199 ms
+prove() -> solveConstraints 耗时: 1956.708584ms
+		deriveGammaAndBeta() || wait for LRO to be committed 耗时: 1956.400961ms
+		completeQk() || wait for solver to be done 耗时: 1868.037841ms
+prove() -> completeQk 耗时: 1956.105052ms
+		computeQuotient() || wait for solver to be done 耗时: 1890.039930ms
+prove() -> deriveGammaAndBeta 耗时: 1956.796530ms
+		buildRatioCopyConstraint() || wait for gamma and beta to be derived 耗时: 1956.809858ms
+		buildRatioCopyConstraint() || iop.BuildRatioCopyConstraint 耗时: 712.102889ms
+		commitOnGPUOrCPU() || GPU 开始 commitLagrange 预计算
+			commitToPolyAndBlinding() -> commit to p 耗时: 159.064632ms
+			commitToPolyAndBlinding() -> commit to b 耗时: 8.566135ms
+			commitToPolyAndBlinding() -> commit_p + commit_b 耗时: 0.003287ms
+		buildRatioCopyConstraint() || commitToPolyAndBlinding(s.x[id_Z], s.bp[id_Bz]) 耗时: 167.682886ms
+prove() -> buildRatioCopyConstraint 耗时: 2836.631167ms
+		computeQuotient() || wait for Z to be committed 耗时: 879.931289ms
+	computeQuotient() || prepare to compute & derive alpha: 2850.478715 ms
+	computeNumerator() || CopyToDevice(poly[0]) 耗时: 41.347433ms
+	computeNumerator() || CopyToDevice(poly[1]) 耗时: 41.322924ms
+	computeNumerator() || CopyToDevice(poly[2]) 耗时: 41.069517ms
+	computeNumerator() || CopyToDevice(poly[3]) 耗时: 41.340184ms
+	computeNumerator() || CopyToDevice(poly[5]) 耗时: 40.896403ms
+	computeNumerator() || CopyToDevice(poly[6]) 耗时: 41.016627ms
+	computeNumerator() || CopyToDevice(poly[7]) 耗时: 41.132209ms
+	computeNumerator() || CopyToDevice(poly[8]) 耗时: 41.017276ms
+	computeNumerator() || CopyToDevice(poly[9]) 耗时: 41.054599ms
+	computeNumerator() || CopyToDevice(poly[10]) 耗时: 41.047832ms
+	computeNumerator() || CopyToDevice(poly[11]) 耗时: 41.020799ms
+	computeNumerator() || CopyToDevice(poly[12]) 耗时: 41.140656ms
+	computeNumerator() || CopyToDevice(poly[13]) 耗时: 41.136529ms
+	computeNumerator() || CopyToDevice(poly[14]) 耗时: 41.067102ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 64.257052ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 56.803122ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.298828ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.202689ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.316690ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.272161ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.792407ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.184913ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.312474ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 59.195236ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.142140ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 159.744338ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.187983ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.173456ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 66.210400ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.215898ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.282647ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.170365ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.263610ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 47.258932ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.171650ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 55.683715ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 65.250283ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.159593ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 50.853512ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.239968ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.212509ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 323.451455ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 65.289868ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 54.664712ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 51.049283ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 55.718339ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.237228ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 55.735866ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 47.349435ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.274221ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.187432ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 44.850541ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 58.761388ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.143316ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.252231ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 55.491564ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 65.298759ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 54.659642ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.195087ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.147066ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 55.561229ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.204243ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.346951ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 59.167968ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 53.302034ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 48.749094ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 51.772912ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 58.014922ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 49.070200ms
+	toCosetLagrangeOnGPUorCPU_DEV() || CopyFromDevice 耗时: 370.649088ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(accList) 耗时: 41.514681ms
+	computeQuotient() || computeNumerator() 耗时: 7211.754267 ms
+		divideByZH() || parallelize divide 耗时: 52.192135 ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[0]) 耗时: 56.742486ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[0]) 耗时: 41.254537ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[1]) 耗时: 64.751915ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[1]) 耗时: 62.581753ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[2]) 耗时: 64.527811ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[2]) 耗时: 70.349383ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[3]) 耗时: 111.037090ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[3]) 耗时: 71.021132ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[5]) 耗时: 58.973154ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[5]) 耗时: 60.601912ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[6]) 耗时: 48.631876ms
+		divideByZH() || ToCanonical 耗时: 716.010852 ms
+	computeQuotient() || divideByZH() 耗时: 768.281552 ms
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 预计算, neededPrecompLen: 16777220
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 预计算, neededPrecompLen: 16777220
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 预计算, neededPrecompLen: 16777220
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[6]) 耗时: 41.296993ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[7]) 耗时: 45.380248ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[7]) 耗时: 41.291954ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[8]) 耗时: 46.463757ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[8]) 耗时: 82.533398ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[10]) 耗时: 45.206073ms
+	computeQuotient() || commitToQuotient() 耗时: 781.197070 ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[10]) 耗时: 41.333799ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[11]) 耗时: 45.234900ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[11]) 耗时: 41.218368ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[12]) 耗时: 45.321147ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[12]) 耗时: 41.273752ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[13]) 耗时: 45.460873ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[13]) 耗时: 41.237181ms
+	scaleEverythingBackGPUorCPU() || CopyToDevice(poly[14]) 耗时: 45.363617ms
+	scaleEverythingBackGPUorCPU() || CopyFromDevice(poly[14]) 耗时: 41.317033ms
+	computeQuotient() || deriveZeta() & clean up 耗时: 425.403647 ms
+prove() -> computeQuotient 耗时: 12037.193112ms
+		openZ() || wait for H to be committed and zeta to be derived 耗时: 12037.202881ms
+		computeLinearizedPolynomial() || wait for H to be committed and zeta to be derived 耗时: 12036.750148ms
+		openZ() || getBlindedCoefficients 耗时: 85.198575ms
+		openZ() || Open 耗时: 484.562535ms
+prove() -> openZ 耗时: 12606.983386ms
+		computeLinearizedPolynomial() || innerComputeLinearizedPoly 耗时: 1029.640537ms
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 预计算, neededPrecompLen: 16777222
+		computeLinearizedPolynomial() || kzg.Commit 耗时: 168.380047 ms
+prove() -> computeLinearizedPolynomial 耗时: 13234.852576ms
+		batchOpening() || wait for linearizedPolynomial 耗时: 13235.417327ms
+		batchOpening() || prepare polysToOpen and digestsToOpen 耗时: 0.008008ms
+		commitOnGPUOrCPU() || GPU 开始 commitMonomial 预计算, neededPrecompLen: 16777220
+		BatchOpenSinglePoint  ||  commitOnGPUOrCPU() 耗时: 168.033728 ms
+		batchOpening() || BatchOpenSinglePoint 耗时: 559.333643ms
+prove() -> batchOpening 耗时: 13794.795561ms
+prove() -> prove() 总耗时: 14978.985185ms
+prove() -> CopyToDevice 总耗时: 1768.948946ms (累计所有 CopyToDevice 调用)
+prove() -> CopyFromDevice 总耗时: 4418.763840ms (累计所有 CopyFromDevice 调用)
+prove() -> CopyToDevice + CopyFromDevice 总耗时: 6187.712786ms (累加时间)
+[TIMING] outer Prove took 18.21525486s
+outer circuit verified
+outer proof/vk/kzgvk exported
+--- PASS: Test_Recursion (39.41s)
+PASS
+ok  	github.com/eon-protocol/eonark/circuits/recursion	39.889s
+Collecting data...
+Generating '/tmp/nsys-report-e915.qdstrm'
+[1/8] [0%                          ] Test_Recursion_20251216_221131.nsys-rep[1/8] [0%                          ] Test_Recursion_20251216_221131.nsys-rep[1/8] [7%                          ] Test_Recursion_20251216_221131.nsys-rep[1/8] [14%                         ] Test_Recursion_20251216_221131.nsys-rep[1/8] [=15%                        ] Test_Recursion_20251216_221131.nsys-rep[1/8] [=16%                        ] Test_Recursion_20251216_221131.nsys-rep[1/8] [=17%                        ] Test_Recursion_20251216_221131.nsys-rep[1/8] [==18%                       ] Test_Recursion_20251216_221131.nsys-rep[1/8] [==19%                       ] Test_Recursion_20251216_221131.nsys-rep[1/8] [==20%                       ] Test_Recursion_20251216_221131.nsys-rep[1/8] [==21%                       ] Test_Recursion_20251216_221131.nsys-rep[1/8] [===22%                      ] Test_Recursion_20251216_221131.nsys-rep[1/8] [===23%                      ] Test_Recursion_20251216_221131.nsys-rep[1/8] [===24%                      ] Test_Recursion_20251216_221131.nsys-rep[1/8] [====25%                     ] Test_Recursion_20251216_221131.nsys-rep[1/8] [====26%                     ] Test_Recursion_20251216_221131.nsys-rep[1/8] [====27%                     ] Test_Recursion_20251216_221131.nsys-rep[1/8] [====28%                     ] Test_Recursion_20251216_221131.nsys-rep[1/8] [=====29%                    ] Test_Recursion_20251216_221131.nsys-rep[1/8] [=====30%                    ] Test_Recursion_20251216_221131.nsys-rep[1/8] [=====31%                    ] Test_Recursion_20251216_221131.nsys-rep[1/8] [===============66%          ] Test_Recursion_20251216_221131.nsys-rep[1/8] [================70%         ] Test_Recursion_20251216_221131.nsys-rep[1/8] [================71%         ] Test_Recursion_20251216_221131.nsys-rep[1/8] [========================100%] Test_Recursion_20251216_221131.nsys-rep[1/8] [========================100%] Test_Recursion_20251216_221131.nsys-rep
+[2/8] [0%                          ] Test_Recursion_20251216_221131.sqlite[2KProcessing 4956 events: 
+[2/8] [1%                          ] Test_Recursion_20251216_221131.sqlite[2/8] [2%                          ] Test_Recursion_20251216_221131.sqlite[2/8] [3%                          ] Test_Recursion_20251216_221131.sqlite[2/8] [4%                          ] Test_Recursion_20251216_221131.sqlite[2/8] [5%                          ] Test_Recursion_20251216_221131.sqlite[2/8] [6%                          ] Test_Recursion_20251216_221131.sqlite[2/8] [7%                          ] Test_Recursion_20251216_221131.sqlite[2/8] [8%                          ] Test_Recursion_20251216_221131.sqlite[2/8] [9%                          ] Test_Recursion_20251216_221131.sqlite[2/8] [10%                         ] Test_Recursion_20251216_221131.sqlite[2/8] [11%                         ] Test_Recursion_20251216_221131.sqlite[2/8] [12%                         ] Test_Recursion_20251216_221131.sqlite[2/8] [13%                         ] Test_Recursion_20251216_221131.sqlite[2/8] [14%                         ] Test_Recursion_20251216_221131.sqlite[2/8] [=15%                        ] Test_Recursion_20251216_221131.sqlite[2/8] [=16%                        ] Test_Recursion_20251216_221131.sqlite[2/8] [=17%                        ] Test_Recursion_20251216_221131.sqlite[2/8] [==18%                       ] Test_Recursion_20251216_221131.sqlite[2/8] [==19%                       ] Test_Recursion_20251216_221131.sqlite[2/8] [==20%                       ] Test_Recursion_20251216_221131.sqlite[2/8] [==21%                       ] Test_Recursion_20251216_221131.sqlite[2/8] [===22%                      ] Test_Recursion_20251216_221131.sqlite[2/8] [===23%                      ] Test_Recursion_20251216_221131.sqlite[2/8] [===24%                      ] Test_Recursion_20251216_221131.sqlite[2/8] [====25%                     ] Test_Recursion_20251216_221131.sqlite[2/8] [====26%                     ] Test_Recursion_20251216_221131.sqlite[2/8] [====27%                     ] Test_Recursion_20251216_221131.sqlite[2/8] [====28%                     ] Test_Recursion_20251216_221131.sqlite[2/8] [=====29%                    ] Test_Recursion_20251216_221131.sqlite[2/8] [=====30%                    ] Test_Recursion_20251216_221131.sqlite[2/8] [=====31%                    ] Test_Recursion_20251216_221131.sqlite[2/8] [=====32%                    ] Test_Recursion_20251216_221131.sqlite[2/8] [======33%                   ] Test_Recursion_20251216_221131.sqlite[2/8] [======34%                   ] Test_Recursion_20251216_221131.sqlite[2/8] [======35%                   ] Test_Recursion_20251216_221131.sqlite[2/8] [=======36%                  ] Test_Recursion_20251216_221131.sqlite[2/8] [=======37%                  ] Test_Recursion_20251216_221131.sqlite[2/8] [=======38%                  ] Test_Recursion_20251216_221131.sqlite[2/8] [=======39%                  ] Test_Recursion_20251216_221131.sqlite[2/8] [========40%                 ] Test_Recursion_20251216_221131.sqlite[2/8] [========41%                 ] Test_Recursion_20251216_221131.sqlite[2/8] [========42%                 ] Test_Recursion_20251216_221131.sqlite[2/8] [=========43%                ] Test_Recursion_20251216_221131.sqlite[2/8] [=========44%                ] Test_Recursion_20251216_221131.sqlite[2/8] [=========45%                ] Test_Recursion_20251216_221131.sqlite[2/8] [=========46%                ] Test_Recursion_20251216_221131.sqlite[2/8] [==========47%               ] Test_Recursion_20251216_221131.sqlite[2/8] [==========48%               ] Test_Recursion_20251216_221131.sqlite[2/8] [==========49%               ] Test_Recursion_20251216_221131.sqlite[2/8] [===========50%              ] Test_Recursion_20251216_221131.sqlite[2/8] [===========51%              ] Test_Recursion_20251216_221131.sqlite[2/8] [===========52%              ] Test_Recursion_20251216_221131.sqlite[2/8] [===========53%              ] Test_Recursion_20251216_221131.sqlite[2/8] [============54%             ] Test_Recursion_20251216_221131.sqlite[2/8] [============55%             ] Test_Recursion_20251216_221131.sqlite[2/8] [============56%             ] Test_Recursion_20251216_221131.sqlite[2/8] [============57%             ] Test_Recursion_20251216_221131.sqlite[2/8] [=============58%            ] Test_Recursion_20251216_221131.sqlite[2/8] [=============59%            ] Test_Recursion_20251216_221131.sqlite[2/8] [=============60%            ] Test_Recursion_20251216_221131.sqlite[2/8] [==============61%           ] Test_Recursion_20251216_221131.sqlite[2/8] [==============62%           ] Test_Recursion_20251216_221131.sqlite[2/8] [==============63%           ] Test_Recursion_20251216_221131.sqlite[2/8] [==============64%           ] Test_Recursion_20251216_221131.sqlite[2/8] [===============65%          ] Test_Recursion_20251216_221131.sqlite[2/8] [===============66%          ] Test_Recursion_20251216_221131.sqlite[2/8] [===============67%          ] Test_Recursion_20251216_221131.sqlite[2/8] [================68%         ] Test_Recursion_20251216_221131.sqlite[2/8] [================69%         ] Test_Recursion_20251216_221131.sqlite[2/8] [================70%         ] Test_Recursion_20251216_221131.sqlite[2/8] [================71%         ] Test_Recursion_20251216_221131.sqlite[2/8] [=================72%        ] Test_Recursion_20251216_221131.sqlite[2/8] [=================73%        ] Test_Recursion_20251216_221131.sqlite[2/8] [=================74%        ] Test_Recursion_20251216_221131.sqlite[2/8] [==================75%       ] Test_Recursion_20251216_221131.sqlite[2/8] [==================76%       ] Test_Recursion_20251216_221131.sqlite[2/8] [==================77%       ] Test_Recursion_20251216_221131.sqlite[2/8] [==================78%       ] Test_Recursion_20251216_221131.sqlite[2/8] [===================79%      ] Test_Recursion_20251216_221131.sqlite[2/8] [===================80%      ] Test_Recursion_20251216_221131.sqlite[2/8] [===================81%      ] Test_Recursion_20251216_221131.sqlite[2/8] [===================82%      ] Test_Recursion_20251216_221131.sqlite[2/8] [====================83%     ] Test_Recursion_20251216_221131.sqlite[2/8] [====================84%     ] Test_Recursion_20251216_221131.sqlite[2/8] [====================85%     ] Test_Recursion_20251216_221131.sqlite[2/8] [=====================86%    ] Test_Recursion_20251216_221131.sqlite[2/8] [=====================87%    ] Test_Recursion_20251216_221131.sqlite[2/8] [=====================88%    ] Test_Recursion_20251216_221131.sqlite[2/8] [=====================89%    ] Test_Recursion_20251216_221131.sqlite[2/8] [======================90%   ] Test_Recursion_20251216_221131.sqlite[2/8] [======================91%   ] Test_Recursion_20251216_221131.sqlite[2/8] [======================92%   ] Test_Recursion_20251216_221131.sqlite[2/8] [=======================93%  ] Test_Recursion_20251216_221131.sqlite[2/8] [=======================94%  ] Test_Recursion_20251216_221131.sqlite[2/8] [=======================95%  ] Test_Recursion_20251216_221131.sqlite[2/8] [=======================96%  ] Test_Recursion_20251216_221131.sqlite[2/8] [========================97% ] Test_Recursion_20251216_221131.sqlite[2/8] [========================98% ] Test_Recursion_20251216_221131.sqlite[2/8] [========================99% ] Test_Recursion_20251216_221131.sqlite[2/8] [========================100%] Test_Recursion_20251216_221131.sqlite[2/8] [========================100%] Test_Recursion_20251216_221131.sqlite
+[3/8] Executing 'nvtx_sum' stats report
+
+ Time (%)  Total Time (ns)  Instances     Avg (ns)         Med (ns)       Min (ns)       Max (ns)       StdDev (ns)     Style                                                Range                                            
+ --------  ---------------  ---------  ---------------  ---------------  -----------  --------------  ---------------  --------  ---------------------------------------------------------------------------------------------
+     15.4   24,978,657,456        112    223,023,727.3     37,050,241.5      284,748     769,478,011    271,967,735.5  StartEnd  :RunOnDevice:toCosetLagrangeOnGPUorCPU_DEV                                                   
+     13.2   21,306,822,317          4  5,326,705,579.3  4,628,139,298.5   13,350,960  12,037,192,760  6,219,686,012.2  StartEnd  :SubFunction:computeQuotient || prepare to compute & derive alpha                            
+      8.6   13,859,309,678          2  6,929,654,839.0  6,929,654,839.0   64,500,867  13,794,808,811  9,708,793,855.0  StartEnd  :Function:batchOpening                                                                       
+      8.2   13,296,128,817          2  6,648,064,408.5  6,648,064,408.5   60,873,411  13,235,255,406  9,315,694,846.6  StartEnd  :Function:computeLinearizedPolynomial                                                        
+      8.2   13,295,719,447          2  6,647,859,723.5  6,647,859,723.5   60,868,578  13,234,850,869  9,315,412,213.2  StartEnd  :SubFunction:computeLinearizedPolynomial || wait for H to be committed and zeta to be derived
+      7.8   12,665,168,176          2  6,332,584,088.0  6,332,584,088.0   58,176,270  12,606,991,906  8,873,352,632.1  StartEnd  :Function:openZ                                                                              
+      7.5   12,092,868,605          2  6,046,434,302.5  6,046,434,302.5   55,670,837  12,037,197,768  8,472,218,941.9  StartEnd  :Function:computeQuotient                                                                    
+      6.3   10,106,023,725          2  5,053,011,862.5  5,053,011,862.5   25,474,040  10,080,549,685  7,110,012,173.9  StartEnd  :SubFunction:computeQuotient || wait for Z to be committed                                   
+      5.7    9,199,964,087          2  4,599,982,043.5  4,599,982,043.5   13,255,504   9,186,708,583  6,486,610,879.1  StartEnd  :SubFunction:computeQuotient || computeNumerator                                             
+      2.3    3,750,049,071        112     33,482,581.0     22,919,075.0       22,713     370,645,400     52,010,575.6  StartEnd  :CopyFromDevice:toCosetLagrangeOnGPUorCPU_DEV                                                
+      1.8    2,884,512,861         14    206,036,632.9     66,767,189.0    2,519,731     781,098,726    299,925,565.1  StartEnd  :RunOnDevice:commitOnGPUOrCPU                                                                
+      1.8    2,878,936,480          2  1,439,468,240.0  1,439,468,240.0   42,300,351   2,836,636,129  1,975,893,777.5  StartEnd  :Function:buildRatioCopyConstraint                                                           
+      1.3    2,024,588,329          2  1,012,294,164.5  1,012,294,164.5    6,489,373   2,018,098,956  1,422,422,777.2  StartEnd  :RunOnDevice:scaleEverythingBackGPUorCPU                                                     
+      1.2    1,987,136,092          2    993,568,046.0    993,568,046.0   30,337,220   1,956,798,872  1,362,214,097.8  StartEnd  :Function:deriveGammaAndBeta                                                                 
+      1.2    1,986,973,905          2    993,486,952.5    993,486,952.5   30,263,925   1,956,709,980  1,362,203,069.1  StartEnd  :Function:solveConstraints                                                                   
+      1.2    1,986,970,729          2    993,485,364.5    993,485,364.5   30,262,484   1,956,708,245  1,362,202,861.2  StartEnd  :SubFunction:solveConstraints || s.spr.Solve() (L, R, O)                                     
+      1.2    1,986,737,765          2    993,368,882.5    993,368,882.5   30,199,118   1,956,538,647  1,362,127,743.8  StartEnd  :Function:completeQk                                                                         
+      1.2    1,981,433,365          2    990,716,682.5    990,716,682.5    6,493,885   1,974,939,480  1,391,901,228.6  StartEnd  :SubFunction:computeQuotient || divideByZH                                                   
+      0.8    1,212,925,674          2    606,462,837.0    606,462,837.0    6,279,553   1,206,646,121    848,787,340.1  StartEnd  :SubFunction:computeQuotient || commitToQuotient                                             
+      0.7    1,203,288,810          2    601,644,405.0    601,644,405.0    5,215,559   1,198,073,251    843,477,763.0  StartEnd  :SubFunction:computeLinearizedPolynomial || innerComputeLinearizedPoly                       
+      0.6    1,009,066,149          6    168,177,691.5    131,832,500.0    4,021,578     383,965,474    180,220,185.5  StartEnd  :RunOnDevice:commitToPolyAndBlindingStream                                                   
+      0.4      664,351,767          2    332,175,883.5    332,175,883.5    1,046,480     663,305,287    468,287,693.3  StartEnd  :RunOnDevice:computeNumerator_UploadPolys                                                    
+      0.3      525,511,704          2    262,755,852.0    262,755,852.0  254,419,733     271,091,971     11,789,052.5  StartEnd  :RunOnDevice:setupDevicePointers_G1Setup                                                     
+      0.3      487,028,604          2    243,514,302.0    243,514,302.0    2,477,219     484,551,385    340,877,911.8  StartEnd  :RunOnDevice:OpenOnGPUOrCPU                                                                  
+      0.3      426,273,147          2    213,136,573.5    213,136,573.5      866,634     425,406,513    300,195,027.3  StartEnd  :SubFunction:computeQuotient || deriveZeta                                                   
+      0.3      419,554,214          2    209,777,107.0    209,777,107.0   20,570,717     398,983,497    267,578,242.8  StartEnd  :SubFunction:solveConstraints || sets x[id_L], x[id_R], x[id_O]                              
+      0.3      419,529,101          2    209,764,550.5    209,764,550.5   20,562,150     398,966,951    267,572,600.8  StartEnd  :SubFunction:solveConstraints || commitToLRO()                                               
+      0.1      214,262,501          6     35,710,416.8     13,412,462.0    9,251,113     131,419,115     47,951,803.9  StartEnd  :RunOnDevice:commitBlindingFactorGPUOrCPUWithStream                                          
+      0.1      170,936,569          2     85,468,284.5     85,468,284.5    2,535,362     168,401,207    117,284,863.8  StartEnd  :SubFunction:computeLinearizedPolynomial || commitOnGPUOrCPU                                 
+      0.1      170,436,489          2     85,218,244.5     85,218,244.5      188,646     170,247,843    120,250,011.4  StartEnd  :RunOnDevice:setupDevicePointers_CosetTables                                                 
+      0.1      138,332,393          2     69,166,196.5     69,166,196.5      100,139     138,232,254     97,674,155.2  StartEnd  :CopyToDevice:setupDevicePointers_G1                                                         
+      0.1      123,268,437          2     61,634,218.5     61,634,218.5       12,955     123,255,482     87,145,626.6  StartEnd  :CopyToDevice:setupDevicePointers_G1Lagrange                                                 
+      0.1      111,084,024          2     55,542,012.0     55,542,012.0       85,091     110,998,933     78,427,929.8  StartEnd  :CopyToDevice:scaleEverythingBackGPUorCPU_poly[3]                                            
+      0.1       82,387,045          2     41,193,522.5     41,193,522.5       12,720      82,374,325     58,238,449.4  StartEnd  :CopyFromDevice:scaleEverythingBackGPUorCPU_poly[8]                                          
+      0.0       71,526,416          2     35,763,208.0     35,763,208.0    1,224,637      70,301,779     48,844,915.5  StartEnd  :CopyFromDevice:scaleEverythingBackGPUorCPU_poly[2]                                          
+      0.0       71,025,151          2     35,512,575.5     35,512,575.5       24,073      71,001,078     50,188,321.5  StartEnd  :CopyFromDevice:scaleEverythingBackGPUorCPU_poly[3]                                          
+      0.0       64,771,967          2     32,385,983.5     32,385,983.5       37,604      64,734,363     45,747,517.0  StartEnd  :CopyToDevice:scaleEverythingBackGPUorCPU_poly[1]                                            
+      0.0       64,592,545          2     32,296,272.5     32,296,272.5      112,497      64,480,048     45,514,731.8  StartEnd  :CopyToDevice:scaleEverythingBackGPUorCPU_poly[2]                                            
+      0.0       62,577,025          2     31,288,512.5     31,288,512.5       27,953      62,549,072     44,209,107.2  StartEnd  :CopyFromDevice:scaleEverythingBackGPUorCPU_poly[1]                                          
+      0.0       60,608,033          2     30,304,016.5     30,304,016.5       15,967      60,592,066     42,833,770.4  StartEnd  :CopyFromDevice:scaleEverythingBackGPUorCPU_poly[5]                                          
+      0.0       58,983,803          2     29,491,901.5     29,491,901.5       21,378      58,962,425     41,677,614.0  StartEnd  :CopyToDevice:scaleEverythingBackGPUorCPU_poly[5]                                            
+      0.0       56,751,268          2     28,375,634.0     28,375,634.0       15,810      56,735,458     40,106,847.7  StartEnd  :CopyToDevice:scaleEverythingBackGPUorCPU_poly[0]                                            
+      0.0       48,633,770          2     24,316,885.0     24,316,885.0        9,207      48,624,563     34,376,247.9  StartEnd  :CopyToDevice:scaleEverythingBackGPUorCPU_poly[6]                                            
+      0.0       46,465,674          2     23,232,837.0     23,232,837.0        6,282      46,459,392     32,847,309.1  StartEnd  :CopyToDevice:scaleEverythingBackGPUorCPU_poly[8]                                            
+      0.0       45,465,046          2     22,732,523.0     22,732,523.0        5,919      45,459,127     32,140,271.6  StartEnd  :CopyToDevice:scaleEverythingBackGPUorCPU_poly[13]                                           
+      0.0       45,383,992          2     22,691,996.0     22,691,996.0        6,382      45,377,610     32,082,303.0  StartEnd  :CopyToDevice:scaleEverythingBackGPUorCPU_poly[7]                                            
+      0.0       45,367,957          2     22,683,978.5     22,683,978.5        5,806      45,362,151     32,071,779.1  StartEnd  :CopyToDevice:scaleEverythingBackGPUorCPU_poly[14]                                           
+      0.0       45,325,316          2     22,662,658.0     22,662,658.0        5,929      45,319,387     32,041,453.4  StartEnd  :CopyToDevice:scaleEverythingBackGPUorCPU_poly[12]                                           
+      0.0       45,239,159          2     22,619,579.5     22,619,579.5        6,330      45,232,829     31,979,964.1  StartEnd  :CopyToDevice:scaleEverythingBackGPUorCPU_poly[11]                                           
+      0.0       45,123,360          2     22,561,680.0     22,561,680.0        7,292      45,116,068     31,896,721.4  StartEnd  :CopyToDevice:scaleEverythingBackGPUorCPU_poly[10]                                           
+      0.0       42,271,724          2     21,135,862.0     21,135,862.0       16,617      42,255,107     29,867,122.7  StartEnd  :CopyToDevice:setupDevicePointers_CosetTable                                                 
+      0.0       42,142,181          2     21,071,090.5     21,071,090.5        7,465      42,134,716     29,788,464.9  StartEnd  :CopyToDevice:setupDevicePointers_BigTwiddlesNRev                                            
+      0.0       41,546,250          2     20,773,125.0     20,773,125.0       34,395      41,511,855     29,328,993.2  StartEnd  :CopyToDevice:scaleEverythingBackGPUorCPU_accList                                            
+      0.0       41,542,242          2     20,771,121.0     20,771,121.0        9,699      41,532,543     29,361,084.6  StartEnd  :CopyToDevice:setupDevicePointers_CosetTableRev                                              
+      0.0       41,354,851          2     20,677,425.5     20,677,425.5       17,266      41,337,585     29,217,877.8  StartEnd  :CopyToDevice:computeNumerator_poly[0]                                                       
+      0.0       41,353,407          2     20,676,703.5     20,676,703.5       16,736      41,336,671     29,217,606.2  StartEnd  :CopyToDevice:computeNumerator_poly[3]                                                       
+      0.0       41,343,866          2     20,671,933.0     20,671,933.0       12,992      41,330,874     29,216,154.5  StartEnd  :CopyFromDevice:scaleEverythingBackGPUorCPU_poly[10]                                         
+      0.0       41,334,961          2     20,667,480.5     20,667,480.5       15,913      41,319,048     29,205,726.8  StartEnd  :CopyToDevice:computeNumerator_poly[1]                                                       
+      0.0       41,328,470          2     20,664,235.0     20,664,235.0       12,804      41,315,666     29,205,533.8  StartEnd  :CopyFromDevice:scaleEverythingBackGPUorCPU_poly[14]                                         
+      0.0       41,306,330          2     20,653,165.0     20,653,165.0       13,126      41,293,204     29,189,423.1  StartEnd  :CopyFromDevice:scaleEverythingBackGPUorCPU_poly[6]                                          
+      0.0       41,299,657          2     20,649,828.5     20,649,828.5       12,515      41,287,142     29,185,568.6  StartEnd  :CopyFromDevice:scaleEverythingBackGPUorCPU_poly[7]                                          
+      0.0       41,296,699          2     20,648,349.5     20,648,349.5        7,711      41,288,988     29,190,270.9  StartEnd  :CopyToDevice:setupDevicePointers_BigTwiddlesN                                               
+      0.0       41,285,872          2     20,642,936.0     20,642,936.0       13,743      41,272,129     29,174,084.5  StartEnd  :CopyFromDevice:scaleEverythingBackGPUorCPU_poly[12]                                         
+      0.0       41,278,834          2     20,639,417.0     20,639,417.0       30,730      41,248,104     29,145,084.7  StartEnd  :CopyFromDevice:scaleEverythingBackGPUorCPU_poly[0]                                          
+      0.0       41,249,393          2     20,624,696.5     20,624,696.5       13,820      41,235,573     29,148,181.1  StartEnd  :CopyFromDevice:scaleEverythingBackGPUorCPU_poly[13]                                         
+      0.0       41,229,479          2     20,614,739.5     20,614,739.5       12,718      41,216,761     29,135,658.2  StartEnd  :CopyFromDevice:scaleEverythingBackGPUorCPU_poly[11]                                         
+      0.0       41,145,441          2     20,572,720.5     20,572,720.5       15,693      41,129,748     29,072,027.1  StartEnd  :CopyToDevice:computeNumerator_poly[7]                                                       
+      0.0       41,144,092          2     20,572,046.0     20,572,046.0        5,248      41,138,844     29,085,844.7  StartEnd  :CopyToDevice:computeNumerator_poly[12]                                                      
+      0.0       41,139,607          2     20,569,803.5     20,569,803.5        5,021      41,134,586     29,082,994.3  StartEnd  :CopyToDevice:computeNumerator_poly[13]                                                      
+      0.0       41,080,793          2     20,540,396.5     20,540,396.5       13,684      41,067,109     29,029,155.2  StartEnd  :CopyToDevice:computeNumerator_poly[2]                                                       
+      0.0       41,069,493          2     20,534,746.5     20,534,746.5        6,019      41,063,474     29,032,004.8  StartEnd  :CopyToDevice:computeNumerator_poly[14]                                                      
+      0.0       41,059,302          2     20,529,651.0     20,529,651.0        6,523      41,052,779     29,024,086.0  StartEnd  :CopyToDevice:computeNumerator_poly[9]                                                       
+      0.0       41,055,762          2     20,527,881.0     20,527,881.0       10,009      41,045,753     29,016,652.9  StartEnd  :CopyToDevice:computeNumerator_poly[10]                                                      
+      0.0       41,029,402          2     20,514,701.0     20,514,701.0       14,025      41,015,377     28,992,334.0  StartEnd  :CopyToDevice:computeNumerator_poly[8]                                                       
+      0.0       41,026,311          2     20,513,155.5     20,513,155.5        7,186      41,019,125     28,999,820.2  StartEnd  :CopyToDevice:computeNumerator_poly[11]                                                      
+      0.0       41,025,383          2     20,512,691.5     20,512,691.5       13,168      41,012,215     28,990,704.2  StartEnd  :CopyToDevice:computeNumerator_poly[6]                                                       
+      0.0       40,904,838          2     20,452,419.0     20,452,419.0       12,989      40,891,849     28,905,719.1  StartEnd  :CopyToDevice:computeNumerator_poly[5]                                                       
+      0.0       23,495,455          2     11,747,727.5     11,747,727.5    6,156,732      17,338,723      7,906,861.7  StartEnd  :RunOnDevice:setupDevicePointers_InitDomain                                                  
+      0.0       17,703,585          2      8,851,792.5      8,851,792.5    8,557,770       9,145,815        415,810.6  StartEnd  :RunOnDevice:commitBlindingFactorGPUOrCPU                                                    
+      0.0        5,609,516        135         41,552.0         20,445.0        2,480       1,483,765        136,659.6  PushPop   CCCL:cub::DeviceRadixSort                                                                    
+      0.0        1,588,377         18         88,243.2         15,174.5        5,561       1,326,766        309,290.5  PushPop   CCCL:cub::DeviceScan::InclusiveSum                                                           
+      0.0          755,064         45         16,779.2          9,193.0        5,881          78,522         15,935.0  PushPop   CCCL:cub::DeviceRunLengthEncode::Encode                                                      
+      0.0          567,317         45         12,607.0          7,919.0        5,616         123,447         17,619.7  PushPop   CCCL:cub::DeviceScan::ExclusiveSum                                                           
+      0.0          555,057          2        277,528.5        277,528.5       90,760         464,297        264,130.5  StartEnd  :RunOnDevice:setupDevicePointers_PrecomputeLagrange                                          
+      0.0          251,843          2        125,921.5        125,921.5       12,652         239,191        160,187.3  StartEnd  :Function:initBlindingPolynomials                                                            
+      0.0          103,937          2         51,968.5         51,968.5       11,144          92,793         57,734.6  StartEnd  :RunOnDevice:setupDevicePointers_PrecomputeG1                                                
+
+[4/8] Executing 'osrt_sum' stats report
+
+ Time (%)  Total Time (ns)  Num Calls    Avg (ns)      Med (ns)     Min (ns)    Max (ns)    StdDev (ns)        Name     
+ --------  ---------------  ---------  ------------  ------------  ----------  -----------  ------------  --------------
+     98.4    2,044,839,027         33  61,964,819.0  44,872,059.0  22,333,182  198,559,898  47,442,607.2  waitpid       
+      0.6       11,659,139        481      24,239.4       1,316.0       1,001   10,877,836     495,913.7  open          
+      0.5       10,153,812        304      33,400.7       2,199.0       1,013    2,684,759     208,701.7  fread         
+      0.3        5,959,139        159      37,478.9       1,693.0       1,001    2,889,390     266,675.7  fwrite        
+      0.1        1,230,069        596       2,0SKIPPED: /home/jade/jade/eonark-gpu/scripts/../logs/gpu-4090//Test_Recursion_20251216_221131.sqlite does not contain CUDA kernel data.
+SKIPPED: /home/jade/jade/eonark-gpu/scripts/../logs/gpu-4090//Test_Recursion_20251216_221131.sqlite does not contain GPU memory data.
+SKIPPED: /home/jade/jade/eonark-gpu/scripts/../logs/gpu-4090//Test_Recursion_20251216_221131.sqlite does not contain GPU memory data.
+63.9       1,471.5       1,001       31,690       2,130.8  stat          
+      0.0          789,553        271       2,913.5       1,777.0       1,007       52,879       5,156.1  fopen64       
+      0.0          612,115        243       2,519.0       2,127.0       1,015        9,362       1,467.5  mmap          
+      0.0          566,874         53      10,695.7       2,299.0       1,030       55,666      15,281.0  fclose        
+      0.0          521,182         20      26,059.1      26,757.5      12,842       39,463       7,089.3  pthread_create
+      0.0          339,012        112       3,026.9       1,531.5       1,003       16,771       3,034.9  fputs         
+      0.0          258,059         34       7,590.0       3,757.5       1,010       32,964       8,488.4  fopen         
+      0.0          239,449         92       2,602.7       1,783.5       1,000       12,211       2,169.1  close         
+      0.0          175,127         52       3,367.8       1,089.5       1,006       51,774       9,597.5  read          
+      0.0          148,858         39       3,816.9       3,127.0       1,010       14,594       3,197.2  putc          
+      0.0          114,694         33       3,475.6       2,683.0       1,089        9,134       2,261.5  pipe2         
+      0.0           72,488         38       1,907.6       1,528.5       1,023        6,299       1,104.9  fputc         
+      0.0           54,187          9       6,020.8       4,103.0       2,406       11,887       3,616.8  getc          
+      0.0           28,795         17       1,693.8       1,561.0       1,006        4,153         735.4  signal        
+      0.0           14,901          6       2,483.5       1,867.5       1,249        6,116       1,809.1  lstat         
+      0.0            9,202          6       1,533.7       1,415.5       1,018        2,591         558.5  fstat         
+      0.0            6,499          5       1,299.8       1,330.0       1,070        1,467         171.4  fcntl         
+
+[5/8] Executing 'cuda_api_sum' stats report
+
+ Time (%)  Total Time (ns)  Num Calls   Avg (ns)    Med (ns)   Min (ns)   Max (ns)   StdDev (ns)            Name         
+ --------  ---------------  ---------  -----------  ---------  --------  ----------  ------------  ----------------------
+     58.1      131,067,670         23  5,698,594.3  209,256.0     1,964  67,841,496  14,227,103.6  cudaStreamSynchronize 
+     29.3       66,231,337         35  1,892,323.9    1,638.0       164  35,730,098   6,569,817.5  cudaEventDestroy      
+     12.6       28,437,542         23  1,236,414.9   31,108.0     1,666  10,349,695   2,683,176.4  cudaStreamDestroy     
+      0.0              647          1        647.0      647.0       647         647           0.0  cuModuleGetLoadingMode
+
+[6/8] Executing 'cuda_gpu_kern_sum' stats report
+[7/8] Executing 'cuda_gpu_mem_time_sum' stats report
+[8/8] Executing 'cuda_gpu_mem_size_sum' stats report
+Generated:
+	/home/jade/jade/eonark-gpu/scripts/../logs/gpu-4090//Test_Recursion_20251216_221131.nsys-rep
+	/home/jade/jade/eonark-gpu/scripts/../logs/gpu-4090//Test_Recursion_20251216_221131.sqlite
+
+============================================================
+CopyToDevice 和 CopyFromDevice 时间分析
+============================================================
+分析时间: 2025-12-16 22:12:17
+SQLite 文件: /home/jade/jade/eonark-gpu/scripts/../logs/gpu-4090//Test_Recursion_20251216_221131.sqlite
+
+
+======================================================================
+检测到的 Prove 阶段时间范围:
+======================================================================
+  Inner Prove:  5639575251 - 5965158377 (325.58 ms)
+  Outer Prove:  27359859583 - 43120856384 (15761.00 ms)
+
+======================================================================
+INNER PROVE 阶段分析
+======================================================================
+
+======================================================================
+Inner Prove - CopyToDevice 统计:
+======================================================================
+  事件数量:                        34
+  总时间（包括并行）:              0.673988 ms
+  去除并行后的时间:                0.673988 ms
+  并行时间:                        0.000000 ms
+  并行比例:                           0.00%
+
+  时间分布:
+    最小时间:                      0.005021 ms
+    最大时间:                      0.112497 ms
+    平均时间:                      0.019823 ms
+    中位数时间:                    0.012955 ms
+
+  前10个最长的事件:
+    序号   事件名称                                                         耗时 (ms)
+    ---- ------------------------------------------------------- ------------
+    1    CopyToDevice:scaleEverythingBackGPUorCPU_poly[2]            0.112497
+    2    CopyToDevice:setupDevicePointers_G1                         0.100139
+    3    CopyToDevice:scaleEverythingBackGPUorCPU_poly[3]            0.085091
+    4    CopyToDevice:scaleEverythingBackGPUorCPU_poly[1]            0.037604
+    5    CopyToDevice:scaleEverythingBackGPUorCPU_accList            0.034395
+    6    CopyToDevice:scaleEverythingBackGPUorCPU_poly[5]            0.021378
+    7    CopyToDevice:computeNumerator_poly[0]                       0.017266
+    8    CopyToDevice:computeNumerator_poly[3]                       0.016736
+    9    CopyToDevice:setupDevicePointers_CosetTable                 0.016617
+    10   CopyToDevice:computeNumerator_poly[1]                       0.015913
+
+======================================================================
+Inner Prove - CopyFromDevice 统计:
+======================================================================
+  事件数量:                        69
+  总时间（包括并行）:             10.207550 ms
+  去除并行后的时间:                5.417840 ms
+  并行时间:                        4.789710 ms
+  并行比例:                          46.92%
+
+  时间分布:
+    最小时间:                      0.012515 ms
+    最大时间:                      1.224637 ms
+    平均时间:                      0.147936 ms
+    中位数时间:                    0.103281 ms
+
+  前10个最长的事件:
+    序号   事件名称                                                         耗时 (ms)
+    ---- ------------------------------------------------------- ------------
+    1    CopyFromDevice:scaleEverythingBackGPUorCPU_poly[2]          1.224637
+    2    CopyFromDevice:toCosetLagrangeOnGPUorCPU_DEV                0.990587
+    3    CopyFromDevice:toCosetLagrangeOnGPUorCPU_DEV                0.481782
+    4    CopyFromDevice:toCosetLagrangeOnGPUorCPU_DEV                0.417181
+    5    CopyFromDevice:toCosetLagrangeOnGPUorCPU_DEV                0.326323
+    6    CopyFromDevice:toCosetLagrangeOnGPUorCPU_DEV                0.306019
+    7    CopyFromDevice:toCosetLagrangeOnGPUorCPU_DEV                0.281509
+    8    CopyFromDevice:toCosetLagrangeOnGPUorCPU_DEV                0.260211
+    9    CopyFromDevice:toCosetLagrangeOnGPUorCPU_DEV                0.246928
+    10   CopyFromDevice:toCosetLagrangeOnGPUorCPU_DEV                0.242477
+
+======================================================================
+Inner Prove - 总体 Copy 操作统计:
+======================================================================
+  总事件数量:                     103
+  总时间（包括并行）:             10.881538 ms
+  去除并行后的时间:                6.091828 ms
+  并行时间:                        4.789710 ms
+  并行比例:                          44.02%
+
+======================================================================
+OUTER PROVE 阶段分析
+======================================================================
+
+======================================================================
+Outer Prove - CopyToDevice 统计:
+======================================================================
+  事件数量:                        34
+  总时间（包括并行）:           1768.637462 ms
+  去除并行后的时间:             1768.637462 ms
+  并行时间:                        0.000000 ms
+  并行比例:                           0.00%
+
+  时间分布:
+    最小时间:                     40.891849 ms
+    最大时间:                    138.232254 ms
+    平均时间:                     52.018749 ms
+    中位数时间:                   42.134716 ms
+
+  前10个最长的事件:
+    序号   事件名称                                                         耗时 (ms)
+    ---- ------------------------------------------------------- ------------
+    1    CopyToDevice:setupDevicePointers_G1                       138.232254
+    2    CopyToDevice:setupDevicePointers_G1Lagrange               123.255482
+    3    CopyToDevice:scaleEverythingBackGPUorCPU_poly[3]          110.998933
+    4    CopyToDevice:scaleEverythingBackGPUorCPU_poly[1]           64.734363
+    5    CopyToDevice:scaleEverythingBackGPUorCPU_poly[2]           64.480048
+    6    CopyToDevice:scaleEverythingBackGPUorCPU_poly[5]           58.962425
+    7    CopyToDevice:scaleEverythingBackGPUorCPU_poly[0]           56.735458
+    8    CopyToDevice:scaleEverythingBackGPUorCPU_poly[6]           48.624563
+    9    CopyToDevice:scaleEverythingBackGPUorCPU_poly[8]           46.459392
+    10   CopyToDevice:scaleEverythingBackGPUorCPU_poly[13]          45.459127
+
+======================================================================
+Outer Prove - CopyFromDevice 统计:
+======================================================================
+  事件数量:                        69
+  总时间（包括并行）:           4418.287092 ms
+  去除并行后的时间:             3710.145053 ms
+  并行时间:                      708.142039 ms
+  并行比例:                          16.03%
+
+  时间分布:
+    最小时间:                     41.216761 ms
+    最大时间:                    370.645400 ms
+    平均时间:                     64.033146 ms
+    中位数时间:                   53.260299 ms
+
+  前10个最长的事件:
+    序号   事件名称                                                         耗时 (ms)
+    ---- ------------------------------------------------------- ------------
+    1    CopyFromDevice:toCosetLagrangeOnGPUorCPU_DEV              370.645400
+    2    CopyFromDevice:toCosetLagrangeOnGPUorCPU_DEV              323.448646
+    3    CopyFromDevice:toCosetLagrangeOnGPUorCPU_DEV              159.740461
+    4    CopyFromDevice:scaleEverythingBackGPUorCPU_poly[8]         82.374325
+    5    CopyFromDevice:scaleEverythingBackGPUorCPU_poly[3]         71.001078
+    6    CopyFromDevice:scaleEverythingBackGPUorCPU_poly[2]         70.301779
+    7    CopyFromDevice:toCosetLagrangeOnGPUorCPU_DEV               66.208356
+    8    CopyFromDevice:toCosetLagrangeOnGPUorCPU_DEV               65.297026
+    9    CopyFromDevice:toCosetLagrangeOnGPUorCPU_DEV               65.287248
+    10   CopyFromDevice:toCosetLagrangeOnGPUorCPU_DEV               65.246807
+
+======================================================================
+Outer Prove - 总体 Copy 操作统计:
+======================================================================
+  总事件数量:                     103
+  总时间（包括并行）:           6186.924554 ms
+  去除并行后的时间:             5478.782515 ms
+  并行时间:                      708.142039 ms
+  并行比例:                          11.45%
+
+======================================================================
+总体 Copy 操作统计 (CopyToDevice + CopyFromDevice):
+======================================================================
+  总事件数量:                     206
+  总时间（包括并行）:           6197.806092 ms
+  去除并行后的时间:             5484.874343 ms
+  并行时间:                      712.931749 ms
+  并行比例:                          11.50%
+
+============================================================
+分析完成
+============================================================
+
+============================================================
+RunOnDevice 时间分析
+============================================================
+分析时间: 2025-12-16 22:12:17
+SQLite 文件: /home/jade/jade/eonark-gpu/scripts/../logs/gpu-4090//Test_Recursion_20251216_221131.sqlite
+
+
+======================================================================
+检测到的 Prove 阶段时间范围:
+======================================================================
+  Inner Prove:  5639575251 - 5965158377 (325.58 ms)
+  Outer Prove:  27359859583 - 43120856384 (15761.00 ms)
+
+======================================================================
+INNER PROVE 阶段分析
+======================================================================
+
+======================================================================
+Inner Prove - RunOnDevice 统计:
+======================================================================
+  事件数量:                        78
+  总时间（包括并行）:            422.842509 ms
+  去除并行后的时间:              322.961455 ms
+  并行时间:                       99.881054 ms
+  并行比例:                          23.62%
+
+  时间分布:
+    最小时间:                      0.011144 ms
+    最大时间:                    254.419733 ms
+    平均时间:                      5.421058 ms
+    中位数时间:                    0.998942 ms
+
+  前10个最长的事件:
+    序号   事件名称                                                         耗时 (ms)
+    ---- ------------------------------------------------------- ------------
+    1    RunOnDevice:setupDevicePointers_G1Setup                   254.419733
+    2    RunOnDevice:commitBlindingFactorGPUOrCPUWithStream         11.996058
+    3    RunOnDevice:commitToPolyAndBlindingStream                  11.216151
+    4    RunOnDevice:commitBlindingFactorGPUOrCPUWithStream         10.454624
+    5    RunOnDevice:commitToPolyAndBlindingStream                   9.999177
+    6    RunOnDevice:commitOnGPUOrCPU                                9.577930
+    7    RunOnDevice:commitBlindingFactorGPUOrCPUWithStream          9.251113
+    8    RunOnDevice:commitBlindingFactorGPUOrCPU                    9.145815
+    9    RunOnDevice:scaleEverythingBackGPUorCPU                     6.489373
+    10   RunOnDevice:setupDevicePointers_InitDomain                  6.156732
+
+  Inner Prove - 按事件名称分组统计:
+    事件名称                                                        次数         总时间(ms)         去重后(ms)          并行(ms)
+    ------------------------------------------------------- ------ --------------- --------------- ---------------
+    RunOnDevice:setupDevicePointers_G1Setup                      1      254.419733      254.419733        0.000000
+    RunOnDevice:toCosetLagrangeOnGPUorCPU_DEV                   56       52.383888        5.022412       47.361476
+    RunOnDevice:commitOnGPUOrCPU                                 7       33.494018       22.776736       10.717282
+    RunOnDevice:commitBlindingFactorGPUOrCPUWithStream           3       31.701795       16.501129       15.200666
+    RunOnDevice:commitToPolyAndBlindingStream                    3       25.236906       11.267095       13.969811
+    RunOnDevice:commitBlindingFactorGPUOrCPU                     1        9.145815        9.145815        0.000000
+    RunOnDevice:scaleEverythingBackGPUorCPU                      1        6.489373        6.489373        0.000000
+    RunOnDevice:setupDevicePointers_InitDomain                   1        6.156732        6.156732        0.000000
+    RunOnDevice:OpenOnGPUOrCPU                                   1        2.477219        2.477219        0.000000
+    RunOnDevice:computeNumerator_UploadPolys                     1        1.046480        1.046480        0.000000
+    RunOnDevice:setupDevicePointers_CosetTables                  1        0.188646        0.188646        0.000000
+    RunOnDevice:setupDevicePointers_PrecomputeLagrange           1        0.090760        0.090760        0.000000
+    RunOnDevice:setupDevicePointers_PrecomputeG1                 1        0.011144        0.011144        0.000000
+
+======================================================================
+OUTER PROVE 阶段分析
+======================================================================
+
+======================================================================
+Outer Prove - RunOnDevice 统计:
+======================================================================
+  事件数量:                        78
+  总时间（包括并行）:          32577.431385 ms
+  去除并行后的时间:             7725.999749 ms
+  并行时间:                    24851.431636 ms
+  并行比例:                          76.28%
+
+  时间分布:
+    最小时间:                      0.092793 ms
+    最大时间:                   2018.098956 ms
+    平均时间:                    417.659377 ms
+    中位数时间:                  396.723592 ms
+
+  前10个最长的事件:
+    序号   事件名称                                                         耗时 (ms)
+    ---- ------------------------------------------------------- ------------
+    1    RunOnDevice:scaleEverythingBackGPUorCPU                  2018.098956
+    2    RunOnDevice:commitOnGPUOrCPU                              781.098726
+    3    RunOnDevice:commitOnGPUOrCPU                              770.789942
+    4    RunOnDevice:toCosetLagrangeOnGPUorCPU_DEV                 769.478011
+    5    RunOnDevice:toCosetLagrangeOnGPUorCPU_DEV                 769.053924
+    6    RunOnDevice:toCosetLagrangeOnGPUorCPU_DEV                 768.561397
+    7    RunOnDevice:toCosetLagrangeOnGPUorCPU_DEV                 765.594953
+    8    RunOnDevice:toCosetLagrangeOnGPUorCPU_DEV                 765.320315
+    9    RunOnDevice:toCosetLagrangeOnGPUorCPU_DEV                 721.235648
+    10   RunOnDevice:toCosetLagrangeOnGPUorCPU_DEV                 718.658900
+
+  Outer Prove - 按事件名称分组统计:
+    事件名称                                                        次数         总时间(ms)         去重后(ms)          并行(ms)
+    ------------------------------------------------------- ------ --------------- --------------- ---------------
+    RunOnDevice:toCosetLagrangeOnGPUorCPU_DEV                   56    24926.273568     3073.986560    21852.287008
+    RunOnDevice:commitOnGPUOrCPU                                 7     2851.018843     1400.552743     1450.466100
+    RunOnDevice:scaleEverythingBackGPUorCPU                      1     2018.098956     2018.098956        0.000000
+    RunOnDevice:commitToPolyAndBlindingStream                    3      983.829243      384.062912      599.766331
+    RunOnDevice:computeNumerator_UploadPolys                     1      663.305287      663.305287        0.000000
+    RunOnDevice:OpenOnGPUOrCPU                                   1      484.551385      484.551385        0.000000
+    RunOnDevice:setupDevicePointers_G1Setup                      1      271.091971      271.091971        0.000000
+    RunOnDevice:commitBlindingFactorGPUOrCPUWithStream           3      182.560706      146.247981       36.312725
+    RunOnDevice:setupDevicePointers_CosetTables                  1      170.247843      170.247843        0.000000
+    RunOnDevice:setupDevicePointers_InitDomain                   1       17.338723       17.338723        0.000000
+    RunOnDevice:commitBlindingFactorGPUOrCPU                     1        8.557770        8.557770        0.000000
+    RunOnDevice:setupDevicePointers_PrecomputeLagrange           1        0.464297        0.464297        0.000000
+    RunOnDevice:setupDevicePointers_PrecomputeG1                 1        0.092793        0.092793        0.000000
+
+======================================================================
+总体 RunOnDevice 统计 (Inner + Outer):
+======================================================================
+  事件数量:                       156
+  总时间（包括并行）:          33000.273894 ms
+  去除并行后的时间:             8048.961204 ms
+  并行时间:                    24951.312690 ms
+  并行比例:                          75.61%
+
+============================================================
+分析完成
+============================================================
